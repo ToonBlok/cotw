@@ -32,9 +32,4 @@ void Player::set_texture(sf::Texture _texture)
 	sprite.setTexture(texture);
 }
 
-//int Player::get_position() const
-//{
-//
-//}
-
 }

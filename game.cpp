@@ -4,8 +4,6 @@
 #include "tile.h"
 #include <SFML/Graphics/RenderStates.hpp>
 
-// For random
-
 using namespace sf;
 using namespace std;
 

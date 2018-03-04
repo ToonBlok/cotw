@@ -22,7 +22,7 @@ struct Point
 class Game
 {
 	const std::string filename_texture_grass = "textures/tile_grass.png";
-	const std::string filename_texture_hero = "textures/hero.png";
+	const std::string filename_texture_hero = "textures/entity_hero.png";
 
 	public:
 		Game();
