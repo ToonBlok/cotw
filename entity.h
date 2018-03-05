@@ -11,10 +11,6 @@ class Entity: public sf::Drawable
 		Entity() {};
 		~Entity() {};
 
-		int x;
-		int y;
-		int height;
-		int width;
 		virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
 		virtual void set_texture(sf::Texture) = 0;
 		virtual void set_position(sf::Vector2f coordinates) { sprite.setPosition(coordinates); };

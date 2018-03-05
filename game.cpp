@@ -125,7 +125,7 @@ void Game::make_map(int screen_width, int screen_height) {
 			if (!texture.loadFromImage(img_tile_grass))
 				cout << "Texture \"" + filename_texture_grass + "\" was not found!" << endl; // Apparentely not even called when not found...
 
-			entities.push_back(new cotw::Tile(texture, x * 32, y * 32, 32, 32));
+			entities.push_back(new cotw::Tile(texture, x * 32, y * 32));
 		}
 	}
 }
@@ -143,8 +143,7 @@ void Game::setup()
 	if (!texture_hero.loadFromImage(img_hero))
 		cout << "Texture \"" + filename_texture_hero + "\" was not found!" << endl; // Apparentely not even called when not found...
 
-	// Now to assign a new player to the pointer obj....
-	player = new cotw::Player(texture_hero, 32, 32, 32, 32);
+	player = new cotw::Player(texture_hero, 32, 32);
 
 	make_map(screen_width, screen_height);
 }

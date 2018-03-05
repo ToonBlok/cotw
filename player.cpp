@@ -7,10 +7,8 @@ namespace cotw {
 
 Player::Player() {}
 
-Player::Player(sf::Texture _texture, int _x, int _y, int _width, int _height) 
+Player::Player(sf::Texture _texture, int _x, int _y) 
 {
-	width = _width;
-	height = _height;
 	texture = _texture;
 
 	sprite.setPosition(sf::Vector2f(_x, _y)); 

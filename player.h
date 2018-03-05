@@ -9,7 +9,7 @@ class Player: public Entity
 {
 	public:
 		Player();
-		Player(sf::Texture, int, int, int, int);
+		Player(sf::Texture, int, int);
 		~Player();
 
 		void draw(sf::RenderTarget&, sf::RenderStates) const;

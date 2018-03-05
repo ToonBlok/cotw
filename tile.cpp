@@ -5,12 +5,9 @@ using namespace std;
 
 namespace cotw {
 
-Tile::Tile(sf::Texture _texture, int _x, int _y, int _width, int _height)
+Tile::Tile(sf::Texture _texture, int _x, int _y)
 {
 	texture = _texture;
-	width = _width;
-	height = _height;
-
 	sprite.setTexture(texture);
 	sprite.setPosition(sf::Vector2f(_x, _y)); 
 }
