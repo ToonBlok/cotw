@@ -15,7 +15,7 @@ class Player: public Entity
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void set_texture(sf::Texture);
 
-		int speed = 10;
+		int speed = 32;
 };
 
 }
