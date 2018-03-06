@@ -11,43 +11,41 @@ namespace cotw {
 
 void Game::handle_key(Event event)
 {
-	sf::Vector2f current_position = player->get_position();
-
 	switch (event.type) 
 	{
 		case Event::KeyPressed:
 			switch (event.key.code) 
 			{
 				case Keyboard::Numpad8:
-					player->set_position(sf::Vector2f(current_position.x, (current_position.y - player->speed)));
+					player->move(sf::Vector2f(0, -player->speed));
 					break;
 
 				case Keyboard::Numpad9:
-					player->set_position(sf::Vector2f((current_position.x + player->speed), (current_position.y - player->speed)));
+					player->move(sf::Vector2f(player->speed, -player->speed));
 					break;
 
 				case Keyboard::Numpad4:
-					player->set_position(sf::Vector2f((current_position.x - player->speed), current_position.y));
+					player->move(sf::Vector2f(-player->speed, 0));
 					break;
 
 				case Keyboard::Numpad3:
-					player->set_position(sf::Vector2f((current_position.x + player->speed), (current_position.y + player->speed)));
+					player->move(sf::Vector2f(player->speed, player->speed));
 					break;
 
 				case Keyboard::Numpad2:
-					player->set_position(sf::Vector2f(current_position.x, (current_position.y + player->speed)));
+					player->move(sf::Vector2f(0, player->speed));
 					break;
 
 				case Keyboard::Numpad1:
-					player->set_position(sf::Vector2f((current_position.x - player->speed), (current_position.y + player->speed)));
+					player->move(sf::Vector2f(-player->speed, player->speed));
 					break;
 
 				case Keyboard::Numpad6:
-					player->set_position(sf::Vector2f((current_position.x + player->speed), current_position.y));
+					player->move(sf::Vector2f(player->speed, 0));
 					break;
 
 				case Keyboard::Numpad7:
-					player->set_position(sf::Vector2f((current_position.x - player->speed), (current_position.y - player->speed)));
+					player->move(sf::Vector2f(-player->speed, -player->speed));
 					break;
 
 				case Keyboard::Q:
@@ -130,13 +128,14 @@ sf::Texture Game::random_rotate_tile(sf::Image& image)
 		image.flipVertically();
 }
 
-sf::Texture Game::get_random_texture() 
+void Game::create_tile(int x, int y) 
 {
 	int rand_num_tile = (rand() % 100) + 1;
 
 	sf::Texture texture;
 	sf::Image image;
 	int rand_num_tile_rotation = (rand() % 2);
+	bool blocking = 0;
 
 	if (rand_num_tile_rotation == 0)
 		image.flipHorizontally();
@@ -178,6 +177,8 @@ sf::Texture Game::get_random_texture()
 		//random_rotate_tile(image);
 		if (!texture.loadFromImage(image))
 			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
+
+		blocking = 1;
 	}
 	else if ((rand_num_tile >= 25) && (rand_num_tile < 30)) // plain grass
 	{
@@ -185,6 +186,8 @@ sf::Texture Game::get_random_texture()
 		//random_rotate_tile(image);
 		if (!texture.loadFromImage(image))
 			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
+
+		blocking = 1;
 	}
 	else if ((rand_num_tile >= 30) && (rand_num_tile < 35)) // plain grass
 	{
@@ -192,6 +195,8 @@ sf::Texture Game::get_random_texture()
 		//random_rotate_tile(image);
 		if (!texture.loadFromImage(image))
 			cout << "Texture \"" + filename_texture_hole + "\" was not found!" << endl;
+
+		blocking = 1;
 	}
 	else if (rand_num_tile >= 35) // plain grass
 	{
@@ -201,7 +206,7 @@ sf::Texture Game::get_random_texture()
 			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
 	}
 	
-	return texture;
+	entities.push_back(new cotw::Tile(texture, x * 32, y * 32, blocking));
 }
 
 // Remove later with get value directly
@@ -215,8 +220,8 @@ void Game::make_map(int screen_width, int screen_height)
 	{
 		for (int x = 0; x < h_tiles_size; x++) 
 		{
-			sf::Texture texture = get_random_texture();
-			entities.push_back(new cotw::Tile(get_random_texture(), x * 32, y * 32));
+			//sf::Texture texture = get_random_texture();
+			create_tile(x, y);
 
 			//int rand_num_tile = (rand() % 100) + 1;
 			//int rand_num_tile_rotation = (rand() % 3) + 1;
@@ -301,6 +306,20 @@ Game::Game()// : player(50, 50, 32, 32)
 	srand(time(0));
 	setup();
 	game_loop();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	for (int i = 0; i < entities.size(); i++)
 		delete entities[i];

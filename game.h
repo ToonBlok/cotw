@@ -49,7 +49,7 @@ class Game
 		void handle_key(sf::Event);
 		void make_map(int, int);
 		void setup();
-		sf::Texture get_random_texture();
+		void create_tile(int, int);
 		sf::Texture random_rotate_tile(sf::Image&);
 		int game_loop();
 };

@@ -8,7 +8,7 @@ namespace cotw {
 class Tile: public Entity 
 {
 	public:
-		Tile(sf::Texture, int, int);
+		Tile(sf::Texture, int, int, bool);
 		~Tile();
 
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
