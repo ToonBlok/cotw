@@ -42,6 +42,7 @@ class Game
 		//sf::Image img_tile_hole;
 		sf::Image img_hero;
 		std::vector<sf::Drawable*> entities;
+		std::vector< std::vector<sf::Drawable*> > entitiesf;
 		//cotw::Player *player;
 		cotw::Player *player;
 
@@ -49,7 +50,7 @@ class Game
 		void handle_key(sf::Event);
 		void make_map(int, int);
 		void setup();
-		void create_tile(int, int);
+		cotw::Tile* create_tile(int, int);
 		sf::Texture random_rotate_tile(sf::Image&);
 		int game_loop();
 };

@@ -11,6 +11,10 @@ namespace cotw {
 
 void Game::handle_key(Event event)
 {
+	sf::Vector2f current_location = player->get_position();
+	int pos_x = current_location.x / 32;
+	int pos_y = current_location.y / 32;
+
 	switch (event.type) 
 	{
 		case Event::KeyPressed:
@@ -54,7 +58,9 @@ void Game::handle_key(Event event)
 					break;
 
 				case Keyboard::I:
-					player->set_position(sf::Vector2f(10, 10));
+					//player->set_position(sf::Vector2f(10, 10));
+					cout << "I am at x: " << current_location.x << " and y: " << current_location.y << endl;
+					//cout << "This block is " << entities
 					//srand(time(NULL));
 					//int num;
 					//num = rand() % 10;
@@ -99,8 +105,9 @@ int Game::game_loop()
 		//tile.draw(bitmap, render_states);
 		//p_tile->draw(bitmap, render_states);
 
-		for (int x = 0; x < entities.size(); x++)
-			static_cast<cotw::Tile*>(entities[x])->draw(bitmap, render_states);
+		for (int y = 0; y < entitiesf.size(); y++)
+			for (int x = 0; x < entitiesf[y].size(); x++)
+				static_cast<cotw::Tile*>(entitiesf[y][x])->draw(bitmap, render_states);
 
 		player->draw(bitmap, render_states);
 
@@ -128,7 +135,7 @@ sf::Texture Game::random_rotate_tile(sf::Image& image)
 		image.flipVertically();
 }
 
-void Game::create_tile(int x, int y) 
+cotw::Tile* Game::create_tile(int x, int y) 
 {
 	int rand_num_tile = (rand() % 100) + 1;
 
@@ -206,7 +213,7 @@ void Game::create_tile(int x, int y)
 			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
 	}
 	
-	entities.push_back(new cotw::Tile(texture, x * 32, y * 32, blocking));
+	return new cotw::Tile(texture, x * 32, y * 32, blocking);
 }
 
 // Remove later with get value directly
@@ -218,67 +225,10 @@ void Game::make_map(int screen_width, int screen_height)
 
 	for (int y = 0; y < v_tiles_size; y++) 
 	{
+		entitiesf.push_back(std::vector<sf::Drawable*>());
 		for (int x = 0; x < h_tiles_size; x++) 
 		{
-			//sf::Texture texture = get_random_texture();
-			create_tile(x, y);
-
-			//int rand_num_tile = (rand() % 100) + 1;
-			//int rand_num_tile_rotation = (rand() % 3) + 1;
-
-			//if (rand_num_tile <= 90) // Plain grass
-			//{
-			//	if (rand_num_tile_rotation == 2)
-			//		img_tile_grass.flipHorizontally();
-			//	else if (rand_num_tile_rotation == 3)
-			//		img_tile_grass.flipVertically();
-
-			//	sf::Texture grass_texture;
-			//	if (!grass_texture.loadFromImage(img_tile_grass))
-			//		cout << "Texture \"" + filename_texture_grass + "\" was not found!" << endl; // Apparentely not even called when not found...
-
-			//	entities.push_back(new cotw::Tile(grass_texture, x * 32, y * 32));
-			//}
-			//else if (rand_num_tile > 90 && rand_num_tile < 93) // Two ferns
-			//{
-			//	if (rand_num_tile_rotation == 2)
-			//		img_tile_plant1.flipHorizontally();
-			//	else if (rand_num_tile_rotation == 3)
-			//		img_tile_plant1.flipVertically();
-
-			//	sf::Texture plant1_texture;
-			//	if (!plant1_texture.loadFromImage(img_tile_plant1))
-			//		cout << "Texture \"" + filename_texture_plant1 + "\" was not found!" << endl; // Apparentely not even called when not found...
-
-			//	entities.push_back(new cotw::Tile(plant1_texture, x * 32, y * 32));
-			//}
-			//else if (rand_num_tile > 92 && rand_num_tile < 100)
-			//{
-			//	if (rand_num_tile_rotation == 2)
-			//		img_tile_plant2.flipHorizontally();
-			//	else if (rand_num_tile_rotation == 3)
-			//		img_tile_plant2.flipVertically();
-
-			//	sf::Texture plant2_texture;
-			//	if (!plant2_texture.loadFromImage(img_tile_plant2))
-			//		cout << "Texture \"" + filename_texture_plant2 + "\" was not found!" << endl; // Apparentely not even called when not found...
-
-			//	entities.push_back(new cotw::Tile(plant2_texture, x * 32, y * 32));
-			//}
-			//else if (rand_num_tile > 99)
-			//{
-			//	if (rand_num_tile_rotation == 2)
-			//		img_tile_hole.flipHorizontally();
-			//	else if (rand_num_tile_rotation == 3)
-			//		img_tile_hole.flipVertically();
-
-			//	sf::Texture hole_texture;
-			//	if (!hole_texture.loadFromImage(img_tile_hole))
-			//		cout << "Texture \"" + filename_texture_hole + "\" was not found!" << endl; // Apparentely not even called when not found...
-
-			//	entities.push_back(new cotw::Tile(hole_texture, x * 32, y * 32));
-			//}
-			//cout << rand_num_tile << endl;
+			entitiesf[y].push_back(create_tile(x, y));
 		}
 	}
 }
@@ -307,22 +257,13 @@ Game::Game()// : player(50, 50, 32, 32)
 	setup();
 	game_loop();
 
+	//std::vector<Tile*> bla;
+	//std::vector<sf::Drawable*> bla;
+	//entitiesf.push_back(bla);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	for (int i = 0; i < entities.size(); i++)
-		delete entities[i];
+	for (int y = 0; y < entitiesf.size(); y++)
+		for (int x = 0; x < entitiesf[y].size(); x++)
+			delete entitiesf[y][x];
 
 	delete player;
 }
