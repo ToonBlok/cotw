@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include <iostream>
 #include "game.h"
 #include "tile.h"
-#include <SFML/Graphics/RenderStates.hpp>
 
 using namespace sf;
 using namespace std;
@@ -101,10 +101,10 @@ bool Game::valid_move(sf::Vector2f pos)
 int Game::game_loop()
 {
 	sf::RenderTexture bitmap;
-
 	Vector2u size = window.getSize();
 	float screen_width = size.x;
 	float screen_height = size.y;
+
 	if (!bitmap.create(screen_width, screen_height))
 		return -1;
 
@@ -118,8 +118,6 @@ int Game::game_loop()
 		bitmap.clear(Color::Black);
 
 		sf::RenderStates render_states;
-		//tile.draw(bitmap, render_states);
-		//p_tile->draw(bitmap, render_states);
 
 		for (int y = 0; y < entitiesf.size(); y++)
 			for (int x = 0; x < entitiesf[y].size(); x++)
@@ -127,15 +125,9 @@ int Game::game_loop()
 
 		player->draw(bitmap, render_states);
 
-		// START Temporary test code
-		// END Temporary test code
-		// We are done drawing to the bitmap.
 		bitmap.display();
-		// Create a sprite from the bitmap.
 	    sf::Sprite sprite(bitmap.getTexture());
-		// Draw the sprite.
 		window.draw(sprite);
-		// We are done drawing to the window.
         window.display();
     }
 
@@ -155,7 +147,7 @@ void Game::get_texture(sf::Texture& texture, std::string filename)
 {
 	sf::Image image;
 	image.loadFromFile(filename);
-	//random_rotate_tile(image);
+
 	if (!texture.loadFromImage(image))
 		cout << "texture \"" + filename + "\" was not found!" << endl; 
 }
@@ -219,12 +211,11 @@ cotw::Tile* Game::create_tile(int x, int y)
 }
 
 // Remove later with get value directly
-void Game::make_map(int screen_width, int screen_height) 
+void Game::make_map() 
 {
-	//bool tree = 0;
-
-	int h_tiles_size = screen_width / 32;
-	int v_tiles_size = screen_height / 32;
+	Vector2u screen_size = window.getSize();
+	int h_tiles_size = screen_size.x / 32;
+	int v_tiles_size = screen_size.y / 32;
 
 	for (int y = 0; y < v_tiles_size; y++) 
 	{
@@ -238,9 +229,7 @@ void Game::make_map(int screen_width, int screen_height)
 
 void Game::setup() 
 {
-	int screen_width = 960;
-	int screen_height = 960;
-	VideoMode video_mode(screen_width, screen_height, 32);
+	VideoMode video_mode(960, 960, 32);
 	window.create(video_mode, "Jets", Style::Titlebar); 
 
 	img_hero.loadFromFile(filename_texture_hero);
@@ -251,27 +240,23 @@ void Game::setup()
 
 	player = new cotw::Player(texture_hero, 0, 0);
 
-	make_map(screen_width, screen_height);
+	make_map();
 }
 
-Game::Game()// : player(50, 50, 32, 32)
+Game::Game()
 {
 	srand(time(0));
 	setup();
 	game_loop();
+}
 
-	//std::vector<Tile*> bla;
-	//std::vector<sf::Drawable*> bla;
-	//entitiesf.push_back(bla);
-
+Game::~Game()
+{
 	for (int y = 0; y < entitiesf.size(); y++)
 		for (int x = 0; x < entitiesf[y].size(); x++)
 			delete entitiesf[y][x];
 
 	delete player;
 }
-
-
-Game::~Game(){ }
 
 }

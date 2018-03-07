@@ -52,7 +52,7 @@ class Game
 
 
 		void handle_key(sf::Event);
-		void make_map(int, int);
+		void make_map();
 		void setup();
 		bool valid_move(sf::Vector2f);
 		cotw::Tile* create_tile(int, int);
