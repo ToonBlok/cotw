@@ -28,6 +28,10 @@ class Game
 	const std::string filename_texture_plant4 = "textures/tile_plant4.png";
 	const std::string filename_texture_plant5 = "textures/tile_plant5.png";
 	const std::string filename_texture_plant6 = "textures/tile_plant6.png";
+	const std::string filename_texture_tree_p1 = "textures/tile_tree_p1.png";
+	const std::string filename_texture_tree_p2 = "textures/tile_tree_p2.png";
+	const std::string filename_texture_tree_p3 = "textures/tile_tree_p3.png";
+	const std::string filename_texture_tree_p4 = "textures/tile_tree_p4.png";
 	const std::string filename_texture_hole = "textures/tile_hole2.png";
 	const std::string filename_texture_hero = "textures/entity_hero.png";
 
@@ -50,7 +54,9 @@ class Game
 		void handle_key(sf::Event);
 		void make_map(int, int);
 		void setup();
+		bool valid_move(sf::Vector2f);
 		cotw::Tile* create_tile(int, int);
+		void get_texture(sf::Texture&, std::string);
 		sf::Texture random_rotate_tile(sf::Image&);
 		int game_loop();
 };

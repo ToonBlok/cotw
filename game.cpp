@@ -12,8 +12,8 @@ namespace cotw {
 void Game::handle_key(Event event)
 {
 	sf::Vector2f current_location = player->get_position();
-	int pos_x = current_location.x / 32;
-	int pos_y = current_location.y / 32;
+	int x = current_location.x / 32;
+	int y = current_location.y / 32;
 
 	switch (event.type) 
 	{
@@ -21,42 +21,42 @@ void Game::handle_key(Event event)
 			switch (event.key.code) 
 			{
 				case Keyboard::Numpad8:
-					if(!static_cast<cotw::Tile*>(entitiesf[pos_y - 1][pos_x])->blocking)
+					if(valid_move(sf::Vector2f(x, y - 1)))
 						player->move(sf::Vector2f(0, -player->speed));
 					break;
 
 				case Keyboard::Numpad9:
-					if(!static_cast<cotw::Tile*>(entitiesf[pos_y - 1][pos_x + 1])->blocking)
-						player->move(sf::Vector2f(0, -player->speed));
+					if(valid_move(sf::Vector2f(x + 1, y - 1)))
+						player->move(sf::Vector2f(player->speed, -player->speed));
 					break;
 
 				case Keyboard::Numpad4:
-					if(!static_cast<cotw::Tile*>(entitiesf[pos_y][pos_x - 1])->blocking)
+					if(valid_move(sf::Vector2f(x - 1, y)))
 						player->move(sf::Vector2f(-player->speed, 0));
 					break;
 
 				case Keyboard::Numpad3:
-					if(!static_cast<cotw::Tile*>(entitiesf[pos_y + 1][pos_x + 1])->blocking)
+					if(valid_move(sf::Vector2f(x + 1, y + 1)))
 						player->move(sf::Vector2f(player->speed, player->speed));
 					break;
 
 				case Keyboard::Numpad2:
-					if(!static_cast<cotw::Tile*>(entitiesf[pos_y + 1][pos_x])->blocking)
+					if(valid_move(sf::Vector2f(x, y + 1)))
 						player->move(sf::Vector2f(0, player->speed));
 					break;
 
 				case Keyboard::Numpad1:
-					if(!static_cast<cotw::Tile*>(entitiesf[pos_y + 1][pos_x - 1])->blocking)
+					if(valid_move(sf::Vector2f(x - 1, y + 1)))
 						player->move(sf::Vector2f(-player->speed, player->speed));
 					break;
 
 				case Keyboard::Numpad6:
-					if(!static_cast<cotw::Tile*>(entitiesf[pos_y][pos_x + 1])->blocking)
+					if(valid_move(sf::Vector2f(x + 1, y)))
 						player->move(sf::Vector2f(player->speed, 0));
 					break;
 
 				case Keyboard::Numpad7:
-					if(!static_cast<cotw::Tile*>(entitiesf[pos_y - 1][pos_x - 1])->blocking)
+					if(valid_move(sf::Vector2f(x - 1, y - 1)))
 						player->move(sf::Vector2f(-player->speed, -player->speed));
 					break;
 
@@ -67,8 +67,8 @@ void Game::handle_key(Event event)
 
 				case Keyboard::I:
 					//player->set_position(sf::Vector2f(10, 10));
-					cout << "I am at x: " << pos_x << " and y: " << pos_y << endl;
-					cout << "This block I am standing on is blocking yes or no: " << static_cast<cotw::Tile*>(entitiesf[pos_y][pos_x])->blocking << endl;
+					cout << "I am at x: " << x << " and y: " << y << endl;
+					cout << "This block I am standing on is blocking yes or no: " << static_cast<cotw::Tile*>(entitiesf[y][x])->blocking << endl;
 					//srand(time(NULL));
 					//int num;
 					//num = rand() % 10;
@@ -88,6 +88,14 @@ void Game::handle_key(Event event)
 		default:
 			break;
 	}
+}
+
+bool Game::valid_move(sf::Vector2f pos)
+{
+	if(static_cast<cotw::Tile*>(entitiesf[pos.y][pos.x])->blocking)
+		return false;
+	else
+		return true;
 }
 
 int Game::game_loop()
@@ -143,6 +151,15 @@ sf::Texture Game::random_rotate_tile(sf::Image& image)
 		image.flipVertically();
 }
 
+void Game::get_texture(sf::Texture& texture, std::string filename) 
+{
+	sf::Image image;
+	image.loadFromFile(filename);
+	//random_rotate_tile(image);
+	if (!texture.loadFromImage(image))
+		cout << "texture \"" + filename + "\" was not found!" << endl; 
+}
+
 cotw::Tile* Game::create_tile(int x, int y) 
 {
 	int rand_num_tile = (rand() % 100) + 1;
@@ -158,75 +175,53 @@ cotw::Tile* Game::create_tile(int x, int y)
 		image.flipVertically();
 	
 
-	if ((rand_num_tile >= 0) && (rand_num_tile < 5)) // plain grass
+	if ((rand_num_tile >= 0) && (rand_num_tile < 5)) 
 	{
-		image.loadFromFile(filename_texture_plant1);
-		//random_rotate_tile(image);
-		if (!texture.loadFromImage(image))
-			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
+		get_texture(texture, filename_texture_plant1);
 	}
-	else if ((rand_num_tile >= 5) && (rand_num_tile < 10)) // plain grass
+	else if ((rand_num_tile >= 5) && (rand_num_tile < 10)) 
 	{
-		image.loadFromFile(filename_texture_plant2);
-		//random_rotate_tile(image);
-		if (!texture.loadFromImage(image))
-			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
+		get_texture(texture, filename_texture_plant2);
 	}
-	else if ((rand_num_tile >= 10) && (rand_num_tile < 15)) // plain grass
+	else if ((rand_num_tile >= 10) && (rand_num_tile < 15)) 
 	{
-		image.loadFromFile(filename_texture_plant3);
-		//random_rotate_tile(image);
-		if (!texture.loadFromImage(image))
-			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
+		get_texture(texture, filename_texture_plant3);
 	}
-	else if ((rand_num_tile >= 15) && (rand_num_tile < 20)) // plain grass
+	else if ((rand_num_tile >= 15) && (rand_num_tile < 20)) 
 	{
-		image.loadFromFile(filename_texture_plant4);
-		//random_rotate_tile(image);
-		if (!texture.loadFromImage(image))
-			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
+		get_texture(texture, filename_texture_plant4);
 	}
-	else if ((rand_num_tile >= 20) && (rand_num_tile < 25)) // plain grass
+	else if ((rand_num_tile >= 20) && (rand_num_tile < 25)) 
 	{
-		image.loadFromFile(filename_texture_plant5);
-		//random_rotate_tile(image);
-		if (!texture.loadFromImage(image))
-			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
-
+		get_texture(texture, filename_texture_plant5);
 		blocking = 1;
 	}
-	else if ((rand_num_tile >= 25) && (rand_num_tile < 30)) // plain grass
+	else if ((rand_num_tile >= 25) && (rand_num_tile < 30)) 
 	{
-		image.loadFromFile(filename_texture_plant6);
-		//random_rotate_tile(image);
-		if (!texture.loadFromImage(image))
-			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
-
+		get_texture(texture, filename_texture_plant6);
 		blocking = 1;
 	}
-	else if ((rand_num_tile >= 30) && (rand_num_tile < 35)) // plain grass
+	else if ((rand_num_tile >= 30) && (rand_num_tile < 35)) 
 	{
-		image.loadFromFile(filename_texture_hole);
-		//random_rotate_tile(image);
-		if (!texture.loadFromImage(image))
-			cout << "Texture \"" + filename_texture_hole + "\" was not found!" << endl;
-
+		get_texture(texture, filename_texture_hole);
 		blocking = 1;
 	}
-	else if (rand_num_tile >= 35) // plain grass
+	else if ((rand_num_tile >= 35) && (rand_num_tile < 37)) 
 	{
-		image.loadFromFile(filename_texture_grass);
-		//random_rotate_tile(image);
-		if (!texture.loadFromImage(image))
-			cout << "texture \"" + filename_texture_grass + "\" was not found!" << endl; 
+		get_texture(texture, filename_texture_tree_p1);
 	}
-	
+	else if (rand_num_tile >= 37) 
+	{
+		get_texture(texture, filename_texture_grass);
+	}
+
 	return new cotw::Tile(texture, x * 32, y * 32, blocking);
 }
 
 // Remove later with get value directly
 void Game::make_map(int screen_width, int screen_height) 
 {
+	//bool tree = 0;
 
 	int h_tiles_size = screen_width / 32;
 	int v_tiles_size = screen_height / 32;
