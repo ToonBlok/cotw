@@ -21,35 +21,43 @@ void Game::handle_key(Event event)
 			switch (event.key.code) 
 			{
 				case Keyboard::Numpad8:
-					player->move(sf::Vector2f(0, -player->speed));
+					if(!static_cast<cotw::Tile*>(entitiesf[pos_y - 1][pos_x])->blocking)
+						player->move(sf::Vector2f(0, -player->speed));
 					break;
 
 				case Keyboard::Numpad9:
-					player->move(sf::Vector2f(player->speed, -player->speed));
+					if(!static_cast<cotw::Tile*>(entitiesf[pos_y - 1][pos_x + 1])->blocking)
+						player->move(sf::Vector2f(0, -player->speed));
 					break;
 
 				case Keyboard::Numpad4:
-					player->move(sf::Vector2f(-player->speed, 0));
+					if(!static_cast<cotw::Tile*>(entitiesf[pos_y][pos_x - 1])->blocking)
+						player->move(sf::Vector2f(-player->speed, 0));
 					break;
 
 				case Keyboard::Numpad3:
-					player->move(sf::Vector2f(player->speed, player->speed));
+					if(!static_cast<cotw::Tile*>(entitiesf[pos_y + 1][pos_x + 1])->blocking)
+						player->move(sf::Vector2f(player->speed, player->speed));
 					break;
 
 				case Keyboard::Numpad2:
-					player->move(sf::Vector2f(0, player->speed));
+					if(!static_cast<cotw::Tile*>(entitiesf[pos_y + 1][pos_x])->blocking)
+						player->move(sf::Vector2f(0, player->speed));
 					break;
 
 				case Keyboard::Numpad1:
-					player->move(sf::Vector2f(-player->speed, player->speed));
+					if(!static_cast<cotw::Tile*>(entitiesf[pos_y + 1][pos_x - 1])->blocking)
+						player->move(sf::Vector2f(-player->speed, player->speed));
 					break;
 
 				case Keyboard::Numpad6:
-					player->move(sf::Vector2f(player->speed, 0));
+					if(!static_cast<cotw::Tile*>(entitiesf[pos_y][pos_x + 1])->blocking)
+						player->move(sf::Vector2f(player->speed, 0));
 					break;
 
 				case Keyboard::Numpad7:
-					player->move(sf::Vector2f(-player->speed, -player->speed));
+					if(!static_cast<cotw::Tile*>(entitiesf[pos_y - 1][pos_x - 1])->blocking)
+						player->move(sf::Vector2f(-player->speed, -player->speed));
 					break;
 
 				case Keyboard::Q:
@@ -59,8 +67,8 @@ void Game::handle_key(Event event)
 
 				case Keyboard::I:
 					//player->set_position(sf::Vector2f(10, 10));
-					cout << "I am at x: " << current_location.x << " and y: " << current_location.y << endl;
-					//cout << "This block is " << entities
+					cout << "I am at x: " << pos_x << " and y: " << pos_y << endl;
+					cout << "This block I am standing on is blocking yes or no: " << static_cast<cotw::Tile*>(entitiesf[pos_y][pos_x])->blocking << endl;
 					//srand(time(NULL));
 					//int num;
 					//num = rand() % 10;
