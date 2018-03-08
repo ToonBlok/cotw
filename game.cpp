@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <iostream>
 #include "game.h"
@@ -143,7 +142,7 @@ sf::Texture Game::random_rotate_tile(sf::Image& image)
 		image.flipVertically();
 }
 
-void Game::get_texture(sf::Texture& texture, std::string filename) 
+void Game::create_texture(sf::Texture& texture, std::string filename) 
 {
 	sf::Image image;
 	image.loadFromFile(filename);
@@ -161,50 +160,44 @@ cotw::Tile* Game::create_tile(int x, int y)
 	int rand_num_tile_rotation = (rand() % 2);
 	bool blocking = 0;
 
-	if (rand_num_tile_rotation == 0)
-		image.flipHorizontally();
-	else if (rand_num_tile_rotation == 1)
-		image.flipVertically();
-	
-
 	if ((rand_num_tile >= 0) && (rand_num_tile < 5)) 
 	{
-		get_texture(texture, filename_texture_plant1);
+		texture = texture_manager.get_texture("textures/tile_plant1.png");
 	}
 	else if ((rand_num_tile >= 5) && (rand_num_tile < 10)) 
 	{
-		get_texture(texture, filename_texture_plant2);
+		texture = texture_manager.get_texture("textures/tile_plant2.png");
 	}
 	else if ((rand_num_tile >= 10) && (rand_num_tile < 15)) 
 	{
-		get_texture(texture, filename_texture_plant3);
+		texture = texture_manager.get_texture("textures/tile_plant3.png");
 	}
 	else if ((rand_num_tile >= 15) && (rand_num_tile < 20)) 
 	{
-		get_texture(texture, filename_texture_plant4);
+		texture = texture_manager.get_texture("textures/tile_plant4.png");
 	}
 	else if ((rand_num_tile >= 20) && (rand_num_tile < 25)) 
 	{
-		get_texture(texture, filename_texture_plant5);
+		texture = texture_manager.get_texture("textures/tile_plant5.png");
 		blocking = 1;
 	}
 	else if ((rand_num_tile >= 25) && (rand_num_tile < 30)) 
 	{
-		get_texture(texture, filename_texture_plant6);
+		texture = texture_manager.get_texture("textures/tile_plant6.png");
 		blocking = 1;
 	}
-	else if ((rand_num_tile >= 30) && (rand_num_tile < 35)) 
+	else if ((rand_num_tile >= 30) && (rand_num_tile < 31)) 
 	{
-		get_texture(texture, filename_texture_hole);
+		texture = texture_manager.get_texture("textures/tile_tree_p1.png");
 		blocking = 1;
 	}
-	else if ((rand_num_tile >= 35) && (rand_num_tile < 37)) 
+	else if ((rand_num_tile >= 31) && (rand_num_tile < 37)) 
 	{
-		get_texture(texture, filename_texture_tree_p1);
+		texture = texture_manager.get_texture("textures/tile_hole2.png");
 	}
 	else if (rand_num_tile >= 37) 
 	{
-		get_texture(texture, filename_texture_grass);
+		texture = texture_manager.get_texture("textures/tile_grass.png");
 	}
 
 	return new cotw::Tile(texture, x * 32, y * 32, blocking);
@@ -222,15 +215,33 @@ void Game::make_map()
 		entitiesf.push_back(std::vector<sf::Drawable*>());
 		for (int x = 0; x < h_tiles_size; x++) 
 		{
+			// I really need to know what texture here because:
+			// 1. To add blocking here and have create_tile be just a get texture method
+			// 2. I need to keep a local var to make trees and fields of grass
+
 			entitiesf[y].push_back(create_tile(x, y));
 		}
 	}
 }
 
+sf::Texture Game::create_texture2(std::string filename)
+{
+	sf::Texture texture;
+	sf::Image image;
+	image.loadFromFile(filename);
+
+	if (!texture.loadFromImage(image))
+		cout << "texture \"" + filename + "\" was not found!" << endl; 
+
+	return texture;
+}
+
+
 void Game::setup() 
 {
 	VideoMode video_mode(960, 960, 32);
 	window.create(video_mode, "Jets", Style::Titlebar); 
+
 
 	img_hero.loadFromFile(filename_texture_hero);
 

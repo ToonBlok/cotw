@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "tile.h"
 #include "player.h"
+#include "texture_manager.h"
 
 namespace cotw {
 
@@ -39,24 +40,21 @@ class Game
 		Game();
 		~Game();
 	private:
+		std::vector<sf::Texture> TEXTURES;
         sf::RenderWindow window;
-		//sf::Image img_tile_plant1;
-		//sf::Image img_tile_plant2;
-		//sf::Image img_tile_grass;
-		//sf::Image img_tile_hole;
 		sf::Image img_hero;
 		std::vector<sf::Drawable*> entities;
 		std::vector< std::vector<sf::Drawable*> > entitiesf;
-		//cotw::Player *player;
 		cotw::Player *player;
-
+		cotw::Texture_manager texture_manager;
 
 		void handle_key(sf::Event);
 		void make_map();
 		void setup();
 		bool valid_move(sf::Vector2f);
 		cotw::Tile* create_tile(int, int);
-		void get_texture(sf::Texture&, std::string);
+		void create_texture(sf::Texture&, std::string);
+		sf::Texture create_texture2(std::string);
 		sf::Texture random_rotate_tile(sf::Image&);
 		int game_loop();
 };
