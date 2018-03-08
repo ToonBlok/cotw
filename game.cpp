@@ -67,7 +67,7 @@ void Game::handle_key(Event event)
 				case Keyboard::I:
 					//player->set_position(sf::Vector2f(10, 10));
 					cout << "I am at x: " << x << " and y: " << y << endl;
-					cout << "This block I am standing on is blocking yes or no: " << static_cast<cotw::Tile*>(entitiesf[y][x])->blocking << endl;
+					cout << "This block I am standing on is blocking yes or no: " << static_cast<cotw::Tile*>(entities[y][x])->blocking << endl;
 					//srand(time(NULL));
 					//int num;
 					//num = rand() % 10;
@@ -91,7 +91,7 @@ void Game::handle_key(Event event)
 
 bool Game::valid_move(sf::Vector2f pos)
 {
-	if(static_cast<cotw::Tile*>(entitiesf[pos.y][pos.x])->blocking)
+	if(static_cast<cotw::Tile*>(entities[pos.y][pos.x])->blocking)
 		return false;
 	else
 		return true;
@@ -118,9 +118,9 @@ int Game::game_loop()
 
 		sf::RenderStates render_states;
 
-		for (int y = 0; y < entitiesf.size(); y++)
-			for (int x = 0; x < entitiesf[y].size(); x++)
-				static_cast<cotw::Tile*>(entitiesf[y][x])->draw(bitmap, render_states);
+		for (int y = 0; y < entities.size(); y++)
+			for (int x = 0; x < entities[y].size(); x++)
+				static_cast<cotw::Tile*>(entities[y][x])->draw(bitmap, render_states);
 
 		player->draw(bitmap, render_states);
 
@@ -194,6 +194,7 @@ cotw::Tile* Game::create_tile(int x, int y)
 	else if ((rand_num_tile >= 31) && (rand_num_tile < 37)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_hole2.png");
+		blocking = 1;
 	}
 	else if (rand_num_tile >= 37) 
 	{
@@ -212,14 +213,14 @@ void Game::make_map()
 
 	for (int y = 0; y < v_tiles_size; y++) 
 	{
-		entitiesf.push_back(std::vector<sf::Drawable*>());
+		entities.push_back(std::vector<sf::Drawable*>());
 		for (int x = 0; x < h_tiles_size; x++) 
 		{
 			// I really need to know what texture here because:
 			// 1. To add blocking here and have create_tile be just a get texture method
 			// 2. I need to keep a local var to make trees and fields of grass
 
-			entitiesf[y].push_back(create_tile(x, y));
+			entities[y].push_back(create_tile(x, y));
 		}
 	}
 }
@@ -242,12 +243,11 @@ void Game::setup()
 	VideoMode video_mode(960, 960, 32);
 	window.create(video_mode, "Jets", Style::Titlebar); 
 
-
-	img_hero.loadFromFile(filename_texture_hero);
+	img_hero.loadFromFile("textures/entity_hero.png");
 
 	sf::Texture texture_hero;
 	if (!texture_hero.loadFromImage(img_hero))
-		cout << "Texture \"" + filename_texture_hero + "\" was not found!" << endl; // Apparentely not even called when not found...
+		cout << "Texture \"textures/entity_hero.png\" was not found!" << endl; // Apparentely not even called when not found...
 
 	player = new cotw::Player(texture_hero, 0, 0);
 
@@ -263,9 +263,9 @@ Game::Game()
 
 Game::~Game()
 {
-	for (int y = 0; y < entitiesf.size(); y++)
-		for (int x = 0; x < entitiesf[y].size(); x++)
-			delete entitiesf[y][x];
+	for (int y = 0; y < entities.size(); y++)
+		for (int x = 0; x < entities[y].size(); x++)
+			delete entities[y][x];
 
 	delete player;
 }
