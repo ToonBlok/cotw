@@ -151,13 +151,19 @@ void Game::create_texture(sf::Texture& texture, std::string filename)
 		cout << "texture \"" + filename + "\" was not found!" << endl; 
 }
 
-cotw::Tile* Game::create_tile(int x, int y) 
+void Game::create_random_tile(int x, int y) 
 {
 	int rand_num_tile = (rand() % 100) + 1;
 
+	// if there are more elements than there should be with the double for loop system, then there is a tree placed... but
+	// we dont know where and when to skip, so check the pos of the last added element
+	//if (entities[y][x]) 
+	//{
+	//	cout << "There is something here!" << endl;
+	//}
+
 	sf::Texture texture;
-	sf::Image image;
-	int rand_num_tile_rotation = (rand() % 2);
+	//int rand_num_tile_rotation = (rand() % 2);
 	bool blocking = 0;
 
 	if ((rand_num_tile >= 0) && (rand_num_tile < 5)) 
@@ -201,7 +207,7 @@ cotw::Tile* Game::create_tile(int x, int y)
 		texture = texture_manager.get_texture("textures/tile_grass.png");
 	}
 
-	return new cotw::Tile(texture, x * 32, y * 32, blocking);
+	entities[y].push_back(new cotw::Tile(texture, x * 32, y * 32, blocking));
 }
 
 // Remove later with get value directly
@@ -212,17 +218,13 @@ void Game::make_map()
 	int v_tiles_size = screen_size.y / 32;
 
 	for (int y = 0; y < v_tiles_size; y++) 
-	{
-		entities.push_back(std::vector<sf::Drawable*>());
 		for (int x = 0; x < h_tiles_size; x++) 
-		{
-			// I really need to know what texture here because:
-			// 1. To add blocking here and have create_tile be just a get texture method
-			// 2. I need to keep a local var to make trees and fields of grass
+			entities.push_back(std::vector<sf::Drawable*>());
 
-			entities[y].push_back(create_tile(x, y));
-		}
-	}
+	for (int y = 0; y < v_tiles_size; y++) 
+		for (int x = 0; x < h_tiles_size; x++) 
+			create_random_tile(x, y);
+
 }
 
 sf::Texture Game::create_texture2(std::string filename)
@@ -240,23 +242,24 @@ sf::Texture Game::create_texture2(std::string filename)
 
 void Game::setup() 
 {
+	srand(time(0));
+
 	VideoMode video_mode(960, 960, 32);
 	window.create(video_mode, "Jets", Style::Titlebar); 
 
 	img_hero.loadFromFile("textures/entity_hero.png");
 
-	sf::Texture texture_hero;
-	if (!texture_hero.loadFromImage(img_hero))
+	sf::Texture texture;
+	if (!texture.loadFromImage(img_hero))
 		cout << "Texture \"textures/entity_hero.png\" was not found!" << endl; // Apparentely not even called when not found...
 
-	player = new cotw::Player(texture_hero, 0, 0);
+	player = new cotw::Player(texture, 0, 0);
 
 	make_map();
 }
 
 Game::Game()
 {
-	srand(time(0));
 	setup();
 	game_loop();
 }

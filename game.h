@@ -26,7 +26,7 @@ class Game
 		void make_map();
 		void setup();
 		bool valid_move(sf::Vector2f);
-		cotw::Tile* create_tile(int, int);
+		void create_random_tile(int, int);
 		void create_texture(sf::Texture&, std::string);
 		sf::Texture create_texture2(std::string);
 		sf::Texture random_rotate_tile(sf::Image&);
