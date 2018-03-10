@@ -147,25 +147,38 @@ sf::Texture Game::random_rotate_tile(sf::Image& image)
 		image.flipVertically();
 }
 
+
+
 void Game::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon) 
 {
 	int rand_num_tile = (rand() % 100) + 1;
 	sf::Texture texture;
 	//int rand_num_tile_rotation = (rand() % 2);
 	
+	
 	bool blocking = 0;
 	if (in_dungeon)
 	{
-		texture = texture_manager.get_texture("textures/tile_plant1.png");
-		if ((rand_num_tile >= 0) && (rand_num_tile < 50)) 
-		{
-			texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png");
-		}
-		else if ((rand_num_tile >= 50) && (rand_num_tile <= 100)) 
-		{
-			blocking = 1;
-			texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1.png");
-		}
+		//if ((y == 0) & (x == 0))
+		//{
+		//	create_room(y, x, 5, 5);
+		//}
+		//else
+		//{
+		//	blocking = 1;
+		//	texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1.png");
+		//	tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, blocking);
+		//}
+	
+		//if ((rand_num_tile >= 0) && (rand_num_tile < 50)) 
+		//{
+		//	texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png");
+		//}
+		//else if ((rand_num_tile >= 50) && (rand_num_tile <= 100)) 
+		//{
+		//	blocking = 1;
+		//	texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1.png");
+		//}
 	}
 	else
 	{
@@ -227,9 +240,46 @@ void Game::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeo
 		{
 			texture = texture_manager.get_texture("textures/tile_grass.png");
 		}
+
+		tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, blocking);
 	}
 
-	tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, blocking);
+}
+
+void Game::fill_empty_map() 
+{
+	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1.png");
+
+	for (int y = 0; y < 30; y++) 
+	{
+		for (int x = 0; x < 30; x++) 
+		{
+			tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, 1);
+		}
+	}
+}
+
+void Game::create_room(cotw::dungeon_room room) 
+{
+	//cout << "Started room creation" << endl;
+	for (int iy = 0; iy < room.height; iy++)
+	{
+		for (int ix = 0; ix < room.width; ix++)
+		{
+			if (((room.y + iy) < 30) && ((room.x + ix) < 30))
+			{
+				//cout << "Tried to change tile of: y: " << (y + iy) << " and x: " << (x + ix) << endl;
+				try {
+					static_cast<cotw::Tile*>(tiles[room.y + iy][room.x + ix])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+					static_cast<cotw::Tile*>(tiles[room.y + iy][room.x + ix])->blocking = 0;
+				}
+				catch (const std::out_of_range& oor) {
+					std::cerr << "Out of Range error: " << oor.what() << '\n';
+				}
+			}
+
+		}
+	}
 }
 
 // Remove later with get value directly
@@ -237,11 +287,42 @@ void Game::make_map(bool in_dungeon)
 {
 	if (in_dungeon)
 	{
-		cout << "Dungeon make map triggered" << endl;
-		bool dungeon_placed = true;
-		for (int y = 0; y < 30; y++) 
-			for (int x = 0; x < 30; x++) 
-				create_random_tile(x, y, dungeon_placed, true);
+		fill_empty_map();
+
+		for (int i = 0; i < 10; i++) 
+		{
+			int rand_y = (rand() % 30) + 1;
+			int rand_x = (rand() % 30) + 1;
+			int rand_height = rand() % (8 - 5 + 1) + 5;
+			int rand_width = rand() % (8 - 5 + 1) + 5;
+
+			while (((rand_y + rand_height) > 30))
+				rand_y = (rand() % 30) + 1;
+
+			while (((rand_x + rand_width) > 30))
+				rand_x = (rand() % 30) + 1;
+
+			//cout << "rand_height: " << rand_height << endl;
+			//cout << "rand_width: " << rand_width << endl;
+
+			rooms[i] = dungeon_room { rand_y, rand_x, rand_width, rand_height };
+			//dungeon_room room1 =
+			//{
+			//	0,
+			//	5,
+			//	5
+			//};
+
+			create_room(rooms[i]);
+		}
+
+
+		//cout << "Dungeon make map triggered" << endl;
+		//bool dungeon_placed = true;
+
+		//	blocking = 1;
+		//	texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1.png");
+		//	tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, blocking);
 	}
 	else 
 	{
