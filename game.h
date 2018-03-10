@@ -24,12 +24,11 @@ class Game
 		cotw::Texture_manager texture_manager;
 
 		void handle_key(sf::Event);
-		void make_map();
+		void enter_dungeon();
+		void make_map(bool);
 		void setup();
 		bool valid_move(sf::Vector2<int>);
-		void create_random_tile(int, int);
-		void create_texture(sf::Texture&, std::string);
-		sf::Texture create_texture2(std::string);
+		void create_random_tile(int, int, bool&, bool);
 		sf::Texture random_rotate_tile(sf::Image&);
 		int game_loop();
 };
