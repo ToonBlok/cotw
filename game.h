@@ -19,13 +19,14 @@ class Game
         sf::RenderWindow window;
 		sf::Image img_hero;
 		std::vector< std::vector<sf::Drawable*> > entities;
+		sf::Drawable* tiles [30][30];
 		cotw::Player *player;
 		cotw::Texture_manager texture_manager;
 
 		void handle_key(sf::Event);
 		void make_map();
 		void setup();
-		bool valid_move(sf::Vector2f);
+		bool valid_move(sf::Vector2<int>);
 		void create_random_tile(int, int);
 		void create_texture(sf::Texture&, std::string);
 		sf::Texture create_texture2(std::string);
