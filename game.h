@@ -10,8 +10,8 @@ namespace cotw {
 
 struct dungeon_room
 {
-	int x;
-	int y;
+	int row;
+	int column;
 	int width; 
 	int height;
 };
@@ -27,7 +27,7 @@ class Game
         sf::RenderWindow window;
 		sf::Image img_hero;
 		//std::vector< std::vector<sf::Drawable*> > entities;
-		dungeon_room rooms[10];
+		dungeon_room rooms[2];
 		//std::vector<dungeon_room> rooms;
 		sf::Drawable* tiles [30][30];
 		cotw::Player *player;
@@ -40,6 +40,7 @@ class Game
 		void enter_dungeon();
 		void fill_empty_map();
 		void create_room(cotw::dungeon_room);
+		void create_tunnel(cotw::dungeon_room, cotw::dungeon_room);
 
 		void make_map(bool);
 		void setup();

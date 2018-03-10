@@ -248,7 +248,7 @@ void Game::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeo
 
 void Game::fill_empty_map() 
 {
-	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1.png");
+	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1_test.png");
 
 	for (int y = 0; y < 30; y++) 
 	{
@@ -266,12 +266,12 @@ void Game::create_room(cotw::dungeon_room room)
 	{
 		for (int ix = 0; ix < room.width; ix++)
 		{
-			if (((room.y + iy) < 30) && ((room.x + ix) < 30))
+			if (((room.row + iy) < 30) && ((room.column + ix) < 30))
 			{
 				//cout << "Tried to change tile of: y: " << (y + iy) << " and x: " << (x + ix) << endl;
 				try {
-					static_cast<cotw::Tile*>(tiles[room.y + iy][room.x + ix])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
-					static_cast<cotw::Tile*>(tiles[room.y + iy][room.x + ix])->blocking = 0;
+					static_cast<cotw::Tile*>(tiles[room.row + iy][room.column + ix])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+					static_cast<cotw::Tile*>(tiles[room.row + iy][room.column + ix])->blocking = 0;
 				}
 				catch (const std::out_of_range& oor) {
 					std::cerr << "Out of Range error: " << oor.what() << '\n';
@@ -282,6 +282,38 @@ void Game::create_room(cotw::dungeon_room room)
 	}
 }
 
+void Game::create_tunnel(cotw::dungeon_room room1, cotw::dungeon_room room2) 
+{
+	//int r1_column = room1.x;
+	//int r1_row = room1.y;
+	//int r2_column = room2.x;
+	//int r2_row = room2.x;
+	//// the rooms we must connect
+	cout << "room1 column: " << room1.column << ", row: " << room1.row << ". Width: " << room1.width << ", height: " << room1.height << endl;
+	cout << "room2 column: " << room2.column << ", row " << room2.row << ". Width: " << room2.width << ", height: " << room2.height << endl;
+
+	//// Decide whether H or V tunnel
+	//int r1_nw = r1_row;
+	//int r1_sw = r1_nw + room1.height;
+
+	//int r2_nw = r2_row;
+	//int r2_sw = r2_nw + room2.height;
+
+	//cout << "r2_nw: " << r2_nw << endl;
+	//cout << "r1_nw: " << r1_nw << endl;
+	//cout << "r1_sw: " << r1_sw << endl;
+	//if (((r2_nw >= r1_nw) && (r2_nw <= r1_sw)) || ((r1_nw >= r2_nw) && (r1_nw <= r2_sw)))
+	//{
+	//	cout << "Room 1 can be H matched with room 2" << endl;
+	//}
+	//	cout << endl;
+
+	// r1 starts at x 8
+
+	// Call method for H or V tunnel
+
+}
+
 // Remove later with get value directly
 void Game::make_map(bool in_dungeon) 
 {
@@ -289,23 +321,30 @@ void Game::make_map(bool in_dungeon)
 	{
 		fill_empty_map();
 
-		for (int i = 0; i < 10; i++) 
+		int max_rooms = 2; // this is also declared in header..
+		int min_room_width = 2;
+		int min_room_height = 2;
+		int max_room_width = 8;
+		int max_room_height = 8;
+
+		for (int i = 0; i < max_rooms; i++) 
 		{
-			int rand_y = (rand() % 30) + 1;
-			int rand_x = (rand() % 30) + 1;
-			int rand_height = rand() % (8 - 5 + 1) + 5;
-			int rand_width = rand() % (8 - 5 + 1) + 5;
+			int rand_row = (rand() % 30) + 1;
+			int rand_column = (rand() % 30) + 1;
+			int rand_height = rand() % (max_room_height - min_room_height + 1) + min_room_height;
+			int rand_width = rand() % (max_room_width - min_room_width + 1) + min_room_width;
 
-			while (((rand_y + rand_height) > 30))
-				rand_y = (rand() % 30) + 1;
+			while (((rand_row + rand_height) > 29))
+				rand_row = (rand() % 30) + 1;
 
-			while (((rand_x + rand_width) > 30))
-				rand_x = (rand() % 30) + 1;
+			while (((rand_column + rand_width) > 29))
+				rand_column = (rand() % 30) + 1;
 
 			//cout << "rand_height: " << rand_height << endl;
 			//cout << "rand_width: " << rand_width << endl;
 
-			rooms[i] = dungeon_room { rand_y, rand_x, rand_width, rand_height };
+	        //                        row     column  
+			rooms[i] = dungeon_room { rand_row, rand_column, rand_width, rand_height };
 			//dungeon_room room1 =
 			//{
 			//	0,
@@ -314,8 +353,12 @@ void Game::make_map(bool in_dungeon)
 			//};
 
 			create_room(rooms[i]);
+
 		}
 
+		for (int i = 0; i < max_rooms; i++) 
+			if ((i + 1) < max_rooms)
+				create_tunnel(rooms[i], rooms[i + 1]);
 
 		//cout << "Dungeon make map triggered" << endl;
 		//bool dungeon_placed = true;
