@@ -1,6 +1,5 @@
 CPPFLAGS = -c -std=c++11
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
-UTFLAGS = -lunittest++
 OBJFILES = main.o game.o map.o player.o tile.o texture_manager.o
 
 cotw: $(OBJFILES)

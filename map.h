@@ -18,6 +18,8 @@ class Map
 		cotw::Texture_manager texture_manager;
 
 		void create(bool);
+		void create_rooms();
+		void create_tunnels();
 		void fill_empty();
 		void create_room(sf::IntRect, int);
 		void create_tunnel(sf::IntRect, sf::IntRect, int);

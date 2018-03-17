@@ -83,79 +83,69 @@ sf::Texture Map::random_rotate_tile(sf::Image& image)
 		image.flipVertically();
 }
 
+void Map::create_rooms() 
+{
+	int min_room_width = 2;
+	int min_room_height = 2;
+	int max_room_width = 5;
+	int max_room_height = 5;
+
+	bool does_not_intersect;
+	int count = 0;
+	for (int i = 0; i < rooms.size(); i++) 
+	{
+		int rand_row;
+		int rand_column;
+		int rand_height;
+		int rand_width; 
+
+		do
+		{
+			does_not_intersect = true;
+			rand_row = (rand() % 30) + 1;
+			rand_column = (rand() % 30) + 1;
+			rand_height = rand() % (max_room_height - min_room_height + 1) + min_room_height;
+			rand_width = rand() % (max_room_width - min_room_width + 1) + min_room_width;
+			sf::IntRect room(rand_column, rand_row, rand_height, rand_width);
+
+			for (int h = 0; h < count; h++)  
+			{
+				if (room.intersects(rooms[h]))
+					does_not_intersect = false;
+				if ( ((room.left + room.width) > 30) || ((room.top + room.height) > 30) )
+					does_not_intersect = false;
+			}
+		}
+		while (!does_not_intersect);
+		
+	//	rand_width = 5; 
+	//	rand_height = 5;
+	//	rand_row = 0;
+	//	rand_column = i * 10;
+
+		rooms[i] = sf::IntRect(rand_column, rand_row, rand_height, rand_width);
+		create_room(rooms[i], i);
+
+		++count;
+	}
+}
+
+void Map::create_tunnels() 
+{
+	for (int i = 0; i < rooms.size(); i++) 
+		for (int h = 0; h < rooms.size(); h++) 
+			if ((h != i) ) 
+				if (rooms[i].left < rooms[h].left)
+					  create_tunnel(rooms[i], rooms[h], h + 1);
+}
+
 void Map::create(bool in_dungeon) 
 {
 	if (in_dungeon)
 	{
 		fill_empty();
-
-
-		int min_room_width = 2;
-		int min_room_height = 2;
-		int max_room_width = 5;
-		int max_room_height = 5;
-
-		bool does_not_intersect;
-		int count = 0;
-		for (int i = 0; i < rooms.size(); i++) 
-		{
-			int rand_row;
-			int rand_column;
-			int rand_height;
-			int rand_width; 
-
-			do
-			{
-				does_not_intersect = true;
-				rand_row = (rand() % 30) + 1;
-				rand_column = (rand() % 30) + 1;
-				rand_height = rand() % (max_room_height - min_room_height + 1) + min_room_height;
-				rand_width = rand() % (max_room_width - min_room_width + 1) + min_room_width;
-				sf::IntRect room(rand_column, rand_row, rand_height, rand_width);
-
-				for (int h = 0; h < count; h++)  
-				{
-					if (room.intersects(rooms[h]))
-						does_not_intersect = false;
-					if ( ((room.left + room.width) > 30) || ((room.top + room.height) > 30) )
-						does_not_intersect = false;
-				}
-			}
-			while (!does_not_intersect);
-			
-		//	rand_width = 5; 
-		//	rand_height = 5;
-		//	rand_row = 0;
-		//	rand_column = i * 10;
-
-			rooms[i] = sf::IntRect(rand_column, rand_row, rand_height, rand_width);
-			create_room(rooms[i], i);
-
-			++count;
-		}
-
-
-		for (int i = 0; i < rooms.size(); i++) 
-		{
-			for (int h = 0; h < rooms.size(); h++) 
-			{
-				// if we are not talking about the same room AND
-				// if the room we are evaluating is NOT to the right of the second room
-				if ((h != i) ) 
-				{
-					//cout << "if (" << rooms[i].left << " > " << rooms[h].left << endl;
-					// Smaller because 0 is left side 10 is right side
-					if (rooms[i].left < rooms[h].left)
-					{
-						  //cout << "before create_tunnel method: " << endl;
-						  //cout << "[" << h << "] r2.left:" << rooms[i].left << endl;
-						  create_tunnel(rooms[i], rooms[h], h + 1);
-					}
-				}
-			}
-		}
+		create_rooms();
 	}
-
 }
 
 void Map::fill_empty() 
@@ -163,12 +153,8 @@ void Map::fill_empty()
 	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1_test.png");
 
 	for (int y = 0; y < 30; y++) 
-	{
 		for (int x = 0; x < 30; x++) 
-		{
 			tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, 1);
-		}
-	}
 }
 
 void Map::create_room(sf::IntRect room, int index) 
