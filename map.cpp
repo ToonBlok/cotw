@@ -91,7 +91,6 @@ void Map::create_rooms()
 	int max_room_height = 5;
 
 	bool does_not_intersect;
-	int count = 0;
 	for (int i = 0; i < rooms.size(); i++) 
 	{
 		int rand_row;
@@ -108,7 +107,7 @@ void Map::create_rooms()
 			rand_width = rand() % (max_room_width - min_room_width + 1) + min_room_width;
 			sf::IntRect room(rand_column, rand_row, rand_height, rand_width);
 
-			for (int h = 0; h < count; h++)  
+			for (int h = 0; h < rooms.size(); h++)  
 			{
 				if (room.intersects(rooms[h]))
 					does_not_intersect = false;
@@ -125,8 +124,6 @@ void Map::create_rooms()
 
 		rooms[i] = sf::IntRect(rand_column, rand_row, rand_height, rand_width);
 		create_room(rooms[i], i);
-
-		++count;
 	}
 }
 
