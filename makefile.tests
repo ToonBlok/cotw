@@ -1,13 +1,18 @@
 CPPFLAGS = -c -std=c++11
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 UTFLAGS = -lunittest++
-OBJFILES = main.o game.o map.o player.o tile.o texture_manager.o
+CPPUFLAGS= -lcppunit
 
-cotw: $(OBJFILES)
-	g++ $(OBJFILES) -o $@ $(SFMLFLAGS) $(UTFLAGS)
+OBJFILES = tests.o cotw.tests.o game.o map.o player.o tile.o texture_manager.o 
 
-main.o: main.cpp 
-	$(CC) $(CPPFLAGS) main.cpp 
+tests: $(OBJFILES)
+	g++ $(OBJFILES) -o $@ $(SFMLFLAGS) $(CPPUFLAGS)
+
+tests.o: tests.cpp 
+	$(CC) $(CPPFLAGS) tests.cpp 
+
+cotw.tests.o: cotw.tests.cpp 
+	$(CC) $(CPPFLAGS) cotw.tests.cpp 
 
 game.o: game.cpp 
 	$(CC) $(CPPFLAGS) game.cpp 
@@ -25,4 +30,4 @@ texture_manager.o: texture_manager.cpp
 	$(CC) $(CPPFLAGS) texture_manager.cpp 
 
 clean:
-	rm *.o cotw 
+	rm *.o tests 

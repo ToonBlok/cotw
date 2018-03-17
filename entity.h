@@ -17,7 +17,7 @@ class Entity: public sf::Drawable
 		virtual void move(sf::Vector2f coordinates) { sprite.move(coordinates); };
 		virtual sf::Vector2f get_position() const { return sprite.getPosition(); };
 
-		bool blocking = 0;
+		bool blocking = false;
 	protected:
 		sf::Sprite sprite;
 		sf::Texture texture;
