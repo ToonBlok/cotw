@@ -57,10 +57,9 @@ void Cotwtests::test_create_room()
 	
 	// Act
 	map.fill_empty();
-
 	sf::IntRect room(5, 2, 2, 3);
-
 	map.create_room(room, 0);
+	//get_visual_feedback();
 
 	// Assert
 	CPPUNIT_ASSERT(static_cast<cotw::Tile*>(map.tiles[2][5])->blocking == false);
@@ -72,6 +71,47 @@ void Cotwtests::test_create_room()
 	CPPUNIT_ASSERT(static_cast<cotw::Tile*>(map.tiles[4][7])->blocking == true);
 
 	return;
+}
+
+void Cotwtests::get_visual_feedback()
+{
+	std::cout << std::endl;
+	for (int i = 0; i < map.tiles.size(); i++)
+	{
+		if (i == 0)
+		{
+			std::cout << "  ";
+			for (int x = 0; x < map.tiles.size(); x++)
+			{
+				if (x < 10)
+					std::cout << "0" << x << " ";
+				else
+					std::cout << x << " ";
+			}
+			std::cout << std::endl;
+
+		}
+
+		for (int h = 0; h < map.tiles[i].size(); h++)
+		{
+			if (h == 0)
+			{
+				if (i < 10)
+					std::cout << "0" << i;
+				else
+					std::cout << i;
+			}
+
+			if (static_cast<cotw::Tile*>(map.tiles[i][h])->blocking)
+				std::cout << "[ ]";
+			else
+				std::cout << "[x]";
+		}
+		std::cout << std::endl;
+
+	}
+
+	std::cout << std::endl;
 }
 
 void Cotwtests::test_create_tunnel()
@@ -93,6 +133,7 @@ void Cotwtests::test_create_tunnel()
 
 	map.create_room(room_west, 0);
 	map.create_room(room_east, 1);
+
 //void Map::create_h_tunnel(int r1_left, int r1_width, int r2_left, int rand_tunnel_entrance) 
 	map.create_h_tunnel(room_west.left, room_west.width, room_east.left, 2);
 
@@ -173,5 +214,6 @@ void Cotwtests::test_create_random_tunnel()
 
 	// Assert
 	CPPUNIT_ASSERT(passed == true);
+	//get_visual_feedback();
 
 }

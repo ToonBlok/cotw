@@ -9,7 +9,6 @@ namespace cotw {
 
 class Game
 {
-
 	public:
 		Game();
 		~Game();

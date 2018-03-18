@@ -26,6 +26,7 @@ class Cotwtests: public CPPUNIT_NS::TestFixture
 		void test_create_room();
 		void test_create_tunnel();
 		void test_create_random_tunnel();
+		void get_visual_feedback();
 };
 
 #endif
