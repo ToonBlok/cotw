@@ -156,17 +156,30 @@ void Map::fill_empty()
 
 void Map::create_room(sf::IntRect room, int index) 
 {
+	cout << "Creating room at: " << endl;
 	for (int iy = 0; iy < room.width; iy++)
 	{
 		for (int ix = 0; ix < room.height; ix++)
 		{
 			if (((room.left + iy) < 30) && ((room.top + ix) < 30))
 			{
-				//static_cast<cotw::Tile*>(map.tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/" + std::to_string(index + 1) + "tile_dungeon_floor1.png"));
-				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/" + std::to_string(index + 1) + "tile_dungeon_floor1.png"));
+				//static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
 				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->blocking = 0;
 			}
 
+		}
+	}
+}
+
+void Map::check_unconnected_rooms() 
+{
+	for (int i = 0; i < rooms.size(); i++) 
+	{
+		for (int h = rooms[i].left; h < (rooms[i].top + rooms[i].width); h++) 
+		{
+			// col row
+			cout << "Room " << i + 1 << " at rooms[" << rooms[i].left << "][" << h << "]->blocking = " << static_cast<cotw::Tile*>(tiles[rooms[i].left][h])->blocking << endl;
 		}
 	}
 }

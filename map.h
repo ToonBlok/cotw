@@ -14,7 +14,8 @@ class Map
 		~Map();
 		// Access with [row][column]
 		std::array<std::array<sf::Drawable*, 30>, 30> tiles;
-		std::array<sf::IntRect, 30> rooms;
+		// Room left = room.row, room.right = room.column
+		std::array<sf::IntRect, 10> rooms;
 		cotw::Texture_manager texture_manager;
 
 		void create(bool);
@@ -25,6 +26,7 @@ class Map
 		void create_tunnel(sf::IntRect, sf::IntRect, int);
 		void create_h_tunnel(int, int, int, int);
 		void create_v_tunnel(sf::IntRect, sf::IntRect);
+		void check_unconnected_rooms();
 
 		void enter_dungeon();
 

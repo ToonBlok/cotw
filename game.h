@@ -7,14 +7,6 @@
 
 namespace cotw {
 
-struct dungeon_room
-{
-	int row;
-	int column;
-	int width; 
-	int height;
-};
-
 class Game
 {
 
