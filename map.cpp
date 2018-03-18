@@ -99,6 +99,7 @@ void Map::create(bool in_dungeon)
 	{
 		fill_empty();
 		create_rooms();
+		std::vector<sf::IntRect> connected_rooms = get_connected_rooms();
 	}
 }
 
@@ -150,7 +151,7 @@ void Map::create_rooms()
 	//	rand_row = 0;
 	//	rand_column = i * 10;
 
-		cout << "Adding room " << i + 1 << " at: [" << rand_row << "][" << rand_column << "] with width: " << rand_width << " and height: " << rand_height << endl;
+		//cout << "Adding room " << i + 1 << " at: [" << rand_row << "][" << rand_column << "] with width: " << rand_width << " and height: " << rand_height << endl;
 		rooms[i] = sf::IntRect(rand_column, rand_row, rand_width, rand_height);
 		create_room(rooms[i], i);
 	}
@@ -174,16 +175,50 @@ void Map::create_room(sf::IntRect room, int index)
 	}
 }
 
-void Map::check_unconnected_rooms() 
+std::vector<sf::IntRect> Map::get_connected_rooms() 
 {
+	std::vector<sf::IntRect> connected_rooms;
+	std::vector<int> test_connected_rooms;
+
 	for (int i = 0; i < rooms.size(); i++) 
 	{
-		for (int h = rooms[i].left; h < (rooms[i].left + rooms[i].width); h++) 
+		if ((i + 1) < rooms.size())
 		{
-			// col row
-			cout << "Room " << i + 1 << " at rooms[" << h << "][" << rooms[i].left << "]->blocking = " << static_cast<cotw::Tile*>(tiles[rooms[i].left][h])->blocking << endl;
+			sf::IntRect room = rooms[i];
+			room.left -= 1;
+			room.top -= 1;
+			room.width += 2;
+			room.height += 2;
+
+			for (int h = 0; h < rooms.size(); h++) 
+				if (h != i)
+					if (room.intersects(rooms[h]))
+					{
+						connected_rooms.push_back(rooms[i]);
+						test_connected_rooms.push_back(i);
+						
+						// If room [i] happens to connect with the last room in the array, go ahead and add the last room in the array too.
+						// This is done because we don't check if the last room is connected, but it must be in the array anyway.
+						if (h == (rooms.size() - 1))
+						{
+							connected_rooms.push_back(rooms[h]);
+							test_connected_rooms.push_back(h);
+						}
+
+						++h;
+					}
+
 		}
 	}
+
+	cout << "In get method:" << endl;
+	for (int i = 0; i < test_connected_rooms.size(); i++) 
+		cout << "Room " << test_connected_rooms[i] + 1 << " is connected somewhere." << endl;
+
+	cout << test_connected_rooms.size() << endl;
+
+	return connected_rooms;
+
 }
 
 void Map::create_h_tunnel(int r1_left, int r1_width, int r2_left, int rand_tunnel_entrance) 

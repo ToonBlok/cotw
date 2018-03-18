@@ -153,7 +153,6 @@ void Game::setup()
 	map.create(false);
 
 	map.enter_dungeon();
-	map.check_unconnected_rooms();
 }
 
 }

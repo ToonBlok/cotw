@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "texture_manager.h"
 #include "tile.h"
+#include <vector>
 
 namespace cotw {
 
@@ -26,7 +27,7 @@ class Map
 		void create_tunnel(sf::IntRect, sf::IntRect, int);
 		void create_h_tunnel(int, int, int, int);
 		void create_v_tunnel(sf::IntRect, sf::IntRect);
-		void check_unconnected_rooms();
+		std::vector<sf::IntRect> get_connected_rooms();
 
 		void enter_dungeon();
 
