@@ -100,12 +100,14 @@ void Game::handle_key(sf::Event event)
 
 bool Game::valid_move(sf::Vector2<int> new_pos)
 {
-	if ((new_pos.x == -1) || (new_pos.y == -1) || (new_pos.x > 30) || (new_pos.y > 30))
-		return false;
-	else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
-		return false;
-	else
-		return true;
+	// Grant wall phasing super power
+	return true;
+	//if ((new_pos.x == -1) || (new_pos.y == -1) || (new_pos.x > 30) || (new_pos.y > 30))
+	//	return false;
+	//else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
+	//	return false;
+	//else
+	//	return true;
 }
 
 int Game::game_loop()
@@ -141,6 +143,7 @@ int Game::game_loop()
         window.display();
     }
 
+	return 0;
 }
 
 void Game::setup() 

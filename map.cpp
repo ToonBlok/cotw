@@ -73,7 +73,7 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 	tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, blocking);
 }
 
-sf::Texture Map::random_rotate_tile(sf::Image& image) 
+void Map::random_rotate_tile(sf::Image& image) 
 {
 	int rand_num_tile_rotation = (rand() % 2);
 
@@ -83,23 +83,20 @@ sf::Texture Map::random_rotate_tile(sf::Image& image)
 		image.flipVertically();
 }
 
-
-void Map::create_tunnels() 
-{
-	for (int i = 0; i < rooms.size(); i++) 
-		for (int h = 0; h < rooms.size(); h++) 
-			if ((h != i) ) 
-				if (rooms[i].left < rooms[h].left)
-					  create_tunnel(rooms[i], rooms[h], h + 1);
-}
-
 void Map::create(bool in_dungeon) 
 {
 	if (in_dungeon)
 	{
 		fill_empty();
 		create_rooms();
-		std::vector<sf::IntRect> connected_rooms = get_connected_rooms();
+		//std::vector<sf::IntRect> unconnected_rooms = get_unconnected_rooms();
+		//for (unsigned int i = 0; i < unconnected_rooms.size(); i++) 
+		//	create_tunnel(unconnected_rooms[i]);
+		for (unsigned int i = 0; i < rooms.size(); i++) 
+		{
+			cout << i << " going into create tunnel" << endl;
+			create_tunnel(rooms[i]);
+		}
 	}
 }
 
@@ -120,7 +117,7 @@ void Map::create_rooms()
 	int max_room_height = 5;
 
 	bool does_not_intersect;
-	for (int i = 0; i < rooms.size(); i++) 
+	for (unsigned int i = 0; i < rooms.size(); i++) 
 	{
 		int rand_row;
 		int rand_column;
@@ -136,7 +133,7 @@ void Map::create_rooms()
 			rand_width = rand() % (max_room_width - min_room_width + 1) + min_room_width;
 			sf::IntRect room(rand_column, rand_row, rand_width, rand_height);
 
-			for (int h = 0; h < rooms.size(); h++)  
+			for (unsigned int h = 0; h < rooms.size(); h++)  
 			{
 				if (room.intersects(rooms[h]))
 					does_not_intersect = false;
@@ -146,6 +143,38 @@ void Map::create_rooms()
 		}
 		while (!does_not_intersect);
 		
+		rand_width = 5; 
+		rand_height = 5;
+
+		if (i == 0)
+		{
+			rand_row = 1;
+			rand_column = 1;
+		}
+		else if (i == 1)
+		{
+			rand_row = 1;
+			rand_column = 10;
+			//rand_row = 10;
+			//rand_column = 1;
+		}
+		else if (i == 2)
+		{
+			rand_row = 10;
+			rand_column = 10;
+		}
+		else if (i == 3)
+		{
+			rand_row = 10;
+			rand_column = 1;
+		}
+		else if (i == 4)
+		{
+			rand_row = 10;
+			rand_column = 20;
+			//rand_row = 20;
+			//rand_column = 20;
+		}
 	//	rand_width = 5; 
 	//	rand_height = 5;
 	//	rand_row = 0;
@@ -166,8 +195,8 @@ void Map::create_room(sf::IntRect room, int index)
 			if (((room.left + iy) < 30) && ((room.top + ix) < 30))
 			{
 				//cout << "Creating room " << index + 1 << " at: [" << room.top + ix << "][" << room.left + iy << "]" << endl;
-				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/" + std::to_string(index + 1) + "tile_dungeon_floor1.png"));
-				//static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+				//static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/" + std::to_sing(index + 1) + "tile_dungeon_floor1.png"));
+				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
 				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->blocking = 0;
 			}
 
@@ -175,12 +204,11 @@ void Map::create_room(sf::IntRect room, int index)
 	}
 }
 
-std::vector<sf::IntRect> Map::get_connected_rooms() 
+std::vector<sf::IntRect> Map::get_unconnected_rooms() 
 {
-	std::vector<sf::IntRect> connected_rooms;
-	std::vector<int> test_connected_rooms;
+	std::vector<int> connected_rooms;
 
-	for (int i = 0; i < rooms.size(); i++) 
+	for (unsigned int i = 0; i < rooms.size(); i++) 
 	{
 		if ((i + 1) < rooms.size())
 		{
@@ -190,19 +218,19 @@ std::vector<sf::IntRect> Map::get_connected_rooms()
 			room.width += 2;
 			room.height += 2;
 
-			for (int h = 0; h < rooms.size(); h++) 
+			for (unsigned int h = 0; h < rooms.size(); h++) 
 				if (h != i)
 					if (room.intersects(rooms[h]))
 					{
-						connected_rooms.push_back(rooms[i]);
-						test_connected_rooms.push_back(i);
+						//connected_rooms.push_back(rooms[i]);
+						connected_rooms.push_back(i);
 						
 						// If room [i] happens to connect with the last room in the array, go ahead and add the last room in the array too.
 						// This is done because we don't check if the last room is connected, but it must be in the array anyway.
 						if (h == (rooms.size() - 1))
 						{
-							connected_rooms.push_back(rooms[h]);
-							test_connected_rooms.push_back(h);
+							//connected_rooms.push_back(rooms[h]);
+							connected_rooms.push_back(h);
 						}
 
 						++h;
@@ -211,47 +239,140 @@ std::vector<sf::IntRect> Map::get_connected_rooms()
 		}
 	}
 
-	cout << "In get method:" << endl;
-	for (int i = 0; i < test_connected_rooms.size(); i++) 
-		cout << "Room " << test_connected_rooms[i] + 1 << " is connected somewhere." << endl;
+	std::vector<sf::IntRect> unconnected_rooms;
 
-	cout << test_connected_rooms.size() << endl;
-
-	return connected_rooms;
-
-}
-
-void Map::create_h_tunnel(int r1_left, int r1_width, int r2_left, int rand_tunnel_entrance) 
-{
-	for (int i = (r1_left + r1_width); i < r2_left; i++)
+//	cout << "In get method:" << endl;
+	for (unsigned int i = 0; i < rooms.size(); i++) 
 	{
-		static_cast<cotw::Tile*>(tiles[rand_tunnel_entrance][i])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
-		static_cast<cotw::Tile*>(tiles[rand_tunnel_entrance][i])->blocking = 0;
-	}
-}
-
-void Map::create_v_tunnel(sf::IntRect room1, sf::IntRect room2) 
-{
-
-}
-
-void Map::create_tunnel(sf::IntRect r1, sf::IntRect r2, int index) 
-{
-	std::vector<int> possible_entrances;
-
-	for (int i = r1.top; i < (r1.top + r1.height); i++)
-	{
-		if ((i >= r2.top) && (i < (r2.top + r2.height)))
-			possible_entrances.push_back(i);
+		if (!(std::find(connected_rooms.begin(), connected_rooms.end(), i) != connected_rooms.end()))
+		{
+			//cout << "Added room " << i + 1 << " to list of unconnected rooms" << endl;
+			unconnected_rooms.push_back(rooms[i]);
+		}
 	}
 
-	if (possible_entrances.size() != 0)
-	{
-		int highest = possible_entrances.back();
-		int lowest = possible_entrances.front();
-		int rand_tunnel_entrance = rand() % (highest - lowest + 1) + lowest;
+	for (unsigned int i = 0; i < connected_rooms.size(); i++) 
+		cout << "Room " << connected_rooms[i] + 1 << " is connected somewhere." << endl;
 
-		create_h_tunnel(r1.left, r1.width, r2.left, rand_tunnel_entrance);
+	return unconnected_rooms;
+
+}
+
+void Map::create_h_tunnel(int start_col, int end_col, int row) 
+{
+	for (int col = start_col; col < end_col + 1; col++) 
+		static_cast<cotw::Tile*>(tiles[row][col])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+}
+
+void Map::create_v_tunnel(int start_row, int end_row, int column) 
+{
+	for (int row = start_row; row < end_row; row++) 
+		static_cast<cotw::Tile*>(tiles[row][column])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+}
+
+//// to mimic:
+//void Map::create_tunnels(std::vector<sf::IntRect> unconnected_rooms) 
+//{
+//	for (int i = 0; i < unconnected_rooms.size(); i++) 
+//		for (int h = 0; h < unconnected_rooms.size(); h++) 
+//			if ((h != i) ) 
+//				if (unconnected_rooms[i].left < unconnected_rooms[h].left)
+//					  create_tunnel(unconnected_rooms[i], unconnected_rooms[h], h + 1);
+//}
+
+// Sole responsibility of this method is to connect this room to ANY other room
+void Map::create_tunnel(sf::IntRect room) 
+{
+	// Scanning algorithm NORTH
+	// --------------------------------------------------------------
+	room.top -= 1;
+	for (int i = room.left; i < (room.left + room.width); i++) 
+	{
+		for (int h = room.top; h > 0; h--) 
+		{
+			for (unsigned int g = 0; g < tiles.size(); g++) 
+			{
+				if (static_cast<cotw::Tile*>(tiles[h][g])->blocking == 0)
+				{
+					//cout << "At tiles[" << h << "][" << g << "] there is a open room." << endl;
+				}
+			}
+
+			//cout << "Checking tiles[" << h << "][" << i << "]." << endl;
+			if (static_cast<cotw::Tile*>(tiles[h - 1][i])->blocking == 0)
+			{
+				cout << "Making tunnel NORTH" << endl;
+				create_v_tunnel(h, room.top + 1, i);
+				return;
+			}
+		}
+	}
+	// Fix changes from first changes
+	room.top += 1;
+	// --------------------------------------------------------------
+
+	cout << endl;
+
+	// Scanning algorithm EAST
+	// --------------------------------------------------------------
+	for (int row = room.top; row < (room.top + room.height); row++) 
+	{
+		for (unsigned int col = (room.left + room.width); col < tiles.size(); col++) 
+		{
+			//cout << "Checking tiles[" << row << "][" << col << "]." << endl;
+			if ((col + 1) > tiles.size() - 1)
+			{
+				row = room.top + room.height;
+				col = tiles.size();
+			}
+			else if (static_cast<cotw::Tile*>(tiles[row][col + 1])->blocking == 0)
+			{
+				cout << "Making tunnel EAST" << endl;
+				create_h_tunnel(room.left + room.width, col, row);
+				return;
+			}
+
+		}
+	}
+	// --------------------------------------------------------------
+
+	// Scanning algorithm WEST
+	// --------------------------------------------------------------
+	room.left -= 1;
+	for (int row = room.top; row < (room.left + room.height); row++) 
+	{
+		for (int col = room.left; col > 0; col--) 
+		{
+			if (static_cast<cotw::Tile*>(tiles[row][col - 1])->blocking == 0)
+			{
+				cout << "Making tunnel WEST" << endl;
+				create_h_tunnel(col, room.left, row);
+				return;
+			}
+
+		}
+	}
+	// --------------------------------------------------------------
+	// Scanning algorithm SOUTH
+	// --------------------------------------------------------------
+	cout << room.left << " to " << room.left + room.width << endl;
+	for (int i = room.left; i < room.left + room.width; i++) 
+	{
+		for (unsigned int h = room.top + room.height; h < tiles.size(); h++) 
+		{
+			//cout << "Checking tiles[" << h << "][" << i << "]." << endl;
+			if ((h + 1) == tiles.size())
+			{
+				i = room.left + room.width;
+				h = tiles.size();
+			}
+			else if (static_cast<cotw::Tile*>(tiles[h + 1][i])->blocking == 0)
+			{
+				cout << "Making tunnel SOUTH" << endl;
+				create_v_tunnel(room.top + room.height, h + 1, i);
+				return;
+			}
+		}
 	}
 }
 

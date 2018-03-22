@@ -1,4 +1,4 @@
-CPPFLAGS = -c -std=c++11
+CPPFLAGS = -c -std=c++11 -Wall -pedantic
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 OBJFILES = main.o game.o map.o player.o tile.o texture_manager.o
 
