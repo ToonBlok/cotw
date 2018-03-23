@@ -101,13 +101,13 @@ void Game::handle_key(sf::Event event)
 bool Game::valid_move(sf::Vector2<int> new_pos)
 {
 	// Grant wall phasing super power
-	return true;
-	//if ((new_pos.x == -1) || (new_pos.y == -1) || (new_pos.x > 30) || (new_pos.y > 30))
-	//	return false;
-	//else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
-	//	return false;
-	//else
-	//	return true;
+	//return true;
+	if ((new_pos.x == -1) || (new_pos.y == -1) || (new_pos.x > 30) || (new_pos.y > 30))
+		return false;
+	else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
+		return false;
+	else
+		return true;
 }
 
 int Game::game_loop()
@@ -131,8 +131,8 @@ int Game::game_loop()
 
 		sf::RenderStates render_states;
 
-		for (int y = 0; y < 30; y++)
-			for (int x = 0; x < 30; x++)
+		for (unsigned int y = 0; y < map.tiles.size(); y++)
+			for (unsigned int x = 0; x < map.tiles.size(); x++)
 				static_cast<cotw::Tile*>(map.tiles[y][x])->draw(bitmap, render_states);
 
 		player->draw(bitmap, render_states);
@@ -155,7 +155,7 @@ void Game::setup()
 
 	map.create(false);
 
-	map.enter_dungeon();
+	//map.enter_dungeon();
 }
 
 }

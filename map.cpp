@@ -85,6 +85,7 @@ void Map::random_rotate_tile(sf::Image& image)
 
 void Map::create(bool in_dungeon) 
 {
+	bool dungeon_placed = false;
 	if (in_dungeon)
 	{
 		fill_empty();
@@ -98,14 +99,20 @@ void Map::create(bool in_dungeon)
 			create_tunnel(rooms[i]);
 		}
 	}
+	else
+	{
+		for (unsigned int y = 0; y < tiles.size(); y++) 
+			for (unsigned int x = 0; x < tiles.size(); x++) 
+				create_random_tile(x, y, dungeon_placed, false);
+	}
 }
 
 void Map::fill_empty() 
 {
 	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1_test.png");
 
-	for (int y = 0; y < 30; y++) 
-		for (int x = 0; x < 30; x++) 
+	for (unsigned int y = 0; y < tiles.size(); y++) 
+		for (unsigned int x = 0; x < tiles.size(); x++) 
 			tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, 1);
 }
 
