@@ -11,8 +11,9 @@ class Cotwtests: public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST( test_misc );
 	CPPUNIT_TEST( test_fill_empty );
 	CPPUNIT_TEST( test_create_room );
+	//CPPUNIT_TEST( test_create_tunnels );
 	CPPUNIT_TEST( test_create_tunnel );
-	CPPUNIT_TEST( test_create_random_tunnel );
+//	CPPUNIT_TEST( test_create_random_tunnel );
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
@@ -25,7 +26,8 @@ class Cotwtests: public CPPUNIT_NS::TestFixture
 		void test_fill_empty();
 		void test_create_room();
 		void test_create_tunnel();
-		void test_create_random_tunnel();
+		//void test_create_tunnels();
+//		void test_create_random_tunnel();
 		void get_visual_feedback();
 };
 

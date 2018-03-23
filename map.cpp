@@ -261,24 +261,20 @@ std::vector<sf::IntRect> Map::get_unconnected_rooms()
 void Map::create_h_tunnel(int start_col, int end_col, int row) 
 {
 	for (int col = start_col; col < end_col + 1; col++) 
+	{
 		static_cast<cotw::Tile*>(tiles[row][col])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+		static_cast<cotw::Tile*>(tiles[row][col])->blocking = 0;
+	}
 }
 
-void Map::create_v_tunnel(int start_row, int end_row, int column) 
+void Map::create_v_tunnel(int start_row, int end_row, int col) 
 {
 	for (int row = start_row; row < end_row; row++) 
-		static_cast<cotw::Tile*>(tiles[row][column])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+	{
+		static_cast<cotw::Tile*>(tiles[row][col])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+		static_cast<cotw::Tile*>(tiles[row][col])->blocking = 0;
+	}
 }
-
-//// to mimic:
-//void Map::create_tunnels(std::vector<sf::IntRect> unconnected_rooms) 
-//{
-//	for (int i = 0; i < unconnected_rooms.size(); i++) 
-//		for (int h = 0; h < unconnected_rooms.size(); h++) 
-//			if ((h != i) ) 
-//				if (unconnected_rooms[i].left < unconnected_rooms[h].left)
-//					  create_tunnel(unconnected_rooms[i], unconnected_rooms[h], h + 1);
-//}
 
 // Sole responsibility of this method is to connect this room to ANY other room
 void Map::create_tunnel(sf::IntRect room) 
