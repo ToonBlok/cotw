@@ -103,13 +103,55 @@ void Map::create(bool in_dungeon)
 	}
 	else
 	{
+		std::vector<int> used_up_spaces;
+
 		for (unsigned int y = 0; y < tiles.size(); y++) 
 			for (unsigned int x = 0; x < tiles.size(); x++) 
 				create_random_tile(x, y, dungeon_placed, false);
 
-		// Overlay trees
-		// later...
+		// Create trees
+		sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
+		sf::Texture tree_sw = texture_manager.get_texture("textures/tile_tree_sw.png");
+		sf::Texture tree_ne = texture_manager.get_texture("textures/tile_tree_ne.png");
+		sf::Texture tree_se = texture_manager.get_texture("textures/tile_tree_se.png");
+
+		for (unsigned int row = 0; row < tiles.size(); row++) 
+		{
+			for (unsigned int col = 0; col < tiles.size(); col++) 
+			{
+				int rand_num = rand() % (100 - 1 + 1) + 1;
+				if (rand_num > 35 && rand_num <= 100)
+				{
+					if (row + 1 < tiles.size() && col + 1 < tiles.size())
+					{
+						if (!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row) != used_up_spaces.end()) &&
+							!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row + 1) != used_up_spaces.end()) &&
+							!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col) != used_up_spaces.end()) &&
+							!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col + 1) != used_up_spaces.end())
+						   )
+						{
+							static_cast<cotw::Tile*>(tiles[row][col])->set_texture(tree_nw);
+							static_cast<cotw::Tile*>(tiles[row + 1][col])->set_texture(tree_sw);
+							static_cast<cotw::Tile*>(tiles[row][col + 1])->set_texture(tree_ne);
+							static_cast<cotw::Tile*>(tiles[row + 1][col + 1])->set_texture(tree_se);
+							used_up_spaces.push_back(row);
+							used_up_spaces.push_back(col);
+							used_up_spaces.push_back(row + 1);
+							used_up_spaces.push_back(col + 1);
+
+						}
+					}
+
+					cout << rand_num << endl;
+				}
+			}
+		}
 	}
+}
+
+void Map::overlay_special_tiles(sf::Texture, int row, int col, int width, int height) 
+{
+
 }
 
 void Map::fill_empty() 

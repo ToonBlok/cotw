@@ -158,7 +158,7 @@ int Game::game_loop()
 		bitmap.clear(sf::Color::Black);
 
 
-		sf::Vector2f player_pos = player->get_position();
+		//sf::Vector2f player_pos = player->get_position();
 		//cout << "y: " << player_pos.y << ", x: " << player_pos.x << endl;
 
 		// idea 1: rebasing what is zero depending on the hero's location
@@ -180,18 +180,6 @@ int Game::game_loop()
 		bitmap.display();
 	    sf::Sprite sprite(bitmap.getTexture());
 		window.draw(sprite);
-		// Test --------
-		sf::Sprite bat;
-		sf::Texture texture = texture_manager.get_texture("textures/entity_giant_bat.png");
-		bat.setTexture(texture);
-		bat.setPosition(50, 50);
-
-		sf::Transform translation;
-		translation.translate(500, 50);
-
-		sf::RenderStates rs(translation);
-		window.draw(bat, rs);
-		// Test --------
         window.display();
     }
 
@@ -203,7 +191,11 @@ void Game::setup()
 	sf::VideoMode video_mode(960, 960, 32);
 	window.create(video_mode, "Castle of the winds", sf::Style::Titlebar); 
 
-	player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), ((map.tiles.size() / 2) * 32), ((map.tiles.size() / 2) * 32));
+	//player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), ((map.tiles.size() / 2) * 32), ((map.tiles.size() / 2) * 32));
+	sf::Vector2u size = window.getSize();
+	float screen_width = size.x;
+	float screen_height = size.y;
+	player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), screen_width / 2, screen_height / 2);
 
 	map.create(false);
 
