@@ -12,8 +12,8 @@ Game::Game()
 
 Game::~Game()
 {
-	for (int y = 0; y < 30; y++)
-		for (int x = 0; x < 30; x++)
+	for (unsigned int y = 0; y < map.tiles.size(); y++)
+		for (unsigned int x = 0; x < map.tiles.size(); x++)
 			delete map.tiles[y][x];
 
 	delete player;
@@ -34,42 +34,68 @@ void Game::handle_key(sf::Event event)
 			{
 				case sf::Keyboard::Numpad8:
 					if(valid_move(sf::Vector2<int>(x, y - 1)))
-						player->move(sf::Vector2f(0, -player->speed));
+						for (unsigned int y = 0; y < map.tiles.size(); y++) 
+							for (unsigned int x = 0; x < map.tiles.size(); x++) 
+								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(0, 32));
+						//player->move(sf::Vector2f(0, -player->speed));
 					break;
 
 				case sf::Keyboard::Numpad9:
 					if(valid_move(sf::Vector2<int>(x + 1, y - 1)))
-						player->move(sf::Vector2f(player->speed, -player->speed));
+						for (unsigned int y = 0; y < map.tiles.size(); y++) 
+							for (unsigned int x = 0; x < map.tiles.size(); x++) 
+								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(-32, 32));
+						//player->move(sf::Vector2f(player->speed, -player->speed));
 					break;
 
 				case sf::Keyboard::Numpad4:
 					if(valid_move(sf::Vector2<int>(x - 1, y)))
-						player->move(sf::Vector2f(-player->speed, 0));
+						for (unsigned int y = 0; y < map.tiles.size(); y++) 
+							for (unsigned int x = 0; x < map.tiles.size(); x++) 
+								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(32, 0));
+						//player->move(sf::Vector2f(-player->speed, 0));
 					break;
 
 				case sf::Keyboard::Numpad3:
 					if(valid_move(sf::Vector2<int>(x + 1, y + 1)))
-						player->move(sf::Vector2f(player->speed, player->speed));
+						for (unsigned int y = 0; y < map.tiles.size(); y++) 
+							for (unsigned int x = 0; x < map.tiles.size(); x++) 
+								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(-32, -32));
+						//player->move(sf::Vector2f(player->speed, player->speed));
 					break;
 
 				case sf::Keyboard::Numpad2:
 					if(valid_move(sf::Vector2<int>(x, y + 1)))
-						player->move(sf::Vector2f(0, player->speed));
+						for (unsigned int y = 0; y < map.tiles.size(); y++) 
+							for (unsigned int x = 0; x < map.tiles.size(); x++) 
+								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(0, -32));
+						//player->move(sf::Vector2f(0, player->speed));
 					break;
 
 				case sf::Keyboard::Numpad1:
 					if(valid_move(sf::Vector2<int>(x - 1, y + 1)))
-						player->move(sf::Vector2f(-player->speed, player->speed));
+						for (unsigned int y = 0; y < map.tiles.size(); y++) 
+							for (unsigned int x = 0; x < map.tiles.size(); x++) 
+								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(32, -32));
+						//player->move(sf::Vector2f(-player->speed, player->speed));
 					break;
 
 				case sf::Keyboard::Numpad6:
 					if(valid_move(sf::Vector2<int>(x + 1, y)))
-						player->move(sf::Vector2f(player->speed, 0));
+					{
+						//player->move(sf::Vector2f(player->speed, 0));
+						for (unsigned int y = 0; y < map.tiles.size(); y++) 
+							for (unsigned int x = 0; x < map.tiles.size(); x++) 
+								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(-32, 0));
+					}
 					break;
 
 				case sf::Keyboard::Numpad7:
 					if(valid_move(sf::Vector2<int>(x - 1, y - 1)))
-						player->move(sf::Vector2f(-player->speed, -player->speed));
+						for (unsigned int y = 0; y < map.tiles.size(); y++) 
+							for (unsigned int x = 0; x < map.tiles.size(); x++) 
+								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(32, 32));
+						//player->move(sf::Vector2f(-player->speed, -player->speed));
 					break;
 
 				case sf::Keyboard::Numpad5:
@@ -132,16 +158,19 @@ int Game::game_loop()
 		bitmap.clear(sf::Color::Black);
 
 
-		//sf::Vector2f player_pos = player->get_position();
+		sf::Vector2f player_pos = player->get_position();
 		//cout << "y: " << player_pos.y << ", x: " << player_pos.x << endl;
 
 		// idea 1: rebasing what is zero depending on the hero's location
 		for (unsigned int y = 0; y < map.tiles.size(); y++)
 			for (unsigned int x = 0; x < map.tiles.size(); x++)
 			{
-				sf::RenderStates render_states;
+				sf::Transform translation;
+				translation.translate(0, 0);
+				sf::RenderStates render_states(translation);
 				static_cast<cotw::Tile*>(map.tiles[y][x])->draw(bitmap, render_states);
 			}
+
 
 		//sf::Transform translation;
 		//translation.translate(20, 50);
@@ -151,6 +180,18 @@ int Game::game_loop()
 		bitmap.display();
 	    sf::Sprite sprite(bitmap.getTexture());
 		window.draw(sprite);
+		// Test --------
+		sf::Sprite bat;
+		sf::Texture texture = texture_manager.get_texture("textures/entity_giant_bat.png");
+		bat.setTexture(texture);
+		bat.setPosition(50, 50);
+
+		sf::Transform translation;
+		translation.translate(500, 50);
+
+		sf::RenderStates rs(translation);
+		window.draw(bat, rs);
+		// Test --------
         window.display();
     }
 
