@@ -1,5 +1,7 @@
 #include "game.h"
 
+using namespace std;
+
 namespace cotw {
 
 Game::Game()
@@ -100,14 +102,14 @@ void Game::handle_key(sf::Event event)
 
 bool Game::valid_move(sf::Vector2<int> new_pos)
 {
-	// Grant wall phasing super power
-	//return true;
-	if ((new_pos.x == -1) || (new_pos.y == -1) || (new_pos.x > 30) || (new_pos.y > 30))
-		return false;
-	else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
-		return false;
-	else
-		return true;
+	//Grant wall phasing super power
+	return true;
+	//if ((new_pos.x == -1) || (new_pos.y == -1) || (new_pos.x > 30) || (new_pos.y > 30))
+	//	return false;
+	//else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
+	//	return false;
+	//else
+	//	return true;
 }
 
 int Game::game_loop()
@@ -129,12 +131,21 @@ int Game::game_loop()
 
 		bitmap.clear(sf::Color::Black);
 
-		sf::RenderStates render_states;
 
+		//sf::Vector2f player_pos = player->get_position();
+		//cout << "y: " << player_pos.y << ", x: " << player_pos.x << endl;
+
+		// idea 1: rebasing what is zero depending on the hero's location
 		for (unsigned int y = 0; y < map.tiles.size(); y++)
 			for (unsigned int x = 0; x < map.tiles.size(); x++)
+			{
+				sf::RenderStates render_states;
 				static_cast<cotw::Tile*>(map.tiles[y][x])->draw(bitmap, render_states);
+			}
 
+		//sf::Transform translation;
+		//translation.translate(20, 50);
+		sf::RenderStates render_states;
 		player->draw(bitmap, render_states);
 
 		bitmap.display();
@@ -151,7 +162,7 @@ void Game::setup()
 	sf::VideoMode video_mode(960, 960, 32);
 	window.create(video_mode, "Castle of the winds", sf::Style::Titlebar); 
 
-	player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), 0, 0);
+	player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), ((map.tiles.size() / 2) * 32), ((map.tiles.size() / 2) * 32));
 
 	map.create(false);
 

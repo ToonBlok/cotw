@@ -1,17 +1,18 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef COTW_DRAWABLE_H
+#define COTW_DRAWABLE_H
 
 #include <SFML/Graphics.hpp>
 
 namespace cotw {
 
-class Entity: public sf::Drawable
+class cotw_drawable: public sf::Drawable
 {
 	public:
-		Entity() {};
-		~Entity() {};
+		cotw_drawable() {};
+		~cotw_drawable() {};
 
 		virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
+		//virtual void update();
 		virtual void set_texture(sf::Texture) = 0;
 		virtual void set_position(sf::Vector2f coordinates) { sprite.setPosition(coordinates); };
 		virtual void move(sf::Vector2f coordinates) { sprite.move(coordinates); };

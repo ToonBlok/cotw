@@ -2,11 +2,11 @@
 #define TILE_H
 
 #include <iostream>
-#include "entity.h"
+#include "cotw_drawable.h"
 
 namespace cotw {
 
-class Tile: public Entity 
+class Tile: public cotw_drawable 
 {
 	public:
 		Tile(sf::Texture, int, int, bool);

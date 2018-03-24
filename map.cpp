@@ -42,12 +42,12 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 		texture = texture_manager.get_texture("textures/tile_plant5.png");
 		blocking = true;
 	}
-	else if ((rand_num_tile >= 25) && (rand_num_tile < 30)) 
+	else if ((rand_num_tile >= 25) && (rand_num_tile < 26)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_plant6.png");
 		blocking = true;
 	}
-	else if ((rand_num_tile >= 30) && (rand_num_tile < 31)) 
+	else if ((rand_num_tile >= 26) && (rand_num_tile < 31)) 
 	{
 		if (!dungeon_placed)
 		{
@@ -56,14 +56,16 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 		}
 		else 
 		{
-			texture = texture_manager.get_texture("textures/tile_plant6.png");
+			texture = texture_manager.get_texture("textures/tile_grass.png");
 			blocking = true;
 		}
 	}
 	else if ((rand_num_tile >= 31) && (rand_num_tile < 37)) 
 	{
-		texture = texture_manager.get_texture("textures/tile_hole2.png");
+		texture = texture_manager.get_texture("textures/tile_grass.png");
 		blocking = true;
+		//texture = texture_manager.get_texture("textures/tile_hole2.png");
+		//blocking = true;
 	}
 	else if (rand_num_tile >= 37) 
 	{
@@ -104,6 +106,9 @@ void Map::create(bool in_dungeon)
 		for (unsigned int y = 0; y < tiles.size(); y++) 
 			for (unsigned int x = 0; x < tiles.size(); x++) 
 				create_random_tile(x, y, dungeon_placed, false);
+
+		// Overlay trees
+		// later...
 	}
 }
 
