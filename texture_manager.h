@@ -14,7 +14,7 @@ class Texture_manager
 		~Texture_manager();
 
 		void set_texture(std::string);
-		sf::Texture get_texture(std::string);
+		sf::Texture& get_texture(std::string);
 	private:
 		std::unordered_map<std::string, sf::Texture> textures;
 };

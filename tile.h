@@ -9,11 +9,12 @@ namespace cotw {
 class Tile: public cotw_drawable 
 {
 	public:
-		Tile(sf::Texture, int, int, bool);
+		Tile(sf::Texture&, int, int, bool);
 		~Tile();
 
+		void update();
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
-		void set_texture(sf::Texture);
+		void set_texture(sf::Texture&);
 };
 
 }

@@ -22,10 +22,16 @@ Game::~Game()
 void Game::handle_key(sf::Event event)
 {
 	sf::Vector2f current_location = player->get_position();
-	int x = current_location.x / 32;
-	int y = current_location.y / 32;
+	//int x = current_location.x / 32;
+	//int y = current_location.y / 32;
 	int rand_row = (rand() % 30) + 1;
 	int rand_column = (rand() % 30) + 1;
+
+	sf::Vector2u size = window.getSize();
+	float screen_width = size.x;
+	float screen_height = size.y;
+	int x = (screen_width / 2) / 32;
+	int y = (screen_height / 2) / 32;
 
 	switch (event.type) 
 	{
@@ -37,7 +43,9 @@ void Game::handle_key(sf::Event event)
 						for (unsigned int y = 0; y < map.tiles.size(); y++) 
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
 								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(0, 32));
+
 						//player->move(sf::Vector2f(0, -player->speed));
+
 					break;
 
 				case sf::Keyboard::Numpad9:
@@ -45,7 +53,8 @@ void Game::handle_key(sf::Event event)
 						for (unsigned int y = 0; y < map.tiles.size(); y++) 
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
 								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(-32, 32));
-						//player->move(sf::Vector2f(player->speed, -player->speed));
+						////player->move(sf::Vector2f(player->speed, -player->speed));
+
 					break;
 
 				case sf::Keyboard::Numpad4:
@@ -53,7 +62,8 @@ void Game::handle_key(sf::Event event)
 						for (unsigned int y = 0; y < map.tiles.size(); y++) 
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
 								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(32, 0));
-						//player->move(sf::Vector2f(-player->speed, 0));
+						////player->move(sf::Vector2f(-player->speed, 0));
+
 					break;
 
 				case sf::Keyboard::Numpad3:
@@ -61,7 +71,8 @@ void Game::handle_key(sf::Event event)
 						for (unsigned int y = 0; y < map.tiles.size(); y++) 
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
 								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(-32, -32));
-						//player->move(sf::Vector2f(player->speed, player->speed));
+						////player->move(sf::Vector2f(player->speed, player->speed));
+
 					break;
 
 				case sf::Keyboard::Numpad2:
@@ -69,7 +80,8 @@ void Game::handle_key(sf::Event event)
 						for (unsigned int y = 0; y < map.tiles.size(); y++) 
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
 								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(0, -32));
-						//player->move(sf::Vector2f(0, player->speed));
+						////player->move(sf::Vector2f(0, player->speed));
+						
 					break;
 
 				case sf::Keyboard::Numpad1:
@@ -78,24 +90,27 @@ void Game::handle_key(sf::Event event)
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
 								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(32, -32));
 						//player->move(sf::Vector2f(-player->speed, player->speed));
+						
 					break;
 
 				case sf::Keyboard::Numpad6:
 					if(valid_move(sf::Vector2<int>(x + 1, y)))
 					{
-						//player->move(sf::Vector2f(player->speed, 0));
 						for (unsigned int y = 0; y < map.tiles.size(); y++) 
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
 								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(-32, 0));
+						//player->move(sf::Vector2f(player->speed, 0));
+
 					}
 					break;
 
 				case sf::Keyboard::Numpad7:
 					if(valid_move(sf::Vector2<int>(x - 1, y - 1)))
+						//player->move(sf::Vector2f(-player->speed, -player->speed));
+
 						for (unsigned int y = 0; y < map.tiles.size(); y++) 
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
 								static_cast<cotw::Tile*>(map.tiles[y][x])->move(sf::Vector2f(32, 32));
-						//player->move(sf::Vector2f(-player->speed, -player->speed));
 					break;
 
 				case sf::Keyboard::Numpad5:
@@ -108,7 +123,9 @@ void Game::handle_key(sf::Event event)
 					break;
 
 				case sf::Keyboard::I:
-					player->set_position(sf::Vector2f(rand_row * 32, rand_column * 32));
+					//player->set_position(sf::Vector2f(rand_row * 32, rand_column * 32));
+					//
+
 					break;
 
 				case sf::Keyboard::Return:
@@ -128,6 +145,7 @@ void Game::handle_key(sf::Event event)
 
 bool Game::valid_move(sf::Vector2<int> new_pos)
 {
+	cout << new_pos.y << ", " << new_pos.x << ".blocked = " << static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking << endl;
 	//Grant wall phasing super power
 	return true;
 	//if ((new_pos.x == -1) || (new_pos.y == -1) || (new_pos.x > 30) || (new_pos.y > 30))
@@ -173,7 +191,8 @@ int Game::game_loop()
 
 
 		//sf::Transform translation;
-		//translation.translate(20, 50);
+		//translation.translate(0, 0);
+		//sf::RenderStates render_states(translation);
 		sf::RenderStates render_states;
 		player->draw(bitmap, render_states);
 
@@ -181,6 +200,7 @@ int Game::game_loop()
 	    sf::Sprite sprite(bitmap.getTexture());
 		window.draw(sprite);
         window.display();
+
     }
 
 	return 0;
@@ -197,7 +217,9 @@ void Game::setup()
 	float screen_height = size.y;
 	player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), screen_width / 2, screen_height / 2);
 
+
 	map.create(false);
+	map.texture_manager.set_texture("foo");
 
 	//map.enter_dungeon();
 }

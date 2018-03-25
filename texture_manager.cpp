@@ -11,21 +11,40 @@ Texture_manager::~Texture_manager(){}
 
 void Texture_manager::set_texture(std::string filename) 
 {
+	//for (unsigned int i = 0; i < textures.size(); i++)
+	//{
+	//	cout << textures[i].first << endl;
+	//}
+	for (auto it : textures) 
+		std::cout << it.first << endl;;
 
 }
 
-sf::Texture Texture_manager::get_texture(std::string filename)
+sf::Texture& Texture_manager::get_texture(std::string filename)
 {
-	sf::Texture texture;
-	sf::Image image;
-	image.loadFromFile(filename);
+	//for (auto it : textures) 
+	//	if (filename == it.first)
+	//		found = true;
 
-	if (!texture.loadFromImage(image))
-		cout << "texture \"" + filename + "\" was not found!" << endl; 
+	std::unordered_map<std::string, sf::Texture>::const_iterator got = textures.find (filename);
 
-	//textures.insert(filename, texture);
-	textures[filename] = texture;
-	return textures[filename];
+
+	if ( got == textures.end() )
+	{
+		sf::Texture texture;
+		sf::Image image;
+		image.loadFromFile(filename);
+
+		if (!texture.loadFromImage(image))
+			cout << "texture \"" + filename + "\" was not found!" << endl; 
+
+		textures[filename] = texture;
+		return textures[filename];
+	}
+	else
+	{
+		return textures[filename];
+	}
 }
 
 }

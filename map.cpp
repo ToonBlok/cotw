@@ -142,14 +142,14 @@ void Map::create(bool in_dungeon)
 						}
 					}
 
-					cout << rand_num << endl;
+					//cout << rand_num << endl;
 				}
 			}
 		}
 	}
 }
 
-void Map::overlay_special_tiles(sf::Texture, int row, int col, int width, int height) 
+void Map::overlay_special_tiles() 
 {
 
 }

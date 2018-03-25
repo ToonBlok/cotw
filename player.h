@@ -12,10 +12,13 @@ class Player: public cotw_drawable
 		Player(sf::Texture, int, int);
 		~Player();
 
+		void update();
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
-		void set_texture(sf::Texture);
+		void set_texture(sf::Texture&);
 
 		int speed = 32;
+		int row;
+		int col;
 };
 
 }
