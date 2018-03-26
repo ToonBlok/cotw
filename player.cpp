@@ -11,8 +11,8 @@ Player::Player(sf::Texture _texture, int _x, int _y)
 {
 	texture = _texture;
 
-	row = _x;
-	col = _y;
+	row = _x / 32;
+	col = _y / 32;
 	sprite.setPosition(sf::Vector2f(_x, _y)); 
 	sprite.setTexture(texture);
 }

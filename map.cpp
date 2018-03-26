@@ -57,13 +57,11 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 		else 
 		{
 			texture = texture_manager.get_texture("textures/tile_grass.png");
-			blocking = true;
 		}
 	}
 	else if ((rand_num_tile >= 31) && (rand_num_tile < 37)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_grass.png");
-		blocking = true;
 		//texture = texture_manager.get_texture("textures/tile_hole2.png");
 		//blocking = true;
 	}
@@ -109,43 +107,47 @@ void Map::create(bool in_dungeon)
 			for (unsigned int x = 0; x < tiles.size(); x++) 
 				create_random_tile(x, y, dungeon_placed, false);
 
-		// Create trees
-		sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
-		sf::Texture tree_sw = texture_manager.get_texture("textures/tile_tree_sw.png");
-		sf::Texture tree_ne = texture_manager.get_texture("textures/tile_tree_ne.png");
-		sf::Texture tree_se = texture_manager.get_texture("textures/tile_tree_se.png");
 
-		for (unsigned int row = 0; row < tiles.size(); row++) 
-		{
-			for (unsigned int col = 0; col < tiles.size(); col++) 
-			{
-				int rand_num = rand() % (100 - 1 + 1) + 1;
-				if (rand_num > 35 && rand_num <= 100)
-				{
-					if (row + 1 < tiles.size() && col + 1 < tiles.size())
-					{
-						if (!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row) != used_up_spaces.end()) &&
-							!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row + 1) != used_up_spaces.end()) &&
-							!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col) != used_up_spaces.end()) &&
-							!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col + 1) != used_up_spaces.end())
-						   )
-						{
-							static_cast<cotw::Tile*>(tiles[row][col])->set_texture(tree_nw);
-							static_cast<cotw::Tile*>(tiles[row + 1][col])->set_texture(tree_sw);
-							static_cast<cotw::Tile*>(tiles[row][col + 1])->set_texture(tree_ne);
-							static_cast<cotw::Tile*>(tiles[row + 1][col + 1])->set_texture(tree_se);
-							used_up_spaces.push_back(row);
-							used_up_spaces.push_back(col);
-							used_up_spaces.push_back(row + 1);
-							used_up_spaces.push_back(col + 1);
+		// if true is present then overlay the image using copyToImage() method
+		static_cast<cotw::Tile*>(tiles[14][15])->set_texture(texture_manager.get_texture("textures/copper.png"));
 
-						}
-					}
+		//// Create trees
+		//sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
+		//sf::Texture tree_sw = texture_manager.get_texture("textures/tile_tree_sw.png");
+		//sf::Texture tree_ne = texture_manager.get_texture("textures/tile_tree_ne.png");
+		//sf::Texture tree_se = texture_manager.get_texture("textures/tile_tree_se.png");
 
-					//cout << rand_num << endl;
-				}
-			}
-		}
+		//for (unsigned int row = 0; row < tiles.size(); row++) 
+		//{
+		//	for (unsigned int col = 0; col < tiles.size(); col++) 
+		//	{
+		//		int rand_num = rand() % (100 - 1 + 1) + 1;
+		//		if (rand_num > 35 && rand_num <= 100)
+		//		{
+		//			if (row + 1 < tiles.size() && col + 1 < tiles.size())
+		//			{
+		//				if (!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row) != used_up_spaces.end()) &&
+		//					!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row + 1) != used_up_spaces.end()) &&
+		//					!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col) != used_up_spaces.end()) &&
+		//					!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col + 1) != used_up_spaces.end())
+		//				   )
+		//				{
+		//					static_cast<cotw::Tile*>(tiles[row][col])->set_texture(tree_nw);
+		//					static_cast<cotw::Tile*>(tiles[row + 1][col])->set_texture(tree_sw);
+		//					static_cast<cotw::Tile*>(tiles[row][col + 1])->set_texture(tree_ne);
+		//					static_cast<cotw::Tile*>(tiles[row + 1][col + 1])->set_texture(tree_se);
+		//					used_up_spaces.push_back(row);
+		//					used_up_spaces.push_back(col);
+		//					used_up_spaces.push_back(row + 1);
+		//					used_up_spaces.push_back(col + 1);
+
+		//				}
+		//			}
+
+		//			//cout << rand_num << endl;
+		//		}
+		//	}
+		//}
 	}
 }
 
