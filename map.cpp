@@ -109,7 +109,7 @@ void Map::create(bool in_dungeon)
 
 
 		// if true is present then overlay the image using copyToImage() method
-		static_cast<cotw::Tile*>(tiles[14][15])->set_texture(texture_manager.get_texture("textures/copper.png"));
+		//static_cast<cotw::Tile*>(tiles[14][15])->set_texture(texture_manager.get_texture("textures/copper.png"));
 
 		//// Create trees
 		//sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");

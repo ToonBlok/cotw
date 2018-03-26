@@ -4,6 +4,7 @@
 #include <iostream>
 #include "map.h"
 #include "player.h"
+#include "item.h"
 
 namespace cotw {
 

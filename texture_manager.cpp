@@ -15,8 +15,8 @@ void Texture_manager::set_texture(std::string filename)
 	//{
 	//	cout << textures[i].first << endl;
 	//}
-	for (auto it : textures) 
-		std::cout << it.first << endl;;
+	//for (auto it : textures) 
+	//	std::cout << it.first << endl;;
 
 }
 

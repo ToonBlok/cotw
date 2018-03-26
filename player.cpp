@@ -31,10 +31,8 @@ void Player::draw(sf::RenderTarget& render_target, sf::RenderStates render_state
 
 void Player::set_texture(sf::Texture& _texture)
 {
-	// If this is really a texture then:
-	// if ...?
-	texture = _texture;
 	sprite.setTexture(texture);
+	texture = _texture;
 }
 
 }
