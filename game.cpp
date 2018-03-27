@@ -39,7 +39,7 @@ void Game::handle_key(sf::Event event)
 			switch (event.key.code) 
 			{
 				case sf::Keyboard::Numpad8:
-					if(valid_move(sf::Vector2<int>(player->col, player->row - 1)))
+					if(valid_move(sf::Vector2<unsigned int>(player->col, player->row - 1)))
 					{
 						player->row -= 1;
 
@@ -52,7 +52,7 @@ void Game::handle_key(sf::Event event)
 					break;
 
 				case sf::Keyboard::Numpad9:
-					if(valid_move(sf::Vector2<int>(player->col + 1, player->row - 1)))
+					if(valid_move(sf::Vector2<unsigned int>(player->col + 1, player->row - 1)))
 					{
 						player->col += 1;
 						player->row -= 1;
@@ -64,7 +64,7 @@ void Game::handle_key(sf::Event event)
 					break;
 
 				case sf::Keyboard::Numpad4:
-					if(valid_move(sf::Vector2<int>(player->col - 1, player->row)))
+					if(valid_move(sf::Vector2<unsigned int>(player->col - 1, player->row)))
 					{
 						player->col -= 1;
 
@@ -75,7 +75,7 @@ void Game::handle_key(sf::Event event)
 					break;
 
 				case sf::Keyboard::Numpad3:
-					if(valid_move(sf::Vector2<int>(player->col + 1, player->row + 1)))
+					if(valid_move(sf::Vector2<unsigned int>(player->col + 1, player->row + 1)))
 					{
 						player->col += 1;
 						player->row += 1;
@@ -87,7 +87,7 @@ void Game::handle_key(sf::Event event)
 					break;
 
 				case sf::Keyboard::Numpad2:
-					if(valid_move(sf::Vector2<int>(player->col, player->row + 1)))
+					if(valid_move(sf::Vector2<unsigned int>(player->col, player->row + 1)))
 					{
 						player->row += 1;
 
@@ -98,7 +98,7 @@ void Game::handle_key(sf::Event event)
 					break;
 
 				case sf::Keyboard::Numpad1:
-					if(valid_move(sf::Vector2<int>(player->col - 1, player->row + 1)))
+					if(valid_move(sf::Vector2<unsigned int>(player->col - 1, player->row + 1)))
 					{
 						player->col -= 1;
 						player->row += 1;
@@ -111,7 +111,7 @@ void Game::handle_key(sf::Event event)
 					break;
 
 				case sf::Keyboard::Numpad6:
-					if(valid_move(sf::Vector2<int>(player->col + 1, player->row)))
+					if(valid_move(sf::Vector2<unsigned int>(player->col + 1, player->row)))
 					{
 						for (unsigned int y = 0; y < map.tiles.size(); y++) 
 							for (unsigned int x = 0; x < map.tiles.size(); x++) 
@@ -122,7 +122,7 @@ void Game::handle_key(sf::Event event)
 					break;
 
 				case sf::Keyboard::Numpad7:
-					if(valid_move(sf::Vector2<int>(player->col - 1, player->row - 1)))
+					if(valid_move(sf::Vector2<unsigned int>(player->col - 1, player->row - 1)))
 					{
 						player->col -= 1;
 						player->row -= 1;
@@ -164,12 +164,12 @@ void Game::handle_key(sf::Event event)
 	}
 }
 
-bool Game::valid_move(sf::Vector2<int> new_pos)
+bool Game::valid_move(sf::Vector2<unsigned int> new_pos)
 {
 	//cout << new_pos.y << ", " << new_pos.x << ".blocked = " << static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking << endl;
 	//Grant wall phasing super power
 	//return true;
-	if ((new_pos.x == -1) || (new_pos.y == -1) || (new_pos.x > 30) || (new_pos.y > 30))
+	if ((new_pos.x < 0) || (new_pos.y < 0) || (new_pos.x > map.tiles.size()) || (new_pos.y > map.tiles.size()))
 		return false;
 	else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
 		return false;
@@ -222,7 +222,7 @@ int Game::game_loop()
 				// so its in the inventory... but how to draw? give item its own coords? Make add_to_inv method and force to merge image??? hmmmm
 				for (unsigned int item = 0; item < static_cast<cotw::Tile*>(map.tiles[y][x])->inventory.size(); item++)
 				{
-					cout << static_cast<cotw::Tile*>(map.tiles[y][x])->inventory[item]->name << endl;
+					//cout << static_cast<cotw::Tile*>(map.tiles[y][x])->inventory[item]->name << endl;
 				}
 			}
 		}

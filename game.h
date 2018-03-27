@@ -21,7 +21,7 @@ class Game
 		cotw::Map map;
 
 		void handle_key(sf::Event);
-		bool valid_move(sf::Vector2<int>);
+		bool valid_move(sf::Vector2<unsigned int>);
 		int game_loop();
 
 		void setup();
