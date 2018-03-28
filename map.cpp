@@ -136,6 +136,86 @@ void Map::create(bool in_dungeon)
 	}
 }
 
+void Map::overlay_special_tiles() 
+{
+	tile_clusters tile_cluster = tile_clusters::tree;
+	create_tile_clusters(tile_cluster);
+}
+
+
+void Map::create_tile_clusters(cotw::tile_clusters tile_cluster) 
+{
+	int height;
+	int width;
+	int spawn_chance;
+
+	if (tile_cluster == tile_clusters::tree)
+	{
+		height = 2;
+		width = 2;
+		spawn_chance = 100 - 30;
+	}
+	// no.... if grass field must redetermine size each time not once here...
+	//else if (tile_cluster == tile_clusters::grassfield)
+	//{
+	//	int rand_num = rand() % (100 - 1 + 1) + 1;
+	//	int rand_num = rand() % (100 - 1 + 1) + 1;
+	//	height = 2;
+	//	width = 2;
+	//	spawn_chance = 100 - 30;
+	//}
+
+	std::vector<sf::IntRect> tile_clusters;
+
+	for (unsigned int row = 0; row < tiles.size(); row++) 
+	{
+		for (unsigned int col = 0; col < tiles.size(); col++) 
+		{
+			if (row + (width - 1) < tiles.size() && col + (height - 1) < tiles.size())
+			{
+				int rand_num = rand() % (100 - 1 + 1) + 1;
+				if (rand_num >= spawn_chance && rand_num <= 100)
+				{
+					// col, row, width, height
+					//cout << "eternal" << endl;
+
+					sf::IntRect special(col, row, width, height);
+					//cout << "Made special:" << col << ", " << row << " 2, 2" << endl;
+
+					if (tile_clusters.size() == 0)
+					{
+						tile_clusters.push_back(special);
+					}
+					else
+					{
+						bool intersects = false;
+						for (unsigned int i = 0; i < tile_clusters.size(); i++) 
+						{
+							//cout << "special.left = " << special.left << ", special.top = " << special.top << endl;
+							//cout << "tile_clusters[" << i << "].left = " << tile_clusters[i].left << ", tile_clusters[" << i << "].top = " << tile_clusters[i].top << endl;
+							if (special.intersects(tile_clusters[i]))
+							{
+								//cout << "INTERSECTS!!" << endl;
+								intersects = true;
+							}
+						}
+						if (!intersects)
+							tile_clusters.push_back(special);
+
+					}
+
+				}
+			}
+		}
+	}
+
+	for (unsigned int i = 0; i < tile_clusters.size(); i++) 
+		create_tree(tile_clusters[i]);
+
+	cout << "tile_clusters: " << tile_clusters.size() << endl;
+
+}
+
 void Map::create_tree(sf::IntRect tree) 
 {
 	sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
@@ -147,98 +227,16 @@ void Map::create_tree(sf::IntRect tree)
 	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_sw.png"));
 	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_tree_ne.png"));
 	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_tree_se.png"));
+
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->blocking = false;
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->blocking = false;
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->blocking = false;
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left + 1])->blocking = false;
 }
 
-void Map::overlay_special_tiles() 
+void Map::create_grassfields() 
 {
-	std::vector<sf::IntRect> trees;
 
-	for (unsigned int row = 0; row < tiles.size(); row++) 
-	{
-		for (unsigned int col = 0; col < tiles.size(); col++) 
-		{
-			if (row + 1 < tiles.size() && col + 1 < tiles.size())
-			{
-				int rand_num = rand() % (100 - 1 + 1) + 1;
-				if (rand_num > 70 && rand_num <= 100)
-				{
-					// col, row, width, height
-					//cout << "eternal" << endl;
-
-					sf::IntRect tree(col, row, 2, 2);
-					//cout << "Made tree:" << col << ", " << row << " 2, 2" << endl;
-
-					if (trees.size() == 0)
-					{
-						trees.push_back(tree);
-					}
-					else
-					{
-						bool intersects = false;
-						for (unsigned int i = 0; i < trees.size(); i++) 
-						{
-							//cout << "tree.left = " << tree.left << ", tree.top = " << tree.top << endl;
-							//cout << "trees[" << i << "].left = " << trees[i].left << ", trees[" << i << "].top = " << trees[i].top << endl;
-							if (tree.intersects(trees[i]))
-							{
-								//cout << "INTERSECTS!!" << endl;
-								intersects = true;
-							}
-						}
-						if (!intersects)
-							trees.push_back(tree);
-
-					}
-
-				}
-			}
-		}
-	}
-
-	for (unsigned int i = 0; i < trees.size(); i++) 
-		create_tree(trees[i]);
-
-	cout << "trees: " << trees.size() << endl;
-
-//	std::vector<int> used_up_spaces;
-//
-//	// Create trees
-//	sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
-//	sf::Texture tree_sw = texture_manager.get_texture("textures/tile_tree_sw.png");
-//	sf::Texture tree_ne = texture_manager.get_texture("textures/tile_tree_ne.png");
-//	sf::Texture tree_se = texture_manager.get_texture("textures/tile_tree_se.png");
-//
-//	for (unsigned int row = 0; row < tiles.size(); row++) 
-//	{
-//		for (unsigned int col = 0; col < tiles.size(); col++) 
-//		{
-//			int rand_num = rand() % (100 - 1 + 1) + 1;
-//			if (rand_num > 35 && rand_num <= 100)
-//			{
-//				if (row + 1 < tiles.size() && col + 1 < tiles.size())
-//				{
-//					if (!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row) != used_up_spaces.end()) &&
-//						!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row + 1) != used_up_spaces.end()) &&
-//						!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col) != used_up_spaces.end()) &&
-//						!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col + 1) != used_up_spaces.end())
-//					   )
-//					{
-//						static_cast<cotw::Tile*>(tiles[row][col])->set_texture(tree_nw);
-//						static_cast<cotw::Tile*>(tiles[row + 1][col])->set_texture(tree_sw);
-//						static_cast<cotw::Tile*>(tiles[row][col + 1])->set_texture(tree_ne);
-//						static_cast<cotw::Tile*>(tiles[row + 1][col + 1])->set_texture(tree_se);
-//						used_up_spaces.push_back(row);
-//						used_up_spaces.push_back(col);
-//						used_up_spaces.push_back(row + 1);
-//						used_up_spaces.push_back(col + 1);
-//
-//					}
-//				}
-//
-//				//cout << rand_num << endl;
-//			}
-//		}
-//	}
 }
 
 void Map::fill_empty() 
