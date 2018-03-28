@@ -40,14 +40,14 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 	else if ((rand_num_tile >= 20) && (rand_num_tile < 25)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_plant5.png");
-		blocking = true;
+		//blocking = true;
 	}
 	else if ((rand_num_tile >= 25) && (rand_num_tile < 26)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_plant6.png");
 		blocking = true;
 	}
-	else if ((rand_num_tile >= 26) && (rand_num_tile < 31)) 
+	else if ((rand_num_tile >= 26) && (rand_num_tile < 35)) 
 	{
 		if (!dungeon_placed)
 		{
@@ -59,28 +59,50 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 			texture = texture_manager.get_texture("textures/tile_grass.png");
 		}
 	}
-	else if ((rand_num_tile >= 31) && (rand_num_tile < 37)) 
+	else if ((rand_num_tile >= 35) && (rand_num_tile < 37)) 
 	{
-		texture = texture_manager.get_texture("textures/tile_grass.png");
+		if (rand_num_tile == 35)
+			texture = texture_manager.get_texture("textures/tile_rock.png");
+		else
+			texture = texture_manager.get_texture("textures/tile_rock2.png");
+
 		//texture = texture_manager.get_texture("textures/tile_hole2.png");
-		//blocking = true;
+		blocking = true;
 	}
 	else if (rand_num_tile >= 37) 
 	{
 		texture = texture_manager.get_texture("textures/tile_grass.png");
+		if (rand_num_tile > 90)
+		{
+			sf::Image image = texture.copyToImage();
+			image.flipVertically();
+			if (!texture.loadFromImage(image))
+				cout << "texture was not found!" << endl; 
+		}
+
 	}
+
+	int flip = rand() % (1 - 0 + 1) + 0;
+	if (flip == 0)
+		flip_tile_h(texture);
 
 	tiles[y][x] = new cotw::Tile(texture, x * 32, y * 32, blocking);
 }
 
-void Map::random_rotate_tile(sf::Image& image) 
+void Map::flip_tile_h(sf::Texture& texture) 
 {
-	int rand_num_tile_rotation = (rand() % 2);
+    // int rand_num_tile_rotation = (rand() % 2);
 
-	if (rand_num_tile_rotation == 0)
-		image.flipHorizontally();
-	else if (rand_num_tile_rotation == 1)
-		image.flipVertically();
+	// if (rand_num_tile_rotation == 0)
+	// 	image.flipHorizontally();
+	// else if (rand_num_tile_rotation == 1)
+	// 	image.flipVertically();
+
+	sf::Image image = texture.copyToImage();
+	image.flipHorizontally();
+	if (!texture.loadFromImage(image))
+		cout << "texture was not found!" << endl; 
+
 }
 
 void Map::create(bool in_dungeon) 
@@ -101,59 +123,122 @@ void Map::create(bool in_dungeon)
 	}
 	else
 	{
-		std::vector<int> used_up_spaces;
 
 		for (unsigned int y = 0; y < tiles.size(); y++) 
 			for (unsigned int x = 0; x < tiles.size(); x++) 
 				create_random_tile(x, y, dungeon_placed, false);
 
+		overlay_special_tiles();
 
 		// if true is present then overlay the image using copyToImage() method
 		//static_cast<cotw::Tile*>(tiles[14][15])->set_texture(texture_manager.get_texture("textures/copper.png"));
 
-		//// Create trees
-		//sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
-		//sf::Texture tree_sw = texture_manager.get_texture("textures/tile_tree_sw.png");
-		//sf::Texture tree_ne = texture_manager.get_texture("textures/tile_tree_ne.png");
-		//sf::Texture tree_se = texture_manager.get_texture("textures/tile_tree_se.png");
-
-		//for (unsigned int row = 0; row < tiles.size(); row++) 
-		//{
-		//	for (unsigned int col = 0; col < tiles.size(); col++) 
-		//	{
-		//		int rand_num = rand() % (100 - 1 + 1) + 1;
-		//		if (rand_num > 35 && rand_num <= 100)
-		//		{
-		//			if (row + 1 < tiles.size() && col + 1 < tiles.size())
-		//			{
-		//				if (!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row) != used_up_spaces.end()) &&
-		//					!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row + 1) != used_up_spaces.end()) &&
-		//					!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col) != used_up_spaces.end()) &&
-		//					!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col + 1) != used_up_spaces.end())
-		//				   )
-		//				{
-		//					static_cast<cotw::Tile*>(tiles[row][col])->set_texture(tree_nw);
-		//					static_cast<cotw::Tile*>(tiles[row + 1][col])->set_texture(tree_sw);
-		//					static_cast<cotw::Tile*>(tiles[row][col + 1])->set_texture(tree_ne);
-		//					static_cast<cotw::Tile*>(tiles[row + 1][col + 1])->set_texture(tree_se);
-		//					used_up_spaces.push_back(row);
-		//					used_up_spaces.push_back(col);
-		//					used_up_spaces.push_back(row + 1);
-		//					used_up_spaces.push_back(col + 1);
-
-		//				}
-		//			}
-
-		//			//cout << rand_num << endl;
-		//		}
-		//	}
-		//}
 	}
+}
+
+void Map::create_tree(sf::IntRect tree) 
+{
+	sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
+	sf::Texture tree_sw = texture_manager.get_texture("textures/tile_tree_sw.png");
+	sf::Texture tree_ne = texture_manager.get_texture("textures/tile_tree_ne.png");
+	sf::Texture tree_se = texture_manager.get_texture("textures/tile_tree_se.png");
+	                            // row      col
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_nw.png"));
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_sw.png"));
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_tree_ne.png"));
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_tree_se.png"));
 }
 
 void Map::overlay_special_tiles() 
 {
+	std::vector<sf::IntRect> trees;
 
+	for (unsigned int row = 0; row < tiles.size(); row++) 
+	{
+		for (unsigned int col = 0; col < tiles.size(); col++) 
+		{
+			if (row + 1 < tiles.size() && col + 1 < tiles.size())
+			{
+				int rand_num = rand() % (100 - 1 + 1) + 1;
+				if (rand_num > 70 && rand_num <= 100)
+				{
+					// col, row, width, height
+					//cout << "eternal" << endl;
+
+					sf::IntRect tree(col, row, 2, 2);
+					//cout << "Made tree:" << col << ", " << row << " 2, 2" << endl;
+
+					if (trees.size() == 0)
+					{
+						trees.push_back(tree);
+					}
+					else
+					{
+						bool intersects = false;
+						for (unsigned int i = 0; i < trees.size(); i++) 
+						{
+							//cout << "tree.left = " << tree.left << ", tree.top = " << tree.top << endl;
+							//cout << "trees[" << i << "].left = " << trees[i].left << ", trees[" << i << "].top = " << trees[i].top << endl;
+							if (tree.intersects(trees[i]))
+							{
+								//cout << "INTERSECTS!!" << endl;
+								intersects = true;
+							}
+						}
+						if (!intersects)
+							trees.push_back(tree);
+
+					}
+
+				}
+			}
+		}
+	}
+
+	for (unsigned int i = 0; i < trees.size(); i++) 
+		create_tree(trees[i]);
+
+	cout << "trees: " << trees.size() << endl;
+
+//	std::vector<int> used_up_spaces;
+//
+//	// Create trees
+//	sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
+//	sf::Texture tree_sw = texture_manager.get_texture("textures/tile_tree_sw.png");
+//	sf::Texture tree_ne = texture_manager.get_texture("textures/tile_tree_ne.png");
+//	sf::Texture tree_se = texture_manager.get_texture("textures/tile_tree_se.png");
+//
+//	for (unsigned int row = 0; row < tiles.size(); row++) 
+//	{
+//		for (unsigned int col = 0; col < tiles.size(); col++) 
+//		{
+//			int rand_num = rand() % (100 - 1 + 1) + 1;
+//			if (rand_num > 35 && rand_num <= 100)
+//			{
+//				if (row + 1 < tiles.size() && col + 1 < tiles.size())
+//				{
+//					if (!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row) != used_up_spaces.end()) &&
+//						!(std::find(used_up_spaces.begin(), used_up_spaces.end(), row + 1) != used_up_spaces.end()) &&
+//						!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col) != used_up_spaces.end()) &&
+//						!(std::find(used_up_spaces.begin(), used_up_spaces.end(), col + 1) != used_up_spaces.end())
+//					   )
+//					{
+//						static_cast<cotw::Tile*>(tiles[row][col])->set_texture(tree_nw);
+//						static_cast<cotw::Tile*>(tiles[row + 1][col])->set_texture(tree_sw);
+//						static_cast<cotw::Tile*>(tiles[row][col + 1])->set_texture(tree_ne);
+//						static_cast<cotw::Tile*>(tiles[row + 1][col + 1])->set_texture(tree_se);
+//						used_up_spaces.push_back(row);
+//						used_up_spaces.push_back(col);
+//						used_up_spaces.push_back(row + 1);
+//						used_up_spaces.push_back(col + 1);
+//
+//					}
+//				}
+//
+//				//cout << rand_num << endl;
+//			}
+//		}
+//	}
 }
 
 void Map::fill_empty() 
@@ -248,7 +333,8 @@ void Map::create_room(sf::IntRect room, int index)
 	{
 		for (int ix = 0; ix < room.height; ix++)
 		{
-			if (((room.left + iy) < 30) && ((room.top + ix) < 30))
+			// replaced from < 30..
+			if (((unsigned int)(room.left + iy) < tiles.size()) && ((unsigned int)(room.top + ix) < tiles.size()))
 			{
 				//cout << "Creating room " << index + 1 << " at: [" << room.top + ix << "][" << room.left + iy << "]" << endl;
 				//static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/" + std::to_sing(index + 1) + "tile_dungeon_floor1.png"));

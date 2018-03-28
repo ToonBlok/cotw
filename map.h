@@ -25,6 +25,7 @@ class Map
 		void fill_empty();
 		void overlay_special_tiles();
 		void create_room(sf::IntRect, int);
+		void create_tree(sf::IntRect);
 		void create_tunnel(sf::IntRect);
 		void create_h_tunnel(int, int, int);
 		void create_v_tunnel(int, int, int);
@@ -33,7 +34,7 @@ class Map
 		void enter_dungeon();
 
 		void create_random_tile(int, int, bool&, bool);
-		void random_rotate_tile(sf::Image&);
+		void flip_tile_h(sf::Texture&);
 };
 
 }

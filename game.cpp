@@ -169,7 +169,7 @@ bool Game::valid_move(sf::Vector2<unsigned int> new_pos)
 	//cout << new_pos.y << ", " << new_pos.x << ".blocked = " << static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking << endl;
 	//Grant wall phasing super power
 	//return true;
-	if ((new_pos.x < 0) || (new_pos.y < 0) || (new_pos.x > map.tiles.size()) || (new_pos.y > map.tiles.size()))
+	if ((new_pos.x < 0) || (new_pos.y < 0) || (new_pos.x >= map.tiles.size()) || (new_pos.y >= map.tiles.size()))
 		return false;
 	else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
 		return false;
