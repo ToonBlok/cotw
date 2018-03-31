@@ -17,10 +17,12 @@ Map::~Map()
 
 void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon) 
 {
-	int rand_num_tile = (rand() % 100) + 1;
+	int max_spawn_chance = 100;
+	int rand_num_tile = rand() % (max_spawn_chance - 1 + 1) + 1;
 	sf::Texture texture;
 	
 	bool blocking = false;
+
 	if ((rand_num_tile >= 0) && (rand_num_tile < 5)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_plant1.png");
@@ -37,49 +39,40 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 	{
 		texture = texture_manager.get_texture("textures/tile_plant4.png");
 	}
-	else if ((rand_num_tile >= 20) && (rand_num_tile < 25)) 
+	else if ((rand_num_tile >= 20) && (rand_num_tile < 21)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_plant5.png");
 		//blocking = true;
 	}
-	else if ((rand_num_tile >= 25) && (rand_num_tile < 26)) 
+	else if ((rand_num_tile >= 21) && (rand_num_tile < 22)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_plant6.png");
 		blocking = true;
 	}
-	else if ((rand_num_tile >= 26) && (rand_num_tile < 35)) 
+	else if ((rand_num_tile >= 22) && (rand_num_tile < 25)) 
 	{
-		if (!dungeon_placed)
-		{
-			texture = texture_manager.get_texture("textures/tile_dungeon_entrance.png");
-			dungeon_placed = true;
-		}
-		else 
-		{
-			texture = texture_manager.get_texture("textures/tile_grass.png");
-		}
-	}
-	else if ((rand_num_tile >= 35) && (rand_num_tile < 37)) 
-	{
-		if (rand_num_tile == 35)
+		if (rand_num_tile >= 22 && rand_num_tile <= 23)
 			texture = texture_manager.get_texture("textures/tile_rock.png");
 		else
 			texture = texture_manager.get_texture("textures/tile_rock2.png");
 
-		//texture = texture_manager.get_texture("textures/tile_hole2.png");
 		blocking = true;
 	}
-	else if (rand_num_tile >= 37) 
+	else if ((rand_num_tile >= 25) && (rand_num_tile < 26)) 
+	{
+		texture = texture_manager.get_texture("textures/tile_grass_mushrooms.png");
+		blocking = true;
+	}
+	else if (rand_num_tile >= 26)
 	{
 		texture = texture_manager.get_texture("textures/tile_grass.png");
-		if (rand_num_tile > 90)
+		if (rand_num_tile > 50)
 		{
 			sf::Image image = texture.copyToImage();
 			image.flipVertically();
 			if (!texture.loadFromImage(image))
 				cout << "texture was not found!" << endl; 
 		}
-
 	}
 
 	int flip = rand() % (1 - 0 + 1) + 0;
@@ -138,23 +131,48 @@ void Map::create(bool in_dungeon)
 
 void Map::overlay_special_tiles() 
 {
+	std::vector<sf::IntRect> all_clusters;
 	tile_clusters tile_cluster = tile_clusters::tree;
-	create_tile_clusters(tile_cluster);
+	create_tile_clusters(tile_cluster, all_clusters);
+
+	tile_cluster = tile_clusters::thintree;
+	create_tile_clusters(tile_cluster, all_clusters);
+	
+	tile_cluster = tile_clusters::log;
+	create_tile_clusters(tile_cluster, all_clusters);
 }
 
 
-void Map::create_tile_clusters(cotw::tile_clusters tile_cluster) 
+void Map::create_tile_clusters(cotw::tile_clusters tile_cluster, std::vector<sf::IntRect>& all_clusters) 
 {
 	int height;
 	int width;
+	int max_spawn_chance = 1000;
 	int spawn_chance;
 
 	if (tile_cluster == tile_clusters::tree)
 	{
 		height = 2;
 		width = 2;
-		spawn_chance = 100 - 30;
+		spawn_chance = 10;
 	}
+	else if (tile_cluster == tile_clusters::thintree)
+	{
+		height = 2;
+		width = 1;
+		spawn_chance = 1;
+	}
+	else if (tile_cluster == tile_clusters::log)
+	{
+		height = 1;
+		width = 2;
+		spawn_chance = 1;
+	}
+
+	// Change from user readable 1% to 10 which is 1% of 1000.
+	// noooo then dev cant enter below 1%
+	//spawn_chance *= 10;
+
 	// no.... if grass field must redetermine size each time not once here...
 	//else if (tile_cluster == tile_clusters::grassfield)
 	//{
@@ -165,16 +183,16 @@ void Map::create_tile_clusters(cotw::tile_clusters tile_cluster)
 	//	spawn_chance = 100 - 30;
 	//}
 
-	std::vector<sf::IntRect> tile_clusters;
+	std::vector<sf::IntRect> clusters;
 
 	for (unsigned int row = 0; row < tiles.size(); row++) 
 	{
 		for (unsigned int col = 0; col < tiles.size(); col++) 
 		{
-			if (row + (width - 1) < tiles.size() && col + (height - 1) < tiles.size())
+			if (row + height - 1 < tiles.size() && col + width - 1 < tiles.size())
 			{
-				int rand_num = rand() % (100 - 1 + 1) + 1;
-				if (rand_num >= spawn_chance && rand_num <= 100)
+				int rand_num = rand() % (max_spawn_chance - 1 + 1) + 1;
+				if (rand_num <= spawn_chance)
 				{
 					// col, row, width, height
 					//cout << "eternal" << endl;
@@ -182,25 +200,29 @@ void Map::create_tile_clusters(cotw::tile_clusters tile_cluster)
 					sf::IntRect special(col, row, width, height);
 					//cout << "Made special:" << col << ", " << row << " 2, 2" << endl;
 
-					if (tile_clusters.size() == 0)
+					if (clusters.size() == 0)
 					{
-						tile_clusters.push_back(special);
+						clusters.push_back(special);
+						all_clusters.push_back(special);
 					}
 					else
 					{
 						bool intersects = false;
-						for (unsigned int i = 0; i < tile_clusters.size(); i++) 
+						for (unsigned int i = 0; i < all_clusters.size(); i++) 
 						{
 							//cout << "special.left = " << special.left << ", special.top = " << special.top << endl;
 							//cout << "tile_clusters[" << i << "].left = " << tile_clusters[i].left << ", tile_clusters[" << i << "].top = " << tile_clusters[i].top << endl;
-							if (special.intersects(tile_clusters[i]))
+							if (special.intersects(all_clusters[i]))
 							{
 								//cout << "INTERSECTS!!" << endl;
 								intersects = true;
 							}
 						}
 						if (!intersects)
-							tile_clusters.push_back(special);
+						{
+							clusters.push_back(special);
+							all_clusters.push_back(special);
+						}
 
 					}
 
@@ -209,33 +231,62 @@ void Map::create_tile_clusters(cotw::tile_clusters tile_cluster)
 		}
 	}
 
-	for (unsigned int i = 0; i < tile_clusters.size(); i++) 
-		create_tree(tile_clusters[i]);
+	for (unsigned int i = 0; i < clusters.size(); i++) 
+	{
+		if (tile_cluster == tile_clusters::tree)
+			create_tree(clusters[i]);
+		else if (tile_cluster == tile_clusters::thintree)
+			create_thintree(clusters[i]);
+		else if (tile_cluster == tile_clusters::log)
+			create_log(clusters[i]);
+	}
 
-	cout << "tile_clusters: " << tile_clusters.size() << endl;
+	cout << "tile_clusters: " << clusters.size() << endl;
 
+}
+
+void Map::create_thintree(sf::IntRect tree) 
+{
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_thin_n2.png"));
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_thin_s2.png"));
+
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->blocking = false;
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->blocking = false;
+}
+
+void Map::create_log(sf::IntRect tree) 
+{
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->set_texture(texture_manager.get_texture("textures/tile_log_w.png"));
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_log_e.png"));
+
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->blocking = true;
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->blocking = true;
 }
 
 void Map::create_tree(sf::IntRect tree) 
 {
-	sf::Texture	tree_nw = texture_manager.get_texture("textures/tile_tree_nw.png");
-	sf::Texture tree_sw = texture_manager.get_texture("textures/tile_tree_sw.png");
-	sf::Texture tree_ne = texture_manager.get_texture("textures/tile_tree_ne.png");
-	sf::Texture tree_se = texture_manager.get_texture("textures/tile_tree_se.png");
 	                            // row      col
-	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_nw.png"));
-	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_sw.png"));
-	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_tree_ne.png"));
-	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_tree_se.png"));
+	// Light green tree
+	//static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_nw.png"));
+	//static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->set_texture(texture_manager.get_texture("textures/tile_tree_sw.png"));
+	//static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_tree_ne.png"));
+	//static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_tree_se.png"));
 
-	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->blocking = false;
-	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->blocking = false;
-	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->blocking = false;
-	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left + 1])->blocking = false;
+	// Dark green tree
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->set_texture(texture_manager.get_texture("textures/tile_darktree_nw.png"));
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->set_texture(texture_manager.get_texture("textures/tile_darktree_sw.png"));
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_darktree_ne.png"));
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left + 1])->set_texture(texture_manager.get_texture("textures/tile_darktree_se.png"));
+
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left])->blocking = true;
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left])->blocking = true;
+	static_cast<cotw::Tile*>(tiles[tree.top][tree.left + 1])->blocking = true;
+	static_cast<cotw::Tile*>(tiles[tree.top + 1][tree.left + 1])->blocking = true;
 }
 
 void Map::create_grassfields() 
 {
+	// needs to be dynamic... can be big sometimes and sometimes small
 
 }
 

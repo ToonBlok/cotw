@@ -4,9 +4,12 @@
 #include <iostream>
 #include "map.h"
 #include "player.h"
-#include "item.h"
+#include "items/item.h"
+#include "screens/main_menu.h"
 
 namespace cotw {
+
+enum class game_state { GAME, MAIN_MENU };
 
 class Game
 {
@@ -20,6 +23,7 @@ class Game
 		cotw::Texture_manager texture_manager;
 		cotw::Map map;
 
+		game_state state = game_state::MAIN_MENU;
 		void handle_key(sf::Event);
 		bool valid_move(sf::Vector2<unsigned int>);
 		int game_loop();

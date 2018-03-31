@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "cotw_drawable.h"
-#include "item.h"
+#include "items/item.h"
 
 namespace cotw {
 
@@ -13,7 +13,7 @@ class Player: public cotw_drawable
 		Player(sf::Texture, int, int);
 		~Player();
 
-		std::vector<cotw::Item> inventory;
+		std::vector<cotw::Item*> inventory;
 		int speed = 32;
 		int row;
 		int col;

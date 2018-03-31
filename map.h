@@ -9,7 +9,7 @@
 
 namespace cotw {
 
-enum class tile_clusters { tree, grassfield };
+enum class tile_clusters { tree, thintree, grassfield, log };
 
 class Map
 {
@@ -27,8 +27,10 @@ class Map
 		void fill_empty();
 		void create_room(sf::IntRect, int);
 		void overlay_special_tiles();
-		void create_tile_clusters(cotw::tile_clusters);
+		void create_tile_clusters(cotw::tile_clusters, std::vector<sf::IntRect>&);
+		void create_thintree(sf::IntRect);
 		void create_tree(sf::IntRect);
+		void create_log(sf::IntRect);
 		void create_grassfields();
 		void create_tunnel(sf::IntRect);
 		void create_h_tunnel(int, int, int);

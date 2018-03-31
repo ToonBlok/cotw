@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "cotw_drawable.h"
-#include "item.h"
+#include "items/item.h"
 
 namespace cotw {
 
