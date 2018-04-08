@@ -19,7 +19,7 @@ class Map
 		// Access with [row][column]
 		std::array<std::array<sf::Drawable*, 90>, 90> tiles;
 		// Room left = room.row, room.right = room.column
-		std::array<sf::IntRect, 15> rooms;
+		std::array<sf::IntRect, 10> rooms;
 		cotw::Texture_manager texture_manager;
 
 		void create(bool);

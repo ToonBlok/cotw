@@ -19,7 +19,7 @@ Player::Player(sf::Texture _texture, int _x, int _y)
 
 Player::~Player(){}
 
-void Player::update()
+void Player::update(int a, int b)
 {
 
 }

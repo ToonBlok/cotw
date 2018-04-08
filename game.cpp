@@ -12,9 +12,10 @@ Game::Game()
 
 Game::~Game()
 {
-	for (unsigned int y = 0; y < map.tiles.size(); y++)
-		for (unsigned int x = 0; x < map.tiles.size(); x++)
-			delete map.tiles[y][x];
+	if (state != cotw::game_state::MAIN_MENU)
+		for (unsigned int y = 0; y < map.tiles.size(); y++)
+			for (unsigned int x = 0; x < map.tiles.size(); x++)
+				delete map.tiles[y][x];
 
 	delete player;
 }
@@ -39,6 +40,11 @@ void Game::handle_key(sf::Event event)
 				{
 					case sf::Keyboard::Return:
 						state = cotw::game_state::GAME;
+						break;
+						
+					case sf::Keyboard::Q:
+						std::cout << "Bye." << std::endl;
+						window.close();
 						break;
 
 					default:
@@ -203,7 +209,7 @@ int Game::game_loop()
 	float screen_width = size.x;
 	float screen_height = size.y;
 	bool setup_done = false;
-	cotw::Main_menu menu;
+	cotw::Main_menu menu(size);
 
 	if (!bitmap.create(screen_width, screen_height))
 		return -1;
@@ -221,6 +227,24 @@ int Game::game_loop()
 		{
 			case cotw::game_state::MAIN_MENU:
 			{
+				if (event.type == sf::Event::MouseButtonReleased)
+					menu.update(event.mouseButton.x, event.mouseButton.y);
+
+				// maybe listen pattern? game is interested in listening to any changes in button?
+				for (unsigned int y = 0; y < menu.ui_elements.size(); y++)
+				{
+					cotw::button_state state = static_cast<cotw::Button*>(menu.ui_elements[y])->state;
+					if (state == cotw::button_state::PRESSED)
+					{
+						cout << "PRESSED" << endl;
+					}
+					else
+					{
+						cout << "NOT PRESSED" << endl;
+					}
+
+				}
+
 				sf::RenderStates render_states;
 				menu.draw(bitmap, render_states);
 			}

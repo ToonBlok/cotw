@@ -12,7 +12,7 @@ class cotw_drawable: public sf::Drawable
 		~cotw_drawable() {};
 
 		virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
-		virtual void update() = 0;
+		virtual void update(int, int) = 0;
 		virtual void set_texture(sf::Texture&) = 0;
 		virtual void set_position(sf::Vector2f coordinates) { sprite.setPosition(coordinates); };
 		virtual void move(sf::Vector2f coordinates) { sprite.move(coordinates); };

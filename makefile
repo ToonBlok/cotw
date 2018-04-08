@@ -1,6 +1,6 @@
 CPPFLAGS = -c -std=c++11 -Wall -pedantic
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
-OBJFILES = main.o game.o map.o player.o tile.o texture_manager.o item.o main_menu.o
+OBJFILES = main.o game.o map.o player.o tile.o texture_manager.o item.o main_menu.o button.o
 
 cotw: $(OBJFILES)
 	g++ $(OBJFILES) -o $@ $(SFMLFLAGS) $(UTFLAGS)
@@ -28,6 +28,9 @@ item.o: items/item.cpp
 
 main_menu.o: screens/main_menu.cpp
 	$(CC) $(CPPFLAGS) screens/main_menu.cpp
+
+button.o: screens/button.cpp
+	$(CC) $(CPPFLAGS) screens/button.cpp
 
 clean:
 	rm *.o cotw 

@@ -15,7 +15,7 @@ Tile::Tile(sf::Texture& _texture, int _x, int _y, bool _blocking)
 
 Tile::~Tile(){}
 
-void Tile::update()
+void Tile::update(int a, int b)
 {
 
 }

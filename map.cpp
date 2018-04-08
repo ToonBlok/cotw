@@ -569,7 +569,7 @@ void Map::enter_dungeon()
 	//	for (int x = 0; x < 30; x++)
 	//		delete map.tiles[y][x];
 
-	create(true);
+	create(false);
 }
 
 }
