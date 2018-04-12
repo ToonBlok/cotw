@@ -1,15 +1,15 @@
-#ifndef COTW_DRAWABLE_H
-#define COTW_DRAWABLE_H
+#ifndef DRAWABLE_H
+#define DRAWABLE_H
 
 #include <SFML/Graphics.hpp>
 
 namespace cotw {
 
-class cotw_drawable: public sf::Drawable
+class Drawable: public sf::Drawable
 {
 	public:
-		cotw_drawable() {};
-		~cotw_drawable() {};
+		Drawable() {};
+		~Drawable() {};
 
 		virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
 		virtual void update(int, int) = 0;
@@ -18,7 +18,6 @@ class cotw_drawable: public sf::Drawable
 		virtual void move(sf::Vector2f coordinates) { sprite.move(coordinates); };
 		virtual sf::Vector2f get_position() const { return sprite.getPosition(); };
 
-		bool blocking = false;
 	protected:
 		sf::Sprite sprite;
 		sf::Texture texture;

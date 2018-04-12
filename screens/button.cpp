@@ -45,7 +45,7 @@ void Button::update(int mouse_x, int mouse_y)
 		//cout << mouse_y << endl;
 	}
 
-	state = button_state::NORMAL;
+	//state = button_state::NORMAL;
 }
 
 void Button::draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const

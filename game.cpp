@@ -230,17 +230,18 @@ int Game::game_loop()
 				if (event.type == sf::Event::MouseButtonReleased)
 					menu.update(event.mouseButton.x, event.mouseButton.y);
 
-				// maybe listen pattern? game is interested in listening to any changes in button?
 				for (unsigned int y = 0; y < menu.ui_elements.size(); y++)
 				{
-					cotw::button_state state = static_cast<cotw::Button*>(menu.ui_elements[y])->state;
-					if (state == cotw::button_state::PRESSED)
+					cotw::Button *p_button = static_cast<cotw::Button*>(menu.ui_elements[y]);
+					cotw::button_state _button_state = p_button->state;
+					if (_button_state == cotw::button_state::PRESSED)
 					{
-						cout << "PRESSED" << endl;
-					}
-					else
-					{
-						cout << "NOT PRESSED" << endl;
+						std::string label = p_button->text.getString();
+						if (label == "Start")
+							state = cotw::game_state::GAME;
+						else if (label == "Quit")
+							window.close();
+
 					}
 
 				}

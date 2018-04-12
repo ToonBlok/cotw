@@ -3,13 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "../cotw_drawable.h"
+#include "../drawable.h"
 #include "../texture_manager.h"
 #include "button.h"
 
 namespace cotw {
 
-class Main_menu: public cotw_drawable
+class Main_menu: public cotw::Drawable
 {
 	public:
 		Main_menu(sf::Vector2u);

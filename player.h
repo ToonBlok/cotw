@@ -1,12 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "cotw_drawable.h"
+#include "drawable.h"
 #include "items/item.h"
 
 namespace cotw {
 
-class Player: public cotw_drawable
+class Player: public cotw::Drawable
 {
 	public:
 		Player();
