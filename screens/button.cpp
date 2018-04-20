@@ -54,14 +54,6 @@ void Button::draw(sf::RenderTarget& render_target, sf::RenderStates render_state
 	render_target.draw(text, render_states);
 }
 
-
-void Button::set_texture(sf::Texture& _texture)
-{
-	// If this is really a texture then:
-	// if ...?
-	texture = _texture;
-}
-
 void Button::overlay_texture(sf::Image& new_img)
 {
 	sf::Image tile_img = texture.copyToImage();

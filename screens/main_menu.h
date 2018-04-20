@@ -19,7 +19,6 @@ class Main_menu: public cotw::Drawable
 		std::array<sf::Drawable*, 3> ui_elements;
 		void update(int, int);
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
-		void set_texture(sf::Texture&);
 		void overlay_texture(sf::Image&);
 
 };

@@ -13,7 +13,7 @@ class Drawable: public sf::Drawable
 
 		virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
 		virtual void update(int, int) = 0;
-		virtual void set_texture(sf::Texture&) = 0;
+		virtual void set_texture(sf::Texture& _texture) { texture = _texture; };
 		virtual void set_position(sf::Vector2f coordinates) { sprite.setPosition(coordinates); };
 		virtual void move(sf::Vector2f coordinates) { sprite.move(coordinates); };
 		virtual sf::Vector2f get_position() const { return sprite.getPosition(); };

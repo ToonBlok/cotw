@@ -19,7 +19,6 @@ class Tile: public cotw::Drawable
 
 		void update(int, int);
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
-		void set_texture(sf::Texture&);
 		void overlay_texture(sf::Image&);
 
 };

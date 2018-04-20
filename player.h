@@ -10,7 +10,7 @@ class Player: public cotw::Drawable
 {
 	public:
 		Player();
-		Player(sf::Texture, int, int);
+		Player(sf::Texture&, int, int);
 		~Player();
 
 		std::vector<cotw::Item*> inventory;
@@ -20,7 +20,6 @@ class Player: public cotw::Drawable
 
 		void update(int, int);
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
-		void set_texture(sf::Texture&);
 };
 
 }

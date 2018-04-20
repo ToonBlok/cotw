@@ -45,13 +45,6 @@ void Main_menu::draw(sf::RenderTarget& render_target, sf::RenderStates render_st
 		static_cast<cotw::Button*>(ui_elements[i])->draw(render_target, render_states);
 }
 
-void Main_menu::set_texture(sf::Texture& _texture)
-{
-	// If this is really a texture then:
-	// if ...?
-	texture = _texture;
-}
-
 void Main_menu::overlay_texture(sf::Image& new_img)
 {
 	sf::Image tile_img = texture.copyToImage();

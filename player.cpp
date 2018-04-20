@@ -7,7 +7,7 @@ namespace cotw {
 
 Player::Player() {}
 
-Player::Player(sf::Texture _texture, int _x, int _y) 
+Player::Player(sf::Texture& _texture, int _x, int _y) 
 {
 	texture = _texture;
 
@@ -27,12 +27,6 @@ void Player::update(int a, int b)
 void Player::draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const
 {
 	render_target.draw(sprite, render_states);
-}
-
-void Player::set_texture(sf::Texture& _texture)
-{
-	sprite.setTexture(texture);
-	texture = _texture;
 }
 
 }

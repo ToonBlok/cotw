@@ -25,14 +25,6 @@ void Tile::draw(sf::RenderTarget& render_target, sf::RenderStates render_states)
 	render_target.draw(sprite, render_states);
 }
 
-
-void Tile::set_texture(sf::Texture& _texture)
-{
-	// If this is really a texture then:
-	// if ...?
-	texture = _texture;
-}
-
 void Tile::overlay_texture(sf::Image& new_img)
 {
 	sf::Image tile_img = texture.copyToImage();

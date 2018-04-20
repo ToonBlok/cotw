@@ -23,12 +23,12 @@ Game::~Game()
 void Game::setup() 
 {
 	sf::VideoMode video_mode(960, 960, 32);
-	window.create(video_mode, "Castle of the winds", sf::Style::Titlebar); 
+	window.create(video_mode, "Castle of the winds 2018", sf::Style::Titlebar); 
 }
 
 void Game::handle_key(sf::Event event)
 {
-	sf::Vector2f new_coords;
+	sf::Vector2f new_move;
 
 	switch (event.type) 
 	{
@@ -60,10 +60,9 @@ void Game::handle_key(sf::Event event)
 						if(valid_move(sf::Vector2<unsigned int>(player->col, player->row - 1)))
 						{
 							player->row -= 1;
-							new_coords.x = 0;
-							new_coords.y = 32;
+							new_move.x = 0;
+							new_move.y = 32;
 						}
-
 						break;
 
 					case sf::Keyboard::Numpad9:
@@ -71,9 +70,8 @@ void Game::handle_key(sf::Event event)
 						{
 							player->col += 1;
 							player->row -= 1;
-
-							new_coords.x = -32;
-							new_coords.y = 32;
+							new_move.x = -32;
+							new_move.y = 32;
 						}
 						break;
 
@@ -81,9 +79,8 @@ void Game::handle_key(sf::Event event)
 						if(valid_move(sf::Vector2<unsigned int>(player->col - 1, player->row)))
 						{
 							player->col -= 1;
-
-							new_coords.x = 32;
-							new_coords.y = 0;
+							new_move.x = 32;
+							new_move.y = 0;
 						}
 						break;
 
@@ -92,9 +89,8 @@ void Game::handle_key(sf::Event event)
 						{
 							player->col += 1;
 							player->row += 1;
-
-							new_coords.x = -32;
-							new_coords.y = -32;
+							new_move.x = -32;
+							new_move.y = -32;
 						}
 						break;
 
@@ -102,9 +98,8 @@ void Game::handle_key(sf::Event event)
 						if(valid_move(sf::Vector2<unsigned int>(player->col, player->row + 1)))
 						{
 							player->row += 1;
-
-							new_coords.x = 0;
-							new_coords.y = -32;
+							new_move.x = 0;
+							new_move.y = -32;
 						}
 						break;
 
@@ -113,9 +108,8 @@ void Game::handle_key(sf::Event event)
 						{
 							player->col -= 1;
 							player->row += 1;
-
-							new_coords.x = 32;
-							new_coords.y = -32;
+							new_move.x = 32;
+							new_move.y = -32;
 						}
 							
 						break;
@@ -124,9 +118,8 @@ void Game::handle_key(sf::Event event)
 						if(valid_move(sf::Vector2<unsigned int>(player->col + 1, player->row)))
 						{
 							player->col += 1;
-
-							new_coords.x = -32;
-							new_coords.y = 0;
+							new_move.x = -32;
+							new_move.y = 0;
 						}
 						break;
 
@@ -135,9 +128,8 @@ void Game::handle_key(sf::Event event)
 						{
 							player->col -= 1;
 							player->row -= 1;
-
-							new_coords.x = 32;
-							new_coords.y = 32;
+							new_move.x = 32;
+							new_move.y = 32;
 						}
 						break;
 
@@ -177,26 +169,24 @@ void Game::handle_key(sf::Event event)
 
 				for (unsigned int y = 0; y < map.tiles.size(); y++) 
 					for (unsigned int x = 0; x < map.tiles.size(); x++) 
-						static_cast<cotw::Tile*>(map.tiles[y][x])->move(new_coords);
+						static_cast<cotw::Tile*>(map.tiles[y][x])->move(new_move);
 			}
 		}
+		break;
 
-
-			break;
 		default:
+			// nothing
 			break;
 	}
-
 }
 
 bool Game::valid_move(sf::Vector2<unsigned int> new_pos)
 {
-	//cout << new_pos.y << ", " << new_pos.x << ".blocked = " << static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking << endl;
 	//Grant wall phasing super power
 	//return true;
 	if ((new_pos.x < 0) || (new_pos.y < 0) || (new_pos.x >= map.tiles.size()) || (new_pos.y >= map.tiles.size()))
 		return false;
-	else if(static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
+	else if (static_cast<cotw::Tile*>(map.tiles[new_pos.y][new_pos.x])->blocking)
 		return false;
 	else
 		return true;
@@ -297,11 +287,8 @@ int Game::game_loop()
 		bitmap.display();
 		sf::Sprite sprite(bitmap.getTexture());
 		window.draw(sprite);
-		//window.draw(hole);
 		window.display();
-
     }
-
 
 	return 0;
 }
