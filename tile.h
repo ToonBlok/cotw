@@ -17,8 +17,7 @@ class Tile: public cotw::Drawable
 
 		std::vector<cotw::Item*> inventory;
 
-		void update(int, int);
-		void draw(sf::RenderTarget&, sf::RenderStates) const;
+		void update();
 		void overlay_texture(sf::Image&);
 
 };

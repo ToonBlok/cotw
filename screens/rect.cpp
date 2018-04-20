@@ -1,10 +1,10 @@
-#include "button.h"
+#include "rect.h"
 
 using namespace std;
 
 namespace cotw {
 
-Button::Button(sf::Texture& _texture, std::string _text, sf::Vector2f coords, unsigned int _width, unsigned int _height)
+Rect::Rect(sf::Texture& _texture, std::string _text, sf::Vector2f coords, unsigned int _width, unsigned int _height)
 {
 	texture = _texture;
 	width = _width;
@@ -27,34 +27,17 @@ Button::Button(sf::Texture& _texture, std::string _text, sf::Vector2f coords, un
 	sprite.setPosition(coords); 
 }
 
-Button::~Button()
-{
-}
+Rect::~Rect() {}
 
-void Button::update(int mouse_x, int mouse_y)
-{
-	//sf::Vector2f bla = sprite.getPosition();
-	if ((mouse_y > sprite.getPosition().y) && (mouse_y < sprite.getPosition().y + height) && (mouse_x > sprite.getPosition().x) && (mouse_x < sprite.getPosition().x + width))
-	{
-		std::string bt_text = text.getString();
-		cout << bt_text << " was pressed" << endl;
-		state = button_state::PRESSED;
+void Rect::update() {}
 
-
-		//cout << mouse_x << endl;
-		//cout << mouse_y << endl;
-	}
-
-	//state = button_state::NORMAL;
-}
-
-void Button::draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const
+void Rect::draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const
 {
 	render_target.draw(sprite, render_states);
 	render_target.draw(text, render_states);
 }
 
-void Button::overlay_texture(sf::Image& new_img)
+void Rect::overlay_texture(sf::Image& new_img)
 {
 	sf::Image tile_img = texture.copyToImage();
 	sf::IntRect a;

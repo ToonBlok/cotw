@@ -7,13 +7,13 @@
 
 namespace cotw {
 
-enum class button_state { PRESSED, NORMAL };
+enum class rect_state { PRESSED, NORMAL };
 
-class Button: public cotw::Drawable
+class Rect: public cotw::Drawable
 {
 	public:
-		Button(sf::Texture&, std::string, sf::Vector2f, unsigned int, unsigned int);
-		~Button();
+		Rect(sf::Texture&, std::string, sf::Vector2f, unsigned int, unsigned int);
+		~Rect();
 
 		int x;
 		int y;
@@ -21,10 +21,9 @@ class Button: public cotw::Drawable
 		int height;
 		sf::Text text;
 		sf::Font font;
-		button_state state = button_state::NORMAL;
 		
 
-		void update(int, int);
+		void update();
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void overlay_texture(sf::Image&);
 };

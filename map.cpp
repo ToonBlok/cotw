@@ -241,7 +241,7 @@ void Map::create_tile_clusters(cotw::tile_clusters tile_cluster, std::vector<sf:
 			create_log(clusters[i]);
 	}
 
-	cout << "tile_clusters: " << clusters.size() << endl;
+	//cout << "tile_clusters: " << clusters.size() << endl;
 
 }
 
@@ -442,8 +442,8 @@ std::vector<sf::IntRect> Map::get_unconnected_rooms()
 		}
 	}
 
-	for (unsigned int i = 0; i < connected_rooms.size(); i++) 
-		cout << "Room " << connected_rooms[i] + 1 << " is connected somewhere." << endl;
+	//for (unsigned int i = 0; i < connected_rooms.size(); i++) 
+	//	cout << "Room " << connected_rooms[i] + 1 << " is connected somewhere." << endl;
 
 	return unconnected_rooms;
 

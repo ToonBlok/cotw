@@ -18,8 +18,7 @@ class Player: public cotw::Drawable
 		int row;
 		int col;
 
-		void update(int, int);
-		void draw(sf::RenderTarget&, sf::RenderStates) const;
+		void update();
 };
 
 }

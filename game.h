@@ -9,7 +9,7 @@
 
 namespace cotw {
 
-enum class game_state { GAME, MAIN_MENU };
+enum class game_state { GAME, GAME_SETUP, MAIN_MENU };
 
 class Game
 {

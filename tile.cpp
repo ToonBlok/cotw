@@ -15,15 +15,7 @@ Tile::Tile(sf::Texture& _texture, int _x, int _y, bool _blocking)
 
 Tile::~Tile(){}
 
-void Tile::update(int a, int b)
-{
-
-}
-
-void Tile::draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const
-{
-	render_target.draw(sprite, render_states);
-}
+void Tile::update() {}
 
 void Tile::overlay_texture(sf::Image& new_img)
 {

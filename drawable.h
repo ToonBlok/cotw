@@ -11,8 +11,8 @@ class Drawable: public sf::Drawable
 		Drawable() {};
 		~Drawable() {};
 
-		virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
-		virtual void update(int, int) = 0;
+		virtual void draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const { render_target.draw(sprite, render_states); } ;
+		virtual void update() = 0;
 		virtual void set_texture(sf::Texture& _texture) { texture = _texture; };
 		virtual void set_position(sf::Vector2f coordinates) { sprite.setPosition(coordinates); };
 		virtual void move(sf::Vector2f coordinates) { sprite.move(coordinates); };

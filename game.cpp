@@ -198,7 +198,6 @@ int Game::game_loop()
 	sf::Vector2u size = window.getSize();
 	float screen_width = size.x;
 	float screen_height = size.y;
-	bool setup_done = false;
 	cotw::Main_menu menu(size);
 
 	if (!bitmap.create(screen_width, screen_height))
@@ -217,23 +216,34 @@ int Game::game_loop()
 		{
 			case cotw::game_state::MAIN_MENU:
 			{
-				if (event.type == sf::Event::MouseButtonReleased)
-					menu.update(event.mouseButton.x, event.mouseButton.y);
+				//if (event.type == sf::Event::MouseButtonReleased)
+				//	menu.update();
+			    //sf::Vector2i mouse_pos = sf::Mouse::getPosition();
+				///cout << mouse_pos.x << endl;
+				///cout << mouse_pos.y << endl;
 
 				for (unsigned int y = 0; y < menu.ui_elements.size(); y++)
 				{
-					cotw::Button *p_button = static_cast<cotw::Button*>(menu.ui_elements[y]);
-					cotw::button_state _button_state = p_button->state;
-					if (_button_state == cotw::button_state::PRESSED)
+					cotw::Rect *p_button = static_cast<cotw::Rect*>(menu.ui_elements[y]);
+					sf::Vector2f pos = p_button->get_position();
+
+					if ((event.mouseButton.y > pos.y) && (event.mouseButton.y < pos.y + p_button->height) && (event.mouseButton.x > pos.x) && (event.mouseButton.x < pos.x + p_button->width))
 					{
 						std::string label = p_button->text.getString();
 						if (label == "Start")
-							state = cotw::game_state::GAME;
+							state = cotw::game_state::GAME_SETUP;
 						else if (label == "Quit")
 							window.close();
-
 					}
+					// press code
+					//cout << "Mouse:" << mouse_pos.y << ", button.y: " << pos.x << endl;
 
+					//if ((mouse_pos.y > pos.y) && (mouse_pos.y < pos.y + p_button->height) && (mouse_pos.x > pos.x) && (mouse_pos.x < pos.x + p_button->width))
+					//{
+					//	p_button->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+					//	cout << mouse_pos.x << endl;
+					//	cout << mouse_pos.y << endl;
+					//}
 				}
 
 				sf::RenderStates render_states;
@@ -241,24 +251,25 @@ int Game::game_loop()
 			}
 			break;
 
+			case cotw::game_state::GAME_SETUP:
+			{
+				//player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), ((map.tiles.size() / 2) * 32), ((map.tiles.size() / 2) * 32));
+				sf::Vector2u size = window.getSize();
+				float screen_width = size.x;
+				float screen_height = size.y;
+				player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), screen_width / 2, screen_height / 2);
+
+
+				map.create(false);
+				//map.texture_manager.set_texture("foo");
+
+				//map.enter_dungeon();
+				state = cotw::game_state::GAME;
+			}
+			break;
+
 			case cotw::game_state::GAME:
 			{
-				if (!setup_done)
-				{
-					//player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), ((map.tiles.size() / 2) * 32), ((map.tiles.size() / 2) * 32));
-					sf::Vector2u size = window.getSize();
-					float screen_width = size.x;
-					float screen_height = size.y;
-					player = new cotw::Player(texture_manager.get_texture("textures/entity_hero.png"), screen_width / 2, screen_height / 2);
-
-
-					map.create(false);
-					map.texture_manager.set_texture("foo");
-
-					//map.enter_dungeon();
-					setup_done = true;
-				}
-
 				for (unsigned int y = 0; y < map.tiles.size(); y++)
 				{
 					for (unsigned int x = 0; x < map.tiles.size(); x++)
