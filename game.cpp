@@ -264,6 +264,21 @@ int Game::game_loop()
 				//map.texture_manager.set_texture("foo");
 
 				//map.enter_dungeon();
+
+				sf::Texture tex_button = texture_manager.get_texture("textures/screens/console.png");
+
+				//coords width height
+				cotw::Rect *button_start = new cotw::Rect
+				(
+					tex_button, 
+					"", 
+					sf::Vector2f(0, screen_height - tex_button.getSize().y), 
+					tex_button.getSize().x + 500, 
+					tex_button.getSize().y
+				);
+
+				ui_elements[0] = button_start;
+
 				state = cotw::game_state::GAME;
 			}
 			break;
@@ -287,6 +302,9 @@ int Game::game_loop()
 
 				sf::RenderStates render_states;
 				player->draw(bitmap, render_states);
+
+				for (unsigned int i = 0; i < ui_elements.size(); i++)
+					static_cast<cotw::Rect*>(ui_elements[i])->draw(bitmap, render_states);
 
 			}
 			break;

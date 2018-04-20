@@ -23,6 +23,7 @@ class Game
 		cotw::Texture_manager texture_manager;
 		cotw::Map map;
 
+		std::array<sf::Drawable*, 1> ui_elements;
 		game_state state = game_state::MAIN_MENU;
 		void handle_key(sf::Event);
 		bool valid_move(sf::Vector2<unsigned int>);

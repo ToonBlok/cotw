@@ -9,7 +9,7 @@ Main_menu::Main_menu(sf::Vector2u screen_size)
 	float smx = screen_size.x / 2;
 	float smy = screen_size.y / 2;
 
-	sf::Texture tex_button = texture_manager.get_texture("textures/screens/button2.png");
+	sf::Texture tex_button = texture_manager.get_texture("textures/screens/button3.png");
 
     cotw::Rect *button_start = new cotw::Rect(tex_button, "Start", sf::Vector2f((smx - tex_button.getSize().x / 2), ((smy - tex_button.getSize().y / 2) - tex_button.getSize().y) - 5), tex_button.getSize().x, tex_button.getSize().y);
 	ui_elements[0] = button_start;
