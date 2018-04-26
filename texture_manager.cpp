@@ -39,12 +39,8 @@ sf::Texture& Texture_manager::get_texture(std::string filename)
 			cout << "texture \"" + filename + "\" was not found!" << endl; 
 
 		textures[filename] = texture;
-		return textures[filename];
 	}
-	else
-	{
 		return textures[filename];
-	}
 }
 
 }

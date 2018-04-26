@@ -139,11 +139,15 @@ void Game::handle_key(sf::Event event)
 						if (static_cast<cotw::Tile*>(map.tiles[player->row][player->col])->inventory.size() == 0)
 						{
 							cout << "nothing of interest." << endl;
+							//console->messages.push_back("Nothing of interest");
+							console->messages.insert(console->messages.begin(), "Nothing of interest");
 						}
 						else
 						{
 							cotw::Item *p_item = static_cast<cotw::Tile*>(map.tiles[player->row][player->col])->inventory.front();
 							cout << p_item->name << endl;
+							//console->messages.push_back(p_item->name);
+							console->messages.insert(console->messages.begin(), p_item->name);
 						}
 						break;
 
@@ -236,7 +240,8 @@ int Game::game_loop()
 							window.close();
 					}
 					// press code
-					//cout << "Mouse:" << mouse_pos.y << ", button.y: " << pos.x << endl;
+					//cout << "Mouse:" << mouse_pos.y << ", button.y: " << pos.y << endl;
+					//cout << "Mouse click: " << event.mouseButton.y << endl;
 
 					//if ((mouse_pos.y > pos.y) && (mouse_pos.y < pos.y + p_button->height) && (mouse_pos.x > pos.x) && (mouse_pos.x < pos.x + p_button->width))
 					//{
@@ -265,19 +270,19 @@ int Game::game_loop()
 
 				//map.enter_dungeon();
 
-				sf::Texture tex_button = texture_manager.get_texture("textures/screens/console.png");
+				sf::Texture tex_console = texture_manager.get_texture("textures/screens/console.png");
 
 				//coords width height
-				cotw::Rect *button_start = new cotw::Rect
+				console = new cotw::Console
 				(
-					tex_button, 
+					tex_console, 
 					"", 
-					sf::Vector2f(0, screen_height - tex_button.getSize().y), 
-					tex_button.getSize().x + 500, 
-					tex_button.getSize().y
+					sf::Vector2f(0, screen_height - tex_console.getSize().y), 
+					tex_console.getSize().x + 500, 
+					tex_console.getSize().y
 				);
 
-				ui_elements[0] = button_start;
+				ui_elements[0] = console;
 
 				state = cotw::game_state::GAME;
 			}
@@ -285,6 +290,7 @@ int Game::game_loop()
 
 			case cotw::game_state::GAME:
 			{
+				console->update();
 				for (unsigned int y = 0; y < map.tiles.size(); y++)
 				{
 					for (unsigned int x = 0; x < map.tiles.size(); x++)
@@ -302,6 +308,7 @@ int Game::game_loop()
 
 				sf::RenderStates render_states;
 				player->draw(bitmap, render_states);
+				//cout << console->messages.size() << endl;
 
 				for (unsigned int i = 0; i < ui_elements.size(); i++)
 					static_cast<cotw::Rect*>(ui_elements[i])->draw(bitmap, render_states);

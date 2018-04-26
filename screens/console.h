@@ -1,26 +1,25 @@
-#ifndef RECT_H
-#define RECT_H
+#ifndef CONSOLE_H
+#define CONSOLE_H
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "../drawable.h"
+#include "rect.h"
 
 namespace cotw {
 
-enum class rect_state { PRESSED, NORMAL };
-
-class Rect: public cotw::Drawable
+class Console: public cotw::Drawable
 {
 	public:
-		Rect(sf::Texture&, std::string, sf::Vector2f, unsigned int, unsigned int);
-		~Rect();
+		Console(sf::Texture&, std::string, sf::Vector2f, unsigned int, unsigned int);
+		~Console();
 
 		int x;
 		int y;
 		int width;
 		int height;
-		sf::Text text;
+		std::array<sf::Text, 6> texts;
 		sf::Font font;
+		std::vector<std::string> messages;
 
 		void update();
 		void draw(sf::RenderTarget&, sf::RenderStates) const;

@@ -20,7 +20,7 @@ Rect::Rect(sf::Texture& _texture, std::string _text, sf::Vector2f coords, unsign
 	//text_coords.y += ((height / 2) - (text.getCharacterSize() / 2));
 	text_coords.y += ((height / 2) - height / 3);
 	text_coords.x += 60;
-	cout << text_coords.y << endl;
+	//cout << text_coords.y << endl;
 	text.setPosition(text_coords);
 
 	sprite.setTexture(texture);

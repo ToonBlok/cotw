@@ -292,7 +292,8 @@ void Map::create_grassfields()
 
 void Map::fill_empty() 
 {
-	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1_test.png");
+	//sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1_test.png");
+	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1.png");
 
 	for (unsigned int y = 0; y < tiles.size(); y++) 
 		for (unsigned int x = 0; x < tiles.size(); x++) 
