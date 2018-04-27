@@ -32,6 +32,12 @@ Console::Console(sf::Texture& _texture, std::string _text, sf::Vector2f coords, 
 
 Console::~Console() {}
 
+void Console::log(std::string msg, sf::Color color) 
+{
+	texts[0].setColor(color);
+	messages.insert(messages.begin(), msg);
+}
+
 void Console::notify(sf::Event event) 
 {
 }

@@ -23,7 +23,7 @@ Game::~Game()
 
 void Game::log(std::string msg) 
 {
-	console->messages.insert(console->messages.begin(), msg);
+	//console->messages.insert(console->messages.begin(), msg);
 }
 
 void Game::on_notify(sf::Event event)
@@ -167,14 +167,14 @@ void Game::handle_key(sf::Event event)
 						{
 							cout << "nothing of interest." << endl;
 							//console->messages.push_back("Nothing of interest");
-							console->messages.insert(console->messages.begin(), "Nothing to interact with here.");
+							console->log(("Nothing to interact with here."), sf::Color::White);
 						}
 						else
 						{
 							cotw::Item *p_item = static_cast<cotw::Tile*>(map.tiles[player->row][player->col])->inventory.front();
 							cout << p_item->name << endl;
 							//console->messages.push_back(p_item->name);
-							console->messages.insert(console->messages.begin(), "You receive item [" + p_item->name + "].");
+							console->log(("You receive item [" + p_item->name + "]."), sf::Color::White);
 						}
 						break;
 
@@ -209,7 +209,8 @@ void Game::handle_key(sf::Event event)
 
 			if (state == cotw::game_state::GAME) 
 			{
-				log(std::to_string(event.mouseButton.x) + ", " + std::to_string(event.mouseButton.y));
+				//log(std::to_string(event.mouseButton.x) + ", " + std::to_string(event.mouseButton.y));
+				console->log((std::to_string(event.mouseButton.x) + ", " + std::to_string(event.mouseButton.y)), sf::Color::White);
 				//notify(event);
 			}
 
@@ -327,6 +328,7 @@ int Game::game_loop()
 				//add_observer(console);
 
 				ui_elements[0] = console;
+				console->log("Hint #1: Use the numpad to navigate and numpad 5 to interact.", sf::Color::Red);
 
 				state = cotw::game_state::GAME;
 			}

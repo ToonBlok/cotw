@@ -18,6 +18,7 @@ class Console: public cotw::Rect
 		std::vector<std::string> messages;
 
 		void update();
+		void log(std::string, sf::Color);
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void overlay_texture(sf::Image&);
 		//void on_notify(sf::Event);
