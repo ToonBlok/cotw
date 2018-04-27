@@ -6,6 +6,8 @@
 #include "../drawable.h"
 #include "../texture_manager.h"
 #include "rect.h"
+#include "button.h"
+#include "../game.h"
 
 namespace cotw {
 
@@ -16,7 +18,8 @@ class Main_menu: public cotw::Drawable
 		~Main_menu();
 
 		cotw::Texture_manager texture_manager;
-		std::array<sf::Drawable*, 3> ui_elements;
+		std::array<cotw::Rect*, 3> ui_elements;
+		sf::Sprite background;
 		void update();
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void overlay_texture(sf::Image&);

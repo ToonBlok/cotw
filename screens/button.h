@@ -1,5 +1,5 @@
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -7,23 +7,24 @@
 
 namespace cotw {
 
-class Console: public cotw::Rect
+class Button: public cotw::Rect
 {
 	public:
-		Console(sf::Texture&, std::string, sf::Vector2f, unsigned int, unsigned int);
-		~Console();
+		Button(sf::Texture&, std::string, sf::Vector2f, unsigned int, unsigned int);
+		~Button();
 
-		std::array<sf::Text, 6> texts;
+		int width;
+		int height;
+		sf::Text text;
 		sf::Font font;
-		std::vector<std::string> messages;
 
 		void update();
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void overlay_texture(sf::Image&);
-		//void on_notify(sf::Event);
 		void notify(sf::Event);
 		void add_observer();
 		void remove_observer();
+		//void on_notify(sf::Event);
 };
 
 }

@@ -40,7 +40,7 @@ sf::Texture& Texture_manager::get_texture(std::string filename)
 
 		textures[filename] = texture;
 	}
-		return textures[filename];
+	return textures[filename];
 }
 
 }

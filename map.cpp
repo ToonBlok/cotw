@@ -61,7 +61,6 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 	else if ((rand_num_tile >= 25) && (rand_num_tile < 26)) 
 	{
 		texture = texture_manager.get_texture("textures/tile_grass_mushrooms.png");
-		blocking = true;
 	}
 	else if (rand_num_tile >= 26)
 	{
@@ -293,7 +292,7 @@ void Map::create_grassfields()
 void Map::fill_empty() 
 {
 	//sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1_test.png");
-	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1.png");
+	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_floor_2.png");
 
 	for (unsigned int y = 0; y < tiles.size(); y++) 
 		for (unsigned int x = 0; x < tiles.size(); x++) 
@@ -388,7 +387,7 @@ void Map::create_room(sf::IntRect room, int index)
 			{
 				//cout << "Creating room " << index + 1 << " at: [" << room.top + ix << "][" << room.left + iy << "]" << endl;
 				//static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/" + std::to_sing(index + 1) + "tile_dungeon_floor1.png"));
-				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor_dots.png"));
 				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->blocking = 0;
 			}
 
@@ -454,7 +453,7 @@ void Map::create_h_tunnel(int start_col, int end_col, int row)
 {
 	for (int col = start_col; col < end_col + 1; col++) 
 	{
-		static_cast<cotw::Tile*>(tiles[row][col])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+		static_cast<cotw::Tile*>(tiles[row][col])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor_dots.png"));
 		static_cast<cotw::Tile*>(tiles[row][col])->blocking = 0;
 	}
 }
@@ -463,7 +462,7 @@ void Map::create_v_tunnel(int start_row, int end_row, int col)
 {
 	for (int row = start_row; row < end_row; row++) 
 	{
-		static_cast<cotw::Tile*>(tiles[row][col])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor1.png"));
+		static_cast<cotw::Tile*>(tiles[row][col])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor_dots.png"));
 		static_cast<cotw::Tile*>(tiles[row][col])->blocking = 0;
 	}
 }

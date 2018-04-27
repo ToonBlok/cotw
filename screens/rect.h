@@ -4,27 +4,25 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "../drawable.h"
+#include "../subject.h"
 
 namespace cotw {
 
-enum class rect_state { PRESSED, NORMAL };
-
-class Rect: public cotw::Drawable
+class Rect: public cotw::Drawable, public ISubject
 {
 	public:
-		Rect(sf::Texture&, std::string, sf::Vector2f, unsigned int, unsigned int);
-		~Rect();
+		Rect() {};
+		~Rect() {};
 
-		int x;
-		int y;
 		int width;
 		int height;
-		sf::Text text;
-		sf::Font font;
+		bool activated = false;
 
-		void update();
-		void draw(sf::RenderTarget&, sf::RenderStates) const;
-		void overlay_texture(sf::Image&);
+		virtual void update() = 0;
+		virtual void notify(sf::Event) = 0;
+		virtual void add_observer() = 0;
+		virtual void remove_observer() = 0;
+		//virtual void on_notify(sf::Event) = 0;
 };
 
 }

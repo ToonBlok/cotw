@@ -1,4 +1,5 @@
 #include "game.h"
+#include <time.h>       /* time_t, struct tm, difftime, time, mktime */
 
 using namespace std;
 
@@ -19,6 +20,32 @@ Game::~Game()
 
 	delete player;
 }
+
+void Game::log(std::string msg) 
+{
+	console->messages.insert(console->messages.begin(), msg);
+}
+
+void Game::on_notify(sf::Event event)
+{
+
+}
+
+//void Game::notify(sf::Event event) 
+//{
+//	for (unsigned int i = 0; i < observers.size(); i++)
+//		observers[i]->on_notify(event);
+//}
+//
+//void Game::add_observer(cotw::Rect* observer)
+//{
+//	observers.push_back(observer);
+//}
+//
+//void Game::remove_observer()
+//{
+//	// ???
+//}
 
 void Game::setup() 
 {
@@ -140,14 +167,14 @@ void Game::handle_key(sf::Event event)
 						{
 							cout << "nothing of interest." << endl;
 							//console->messages.push_back("Nothing of interest");
-							console->messages.insert(console->messages.begin(), "Nothing of interest");
+							console->messages.insert(console->messages.begin(), "Nothing to interact with here.");
 						}
 						else
 						{
 							cotw::Item *p_item = static_cast<cotw::Tile*>(map.tiles[player->row][player->col])->inventory.front();
 							cout << p_item->name << endl;
 							//console->messages.push_back(p_item->name);
-							console->messages.insert(console->messages.begin(), p_item->name);
+							console->messages.insert(console->messages.begin(), "You receive item [" + p_item->name + "].");
 						}
 						break;
 
@@ -177,6 +204,17 @@ void Game::handle_key(sf::Event event)
 			}
 		}
 		break;
+		case sf::Event::MouseButtonPressed:
+		{
+
+			if (state == cotw::game_state::GAME) 
+			{
+				log(std::to_string(event.mouseButton.x) + ", " + std::to_string(event.mouseButton.y));
+				//notify(event);
+			}
+
+		}
+		break;
 
 		default:
 			// nothing
@@ -204,6 +242,9 @@ int Game::game_loop()
 	float screen_height = size.y;
 	cotw::Main_menu menu(size);
 
+	//for (unsigned int i = 0; i < menu.ui_elements.size(); i++)
+	//	add_observer(menu.ui_elements[i]);
+
 	if (!bitmap.create(screen_width, screen_height))
 		return -1;
 
@@ -228,7 +269,7 @@ int Game::game_loop()
 
 				for (unsigned int y = 0; y < menu.ui_elements.size(); y++)
 				{
-					cotw::Rect *p_button = static_cast<cotw::Rect*>(menu.ui_elements[y]);
+					cotw::Button *p_button = static_cast<cotw::Button*>(menu.ui_elements[y]);
 					sf::Vector2f pos = p_button->get_position();
 
 					if ((event.mouseButton.y > pos.y) && (event.mouseButton.y < pos.y + p_button->height) && (event.mouseButton.x > pos.x) && (event.mouseButton.x < pos.x + p_button->width))
@@ -282,6 +323,9 @@ int Game::game_loop()
 					tex_console.getSize().y
 				);
 
+				//cotw::Console *p_console = &console;
+				//add_observer(console);
+
 				ui_elements[0] = console;
 
 				state = cotw::game_state::GAME;
@@ -300,18 +344,40 @@ int Game::game_loop()
 					}
 				}
 
+
+				for (unsigned int x = 10; x < 21; x++)
+				{
+					for (unsigned int y = 10; y < 21; y++)
+					{
+						static_cast<cotw::Tile*>(map.tiles[y][x])->blocking = false;
+						static_cast<cotw::Tile*>(map.tiles[y][x])->set_texture(texture_manager.get_texture("textures/tile_grass.png"));
+					}
+				}
+
 				sf::Image item_image;
 				item_image.loadFromFile("textures/item_flail.png");
 				cotw::Item flail("flail", item_image, false);
 				static_cast<cotw::Tile*>(map.tiles[14][15])->overlay_texture(flail.image);
 				static_cast<cotw::Tile*>(map.tiles[14][15])->inventory.push_back(new cotw::Item("flail", item_image, false));
 
+				sf::Image item_image2;
+				item_image2.loadFromFile("textures/chest_closed.png");
+				cotw::Item chest("chest", item_image2, false);
+				static_cast<cotw::Tile*>(map.tiles[14][16])->overlay_texture(chest.image);
+				static_cast<cotw::Tile*>(map.tiles[14][16])->inventory.push_back(new cotw::Item("chest", item_image2, false));
+
+				sf::Image item_image3;
+				item_image3.loadFromFile("textures/treasure.png");
+				cotw::Item treasure("chest", item_image3, false);
+				static_cast<cotw::Tile*>(map.tiles[14][14])->overlay_texture(treasure.image);
+				static_cast<cotw::Tile*>(map.tiles[14][14])->inventory.push_back(new cotw::Item("treasure", item_image3, false));
+
 				sf::RenderStates render_states;
 				player->draw(bitmap, render_states);
 				//cout << console->messages.size() << endl;
 
 				for (unsigned int i = 0; i < ui_elements.size(); i++)
-					static_cast<cotw::Rect*>(ui_elements[i])->draw(bitmap, render_states);
+					static_cast<cotw::Button*>(ui_elements[i])->draw(bitmap, render_states);
 
 			}
 			break;

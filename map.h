@@ -24,8 +24,8 @@ class Map
 
 		void create(bool);
 		void create_rooms();
-		void fill_empty();
 		void create_room(sf::IntRect, int);
+		void fill_empty();
 		void overlay_special_tiles();
 		void create_tile_clusters(cotw::tile_clusters, std::vector<sf::IntRect>&);
 		void create_thintree(sf::IntRect);
@@ -36,9 +36,7 @@ class Map
 		void create_h_tunnel(int, int, int);
 		void create_v_tunnel(int, int, int);
 		std::vector<sf::IntRect> get_unconnected_rooms();
-
 		void enter_dungeon();
-
 		void create_random_tile(int, int, bool&, bool);
 		void flip_tile_h(sf::Texture&);
 };
