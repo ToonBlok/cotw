@@ -23,7 +23,7 @@ class Console: public cotw::Rect
 		void overlay_texture(sf::Image&);
 		//void on_notify(sf::Event);
 		void notify(sf::Event);
-		void add_observer();
+		void add_observer(IObserver*);
 		void remove_observer();
 };
 

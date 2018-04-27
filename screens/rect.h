@@ -20,7 +20,7 @@ class Rect: public cotw::Drawable, public ISubject
 
 		virtual void update() = 0;
 		virtual void notify(sf::Event) = 0;
-		virtual void add_observer() = 0;
+		virtual void add_observer(IObserver*) = 0;
 		virtual void remove_observer() = 0;
 		//virtual void on_notify(sf::Event) = 0;
 };

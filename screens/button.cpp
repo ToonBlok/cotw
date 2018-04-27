@@ -33,8 +33,9 @@ void Button::notify(sf::Event event)
 {
 }
 
-void Button::add_observer()
+void Button::add_observer(IObserver *observer)
 {
+	observers.push_back(observer);
 }
 
 void Button::remove_observer()

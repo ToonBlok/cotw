@@ -40,10 +40,12 @@ void Console::log(std::string msg, sf::Color color)
 
 void Console::notify(sf::Event event) 
 {
+
 }
 
-void Console::add_observer()
+void Console::add_observer(IObserver *observer)
 {
+	observers.push_back(observer);
 }
 
 void Console::remove_observer()

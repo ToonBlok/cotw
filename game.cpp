@@ -323,6 +323,9 @@ int Game::game_loop()
 					tex_console.getSize().x + 500, 
 					tex_console.getSize().y
 				);
+				//Game *p_game = new Game;
+				//p_game = &this;
+				console->add_observer(this);
 
 				//cotw::Console *p_console = &console;
 				//add_observer(console);
