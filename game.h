@@ -9,14 +9,16 @@
 #include "screens/console.h"
 #include "screens/rect.h"
 #include "screens/button.h"
-#include "observer.h"
+#include "subject.h"
+
 
 namespace cotw {
 
 enum class game_state { GAME, GAME_SETUP, MAIN_MENU };
 
-class Game: public IObserver
+class Game: public cotw::ISubject
 {
+
 	public:
 		Game();
 		~Game();
@@ -34,11 +36,9 @@ class Game: public IObserver
 		int game_loop();
 		void handle_key(sf::Event);
 		bool valid_move(sf::Vector2<unsigned int>);
-		//void notify(sf::Event);
-		//void add_observer(cotw::Rect*);
-		//void remove_observer();
-		void on_notify(sf::Event);
-		void log(std::string);
+		void notify(sf::Event);
+		void add_observer(IObserver*);
+		void remove_observer();
 };
 
 }

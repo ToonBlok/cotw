@@ -21,10 +21,10 @@ class Console: public cotw::Rect
 		void log(std::string, sf::Color);
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void overlay_texture(sf::Image&);
-		//void on_notify(sf::Event);
-		void notify(sf::Event);
-		void add_observer(IObserver*);
-		void remove_observer();
+		void on_notify(sf::Event);
+		//void notify(sf::Event);
+		//void add_observer(IObserver*);
+		//void remove_observer();
 };
 
 }

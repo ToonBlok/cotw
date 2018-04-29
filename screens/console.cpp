@@ -38,23 +38,23 @@ void Console::log(std::string msg, sf::Color color)
 	messages.insert(messages.begin(), msg);
 }
 
-void Console::notify(sf::Event event) 
-{
-
-}
-
-void Console::add_observer(IObserver *observer)
-{
-	observers.push_back(observer);
-}
-
-void Console::remove_observer()
-{
-}
-//void Console::on_notify(sf::Event event)
+//void Console::notify(sf::Event event) 
 //{
-//	cout << "I am Console, copy." << endl;
+//
 //}
+//
+//void Console::add_observer(IObserver *observer)
+//{
+//	observers.push_back(observer);
+//}
+//
+//void Console::remove_observer()
+//{
+//}
+void Console::on_notify(sf::Event event)
+{
+	//cout << "I am Console, copy." << endl;
+}
 
 void Console::update() 
 {

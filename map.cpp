@@ -83,13 +83,6 @@ void Map::create_random_tile(int x, int y, bool& dungeon_placed, bool in_dungeon
 
 void Map::flip_tile_h(sf::Texture& texture) 
 {
-    // int rand_num_tile_rotation = (rand() % 2);
-
-	// if (rand_num_tile_rotation == 0)
-	// 	image.flipHorizontally();
-	// else if (rand_num_tile_rotation == 1)
-	// 	image.flipVertically();
-
 	sf::Image image = texture.copyToImage();
 	image.flipHorizontally();
 	if (!texture.loadFromImage(image))
@@ -104,9 +97,6 @@ void Map::create(bool in_dungeon)
 	{
 		fill_empty();
 		create_rooms();
-		//std::vector<sf::IntRect> unconnected_rooms = get_unconnected_rooms();
-		//for (unsigned int i = 0; i < unconnected_rooms.size(); i++) 
-		//	create_tunnel(unconnected_rooms[i]);
 		for (unsigned int i = 0; i < rooms.size(); i++) 
 		{
 			cout << i << " going into create tunnel" << endl;
@@ -121,10 +111,6 @@ void Map::create(bool in_dungeon)
 				create_random_tile(x, y, dungeon_placed, false);
 
 		overlay_special_tiles();
-
-		// if true is present then overlay the image using copyToImage() method
-		//static_cast<cotw::Tile*>(tiles[14][15])->set_texture(texture_manager.get_texture("textures/copper.png"));
-
 	}
 }
 
@@ -168,20 +154,6 @@ void Map::create_tile_clusters(cotw::tile_clusters tile_cluster, std::vector<sf:
 		spawn_chance = 1;
 	}
 
-	// Change from user readable 1% to 10 which is 1% of 1000.
-	// noooo then dev cant enter below 1%
-	//spawn_chance *= 10;
-
-	// no.... if grass field must redetermine size each time not once here...
-	//else if (tile_cluster == tile_clusters::grassfield)
-	//{
-	//	int rand_num = rand() % (100 - 1 + 1) + 1;
-	//	int rand_num = rand() % (100 - 1 + 1) + 1;
-	//	height = 2;
-	//	width = 2;
-	//	spawn_chance = 100 - 30;
-	//}
-
 	std::vector<sf::IntRect> clusters;
 
 	for (unsigned int row = 0; row < tiles.size(); row++) 
@@ -193,11 +165,7 @@ void Map::create_tile_clusters(cotw::tile_clusters tile_cluster, std::vector<sf:
 				int rand_num = rand() % (max_spawn_chance - 1 + 1) + 1;
 				if (rand_num <= spawn_chance)
 				{
-					// col, row, width, height
-					//cout << "eternal" << endl;
-
 					sf::IntRect special(col, row, width, height);
-					//cout << "Made special:" << col << ", " << row << " 2, 2" << endl;
 
 					if (clusters.size() == 0)
 					{
@@ -209,11 +177,8 @@ void Map::create_tile_clusters(cotw::tile_clusters tile_cluster, std::vector<sf:
 						bool intersects = false;
 						for (unsigned int i = 0; i < all_clusters.size(); i++) 
 						{
-							//cout << "special.left = " << special.left << ", special.top = " << special.top << endl;
-							//cout << "tile_clusters[" << i << "].left = " << tile_clusters[i].left << ", tile_clusters[" << i << "].top = " << tile_clusters[i].top << endl;
 							if (special.intersects(all_clusters[i]))
 							{
-								//cout << "INTERSECTS!!" << endl;
 								intersects = true;
 							}
 						}
@@ -239,9 +204,6 @@ void Map::create_tile_clusters(cotw::tile_clusters tile_cluster, std::vector<sf:
 		else if (tile_cluster == tile_clusters::log)
 			create_log(clusters[i]);
 	}
-
-	//cout << "tile_clusters: " << clusters.size() << endl;
-
 }
 
 void Map::create_thintree(sf::IntRect tree) 
@@ -291,7 +253,6 @@ void Map::create_grassfields()
 
 void Map::fill_empty() 
 {
-	//sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_wall1_test.png");
 	sf::Texture texture = texture_manager.get_texture("textures/dungeon/tile_dungeon_floor_2.png");
 
 	for (unsigned int y = 0; y < tiles.size(); y++) 
@@ -345,8 +306,6 @@ void Map::create_rooms()
 		{
 			rand_row = 1;
 			rand_column = 10;
-			//rand_row = 10;
-			//rand_column = 1;
 		}
 		else if (i == 2)
 		{
@@ -362,15 +321,8 @@ void Map::create_rooms()
 		{
 			rand_row = 10;
 			rand_column = 20;
-			//rand_row = 20;
-			//rand_column = 20;
 		}
-	//	rand_width = 5; 
-	//	rand_height = 5;
-	//	rand_row = 0;
-	//	rand_column = i * 10;
 
-		//cout << "Adding room " << i + 1 << " at: [" << rand_row << "][" << rand_column << "] with width: " << rand_width << " and height: " << rand_height << endl;
 		rooms[i] = sf::IntRect(rand_column, rand_row, rand_width, rand_height);
 		create_room(rooms[i], i);
 	}
@@ -382,11 +334,8 @@ void Map::create_room(sf::IntRect room, int index)
 	{
 		for (int ix = 0; ix < room.height; ix++)
 		{
-			// replaced from < 30..
 			if (((unsigned int)(room.left + iy) < tiles.size()) && ((unsigned int)(room.top + ix) < tiles.size()))
 			{
-				//cout << "Creating room " << index + 1 << " at: [" << room.top + ix << "][" << room.left + iy << "]" << endl;
-				//static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/" + std::to_sing(index + 1) + "tile_dungeon_floor1.png"));
 				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->set_texture(texture_manager.get_texture("textures/dungeon/tile_dungeon_floor_dots.png"));
 				static_cast<cotw::Tile*>(tiles[room.top + ix][room.left + iy])->blocking = 0;
 			}
@@ -413,14 +362,10 @@ std::vector<sf::IntRect> Map::get_unconnected_rooms()
 				if (h != i)
 					if (room.intersects(rooms[h]))
 					{
-						//connected_rooms.push_back(rooms[i]);
 						connected_rooms.push_back(i);
 						
-						// If room [i] happens to connect with the last room in the array, go ahead and add the last room in the array too.
-						// This is done because we don't check if the last room is connected, but it must be in the array anyway.
 						if (h == (rooms.size() - 1))
 						{
-							//connected_rooms.push_back(rooms[h]);
 							connected_rooms.push_back(h);
 						}
 
@@ -432,18 +377,14 @@ std::vector<sf::IntRect> Map::get_unconnected_rooms()
 
 	std::vector<sf::IntRect> unconnected_rooms;
 
-//	cout << "In get method:" << endl;
 	for (unsigned int i = 0; i < rooms.size(); i++) 
 	{
 		if (!(std::find(connected_rooms.begin(), connected_rooms.end(), i) != connected_rooms.end()))
 		{
-			//cout << "Added room " << i + 1 << " to list of unconnected rooms" << endl;
 			unconnected_rooms.push_back(rooms[i]);
 		}
 	}
 
-	//for (unsigned int i = 0; i < connected_rooms.size(); i++) 
-	//	cout << "Room " << connected_rooms[i] + 1 << " is connected somewhere." << endl;
 
 	return unconnected_rooms;
 
@@ -485,7 +426,6 @@ void Map::create_tunnel(sf::IntRect room)
 				}
 			}
 
-			//cout << "Checking tiles[" << h << "][" << i << "]." << endl;
 			if (static_cast<cotw::Tile*>(tiles[h - 1][i])->blocking == 0)
 			{
 				cout << "Making tunnel NORTH" << endl;
@@ -494,9 +434,7 @@ void Map::create_tunnel(sf::IntRect room)
 			}
 		}
 	}
-	// Fix changes from first changes
 	room.top += 1;
-	// --------------------------------------------------------------
 
 	cout << endl;
 
@@ -565,10 +503,6 @@ void Map::create_tunnel(sf::IntRect room)
 
 void Map::enter_dungeon() 
 {
-	//for (int y = 0; y < 30; y++)
-	//	for (int x = 0; x < 30; x++)
-	//		delete map.tiles[y][x];
-
 	create(false);
 }
 
