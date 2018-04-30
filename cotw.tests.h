@@ -3,7 +3,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 #include <SFML/Graphics.hpp>
-#include "map.h"
+#include "Map.h"
 
 class Cotwtests: public CPPUNIT_NS::TestFixture 
 {

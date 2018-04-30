@@ -1,39 +1,43 @@
 CPPFLAGS = -c -std=c++11 -Wall -pedantic
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
-OBJFILES = main.o game.o map.o player.o tile.o texture_manager.o item.o main_menu.o button.o console.o 
+OBJFILES = Main.o Game.o Map.o Player.o Tile.o TextureManager.o Item.o MainMenu.o Button.o Console.o MainMenuState.h
 
 cotw: $(OBJFILES)
 	g++ $(OBJFILES) -o $@ $(SFMLFLAGS) $(UTFLAGS)
 
-main.o: main.cpp 
-	$(CC) $(CPPFLAGS) main.cpp 
+Main.o: Main.cpp 
+	$(CC) $(CPPFLAGS) Main.cpp 
 
-game.o: game.cpp 
-	$(CC) $(CPPFLAGS) game.cpp 
+Game.o: Game.cpp 
+	$(CC) $(CPPFLAGS) Game.cpp 
 
-map.o: map.cpp 
-	$(CC) $(CPPFLAGS) map.cpp 
+Map.o: Map.cpp 
+	$(CC) $(CPPFLAGS) Map.cpp 
 
-player.o: player.cpp 
-	$(CC) $(CPPFLAGS) player.cpp 
+Player.o: Player.cpp 
+	$(CC) $(CPPFLAGS) Player.cpp 
 
-tile.o: tile.cpp 
-	$(CC) $(CPPFLAGS) tile.cpp 
+Tile.o: Tile.cpp 
+	$(CC) $(CPPFLAGS) Tile.cpp 
 
-texture_manager.o: texture_manager.cpp 
-	$(CC) $(CPPFLAGS) texture_manager.cpp 
+TextureManager.o: TextureManager.cpp 
+	$(CC) $(CPPFLAGS) TextureManager.cpp 
 
-item.o: items/item.cpp 
-	$(CC) $(CPPFLAGS) items/item.cpp 
+Item.o: items/Item.cpp 
+	$(CC) $(CPPFLAGS) items/Item.cpp 
 
-console.o: screens/console.cpp
-	$(CC) $(CPPFLAGS) screens/console.cpp
+Console.o: screens/Console.cpp
+	$(CC) $(CPPFLAGS) screens/Console.cpp
 
-main_menu.o: screens/main_menu.cpp
-	$(CC) $(CPPFLAGS) screens/main_menu.cpp
+MainMenu.o: screens/MainMenu.cpp
+	$(CC) $(CPPFLAGS) screens/MainMenu.cpp
 
-button.o: screens/button.cpp
-	$(CC) $(CPPFLAGS) screens/button.cpp
+Button.o: screens/Button.cpp
+	$(CC) $(CPPFLAGS) screens/Button.cpp
+
+MainMenuState.o: MainMenuState.cpp
+	$(CC) $(CPPFLAGS) MainMenuState.cpp
+
 
 clean:
 	rm *.o cotw 
