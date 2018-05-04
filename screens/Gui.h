@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "main_menu.h"
-#include "../subject.h"
+#include "MainMenu.h"
+#include "../ISubject.h"
 
 using namespace std;
 

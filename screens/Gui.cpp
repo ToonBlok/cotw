@@ -5,7 +5,7 @@ namespace cotw {
 Gui::Gui(sf::Vector2u _screen_size)
 {
 	screen_size = _screen_size;
-	cotw::Main_menu menu = new cotw::Main_menu(screen_size);
+	cotw::MainMenu menu();
 
 	//add_observer(menu);
 }

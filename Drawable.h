@@ -5,11 +5,11 @@
 
 namespace cotw {
 
-class Drawable: public sf::Drawable
+class Drawable//: public sf::Drawable
 {
 	public:
 		Drawable() {};
-		~Drawable() {};
+		virtual ~Drawable() {};
 
 		virtual void draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const { render_target.draw(sprite, render_states); } ;
 		virtual void update() = 0;

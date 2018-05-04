@@ -4,10 +4,10 @@ using namespace std;
 
 namespace cotw {
 
-Main_menu::Main_menu(sf::Vector2u screen_size)
+MainMenu::MainMenu(sf::Vector2u screen_size)
 {
-	float smx = screen_size.x / 2;
-	float smy = screen_size.y / 2;
+//	float smx = screen_size.x / 2;
+//	float smy = screen_size.y / 2;
 
 	sf::Texture *bg_texture = new sf::Texture(texture_manager.get_texture("textures/screens/background.png"));
 	background.setTexture(*bg_texture);
@@ -15,9 +15,9 @@ Main_menu::Main_menu(sf::Vector2u screen_size)
 
 	sf::Texture tex_button = texture_manager.get_texture("textures/screens/button3.png");
 
-    cotw::Button *button_start = new cotw::Button(tex_button, "Start", sf::Vector2f((smx - tex_button.getSize().x / 2), ((smy - tex_button.getSize().y / 2) - tex_button.getSize().y) - 5), tex_button.getSize().x, tex_button.getSize().y);
-	ui_elements[0] = button_start;
-
+//    cotw::Button *button_start = new cotw::Button(tex_button, "Start", sf::Vector2f((smx - tex_button.getSize().x / 2), ((smy - tex_button.getSize().y / 2) - tex_button.getSize().y) - 5), tex_button.getSize().x, tex_button.getSize().y);
+//	ui_elements[0] = button_start;
+//
     //cotw::Button *button_settings = new cotw::Button(tex_button, "Settings", sf::Vector2f((smx - tex_button.getSize().x / 2), (smy - tex_button.getSize().y / 2)), tex_button.getSize().x, tex_button.getSize().y);
 	//ui_elements[1] = button_settings;
 
@@ -25,24 +25,24 @@ Main_menu::Main_menu(sf::Vector2u screen_size)
 	//ui_elements[2] = button_quit;
 }
 
-Main_menu::~Main_menu(){}
+MainMenu::~MainMenu(){}
 
-void Main_menu::update()
+void MainMenu::update()
 {
-	for (unsigned int i = 0; i < ui_elements.size(); i++)
-		static_cast<cotw::Button*>(ui_elements[i])->update();
+//	for (unsigned int i = 0; i < ui_elements.size(); i++)
+//		static_cast<cotw::Button*>(ui_elements[i])->update();
 }
 
-void Main_menu::draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const
+void MainMenu::draw(sf::RenderTarget& render_target, sf::RenderStates render_states) const
 {
-	render_target.draw(background, render_states);
+	//render_target.draw(background, render_states);
 
-	for (unsigned int i = 0; i < ui_elements.size(); i++)
-		static_cast<cotw::Button*>(ui_elements[i])->draw(render_target, render_states);
+//	for (unsigned int i = 0; i < ui_elements.size(); i++)
+//		static_cast<cotw::Button*>(ui_elements[i])->draw(render_target, render_states);
 
 }
 
-void Main_menu::overlay_texture(sf::Image& new_img)
+void MainMenu::overlay_texture(sf::Image& new_img)
 {
 	sf::Image tile_img = texture.copyToImage();
 	sf::IntRect a;

@@ -1,7 +1,6 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 
-#include "screens/Rect.h"
 #include "IObserver.h"
 
 namespace cotw {
