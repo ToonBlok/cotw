@@ -8,7 +8,7 @@
 #include "TextureManager.h"
 #include "screens/Rect.h"
 #include "screens/Button.h"
-//#include "InGameState.h"
+#include "InGameState.h"
 //#include "GameStateManager.h"
 
 namespace cotw {
@@ -21,12 +21,12 @@ class MainMenuState: public cotw::GameState
 		cotw::GameStateManager* game_state_manager;
 		std::string foo = "foo";
 		cotw::TextureManager texture_manager;
-		std::array<cotw::IObserver*, 3> ui_elements;
+		std::array<cotw::Rect*, 3> ui_elements;
 		sf::Sprite background;
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void update(sf::RenderWindow&);
 		void handle_key(sf::RenderWindow&, sf::Event);
-		void on_notify(sf::Event);
+		void on_notify(cotw::Event);
 
 		void handle_events();
 		void init();

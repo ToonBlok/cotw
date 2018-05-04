@@ -29,36 +29,36 @@ Button::Button(sf::Texture& _texture, std::string _text, sf::Vector2f coords, un
 
 Button::~Button() {}
 
-//void Button::notify(sf::Event event) 
-//{
-//}
-//
-//void Button::add_observer(IObserver *observer)
-//{
-//	observers.push_back(observer);
-//}
-//
-//void Button::remove_observer()
-//{
-//}
-
-void Button::on_notify(sf::Event event)
+void Button::notify(cotw::Event event) 
 {
-	cout << event.mouseButton.x << ", " << event.mouseButton.y << endl;
-
-	sf::Vector2f coords = get_position();
-	if ((event.mouseButton.y > coords.y) && (event.mouseButton.y < coords.y + height) && (event.mouseButton.x > coords.x) && (event.mouseButton.x < coords.x + width))
-	{
-		activated = true;
-		//std::string label = p_button->text.getString();
-		//if (label == "Start")
-		//	state = cotw::game_state::GAME_SETUP;
-		//else if (label == "Quit")
-		//	window.close();
-	}
-	//cout << "I am button, copy." << endl;
-
 }
+
+void Button::add_observer(IObserver *observer)
+{
+	observers.push_back(observer);
+}
+
+void Button::remove_observer()
+{
+}
+
+//void Button::on_notify(sf::Event event)
+//{
+//	cout << event.mouseButton.x << ", " << event.mouseButton.y << endl;
+//
+//	sf::Vector2f coords = get_position();
+//	if ((event.mouseButton.y > coords.y) && (event.mouseButton.y < coords.y + height) && (event.mouseButton.x > coords.x) && (event.mouseButton.x < coords.x + width))
+//	{
+//		activated = true;
+//		//std::string label = p_button->text.getString();
+//		//if (label == "Start")
+//		//	state = cotw::game_state::GAME_SETUP;
+//		//else if (label == "Quit")
+//		//	window.close();
+//	}
+//	//cout << "I am button, copy." << endl;
+//
+//}
 
 void Button::update()
 {

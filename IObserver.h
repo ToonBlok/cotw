@@ -3,10 +3,12 @@
 
 namespace cotw {
 
+enum class Event { START_CLICKED, SETTINGS_CLICKED, EXIT_CLICKED };
+
 class IObserver
 {
 	public:
-		virtual void on_notify(sf::Event) = 0;
+		virtual void on_notify(cotw::Event) = 0;
 };
 
 }

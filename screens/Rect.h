@@ -4,11 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "../Drawable.h"
-#include "../IObserver.h"
+#include "../ISubject.h"
 
 namespace cotw {
 
-class Rect: public cotw::Drawable, public cotw::IObserver
+class Rect: public cotw::Drawable, public cotw::ISubject
 {
 	public:
 		Rect() {};
@@ -19,10 +19,9 @@ class Rect: public cotw::Drawable, public cotw::IObserver
 		bool activated = false;
 
 		virtual void update() = 0;
-		//virtual void notify(sf::Event) = 0;
-		//virtual void add_observer(IObserver*) = 0;
-		//virtual void remove_observer() = 0;
-		virtual void on_notify(sf::Event) = 0;
+		virtual void notify(cotw::Event) = 0;
+		virtual void add_observer(IObserver*) = 0;
+		virtual void remove_observer() = 0;
 };
 
 }

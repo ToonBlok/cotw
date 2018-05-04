@@ -1,6 +1,6 @@
 #include <iostream>
 #include "MainMenuState.h"
-//#include "GameStateManager.h"
+#include "GameStateManager.h"
 
 using namespace std;
 
@@ -29,12 +29,7 @@ MainMenuState::MainMenuState(cotw::GameStateManager* _game_state_manager)
 
 MainMenuState::~MainMenuState() {}
 
-void MainMenuState::change_state(cotw::GameStateManager* game_state_manager, cotw::GameState* state)
-{
-	//game->set_state(state);
-}
-
-void MainMenuState::on_notify(sf::Event)
+void MainMenuState::on_notify(cotw::Event)
 {
 }
 
@@ -58,6 +53,11 @@ void MainMenuState::resume()
 {
 }
 
+void MainMenuState::change_state(cotw::GameStateManager* game_state_manager, cotw::GameState* state)
+{
+	game_state_manager->set_state(state);
+}
+
 
 void MainMenuState::update(sf::RenderWindow& window) 
 {
@@ -78,15 +78,19 @@ void MainMenuState::handle_key(sf::RenderWindow& window, sf::Event event)
 			switch (event.key.code) 
 			{
 				case sf::Keyboard::Return:
-					cout << "Return" << endl;
-					//change_state(new InGameState);
-
-					//state = cotw::game_state::GAME;
+				{
+					//std::cout << "Bye." << std::endl;
+					//cotw::InGameState *foo = new InGameState(game_state_manager);
+					cout << "MainMenuState" << endl;
+					change_state(game_state_manager, new InGameState(game_state_manager));
+				}
 					break;
 					
 				case sf::Keyboard::Q:
+				{
 					std::cout << "Bye." << std::endl;
 					window.close();
+				}
 					break;
 
 				default:
@@ -96,6 +100,7 @@ void MainMenuState::handle_key(sf::RenderWindow& window, sf::Event event)
 			break;
 			case sf::Event::MouseButtonPressed:
 			{
+				cout << event.mouseButton.x << ", " << event.mouseButton.y << endl;
 
 			}
 			break;

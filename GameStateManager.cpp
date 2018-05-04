@@ -28,4 +28,8 @@ void GameStateManager::pop_state()
 {
 }
 
+void GameStateManager::on_notify(cotw::Event)
+{
+}
+
 }

@@ -11,7 +11,7 @@ namespace cotw {
 
 class GameStateManager;
 
-class GameState: public sf::Drawable, public IObserver
+class GameState: public sf::Drawable, public cotw::IObserver
 {
 	public:
 		GameState() {};
@@ -27,7 +27,7 @@ class GameState: public sf::Drawable, public IObserver
 		virtual void change_state(cotw::GameStateManager*, cotw::GameState*) = 0;
 	protected:
 		virtual void handle_key(sf::RenderWindow&, sf::Event) = 0;
-		virtual void on_notify(sf::Event) = 0;
+		virtual void on_notify(cotw::Event) = 0;
 };
 
 }

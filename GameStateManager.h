@@ -4,12 +4,13 @@
 #include "GameState.h"
 #include "MainMenuState.h"
 #include "InGameState.h"
+#include "IObserver.h"
 
 namespace cotw {
 
 //class GameState;
 
-class GameStateManager
+class GameStateManager: public IObserver
 {
 	public:
 		GameStateManager();
@@ -19,6 +20,8 @@ class GameStateManager
 		void push_state(cotw::GameState*);
 		void pop_state();
 		void set_state(cotw::GameState*);
+
+		void on_notify(cotw::Event);
 };
 
 }

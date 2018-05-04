@@ -20,10 +20,12 @@ class Button: public cotw::Rect
 		void update();
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void overlay_texture(sf::Image&);
-		//void notify(sf::Event);
-		//void add_observer(IObserver*);
-		//void remove_observer();
-		void on_notify(sf::Event);
+
+		void notify(cotw::Event);
+		void add_observer(IObserver*);
+		void remove_observer();
+
+		//void on_notify(sf::Event);
 };
 
 }
