@@ -16,24 +16,20 @@ namespace cotw {
 class MainMenuState: public cotw::GameState
 {
 	public:
-		MainMenuState(cotw::GameStateManager*);
+		MainMenuState(cotw::GameStateManager*, sf::Vector2u);
 		~MainMenuState();
+
 		cotw::GameStateManager* game_state_manager;
 		std::string foo = "foo";
 		cotw::TextureManager texture_manager;
 		std::array<cotw::Rect*, 3> ui_elements;
 		sf::Sprite background;
+
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void update(sf::RenderWindow&);
 		void handle_key(sf::RenderWindow&, sf::Event);
 		void on_notify(cotw::Event);
-
-		void handle_events();
-		void init();
-		void cleanup();
-		void pause();
-		void resume();
-		void change_state(cotw::GameStateManager*, cotw::GameState*);
+		void change_state(cotw::GameStateManager*, cotw::State);
 };
 
 }

@@ -11,30 +11,31 @@
 #include "MainMenuState.h"
 #include "screens/Console.h"
 //#include "GameStateManager.h"
+#include "Map.h"
+#include "Player.h"
 
 namespace cotw {
 
 class InGameState: public cotw::GameState
 {
 	public:
-		InGameState(cotw::GameStateManager*);
+		InGameState(cotw::GameStateManager*, sf::Vector2u);
 		~InGameState();
 		cotw::GameStateManager* game_state_manager;
 		std::string foo = "foo";
 		cotw::TextureManager texture_manager;
 		std::array<cotw::Rect*, 1> ui_elements;
-		sf::Sprite background;
+		cotw::Player *player;
+		cotw::Map map;
+		cotw::Console *console;
+
+		bool valid_move(sf::Vector2<unsigned int>);
 		void draw(sf::RenderTarget&, sf::RenderStates) const;
 		void update(sf::RenderWindow&);
 		void handle_key(sf::RenderWindow&, sf::Event);
 		void on_notify(cotw::Event);
 
-		void handle_events();
-		void init();
-		void cleanup();
-		void pause();
-		void resume();
-		void change_state(cotw::GameStateManager*, cotw::GameState*);
+		void change_state(cotw::GameStateManager*, cotw::State);
 };
 
 }

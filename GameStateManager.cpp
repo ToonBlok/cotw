@@ -5,31 +5,19 @@ using namespace std;
 
 namespace cotw {
 
-GameStateManager::GameStateManager()
+GameStateManager::GameStateManager(sf::Vector2u window_size)
 { 
-	state = new cotw::MainMenuState(this);	
-	//set_state(new MainMenuState(this));
-
+	states[0] = new cotw::MainMenuState(this, window_size);
+	states[1] = new cotw::InGameState(this, window_size);
+	current_state = states[0];
 }
 
 GameStateManager::~GameStateManager(){ }
 
 
-void GameStateManager::set_state(cotw::GameState* new_state)
+void GameStateManager::set_state(cotw::State state)
 {
-	state = new_state;
-}
-
-void GameStateManager::push_state(cotw::GameState*)
-{
-}
-
-void GameStateManager::pop_state()
-{
-}
-
-void GameStateManager::on_notify(cotw::Event)
-{
+	current_state = states[state];
 }
 
 }

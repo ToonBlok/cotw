@@ -8,20 +8,17 @@
 
 namespace cotw {
 
-//class GameState;
 
-class GameStateManager: public IObserver
+class GameStateManager
 {
 	public:
-		GameStateManager();
+		GameStateManager(sf::Vector2u);
 		~GameStateManager();
-		cotw::GameState *state;
 
-		void push_state(cotw::GameState*);
-		void pop_state();
-		void set_state(cotw::GameState*);
+		std::array<cotw::GameState*, 2> states;
+		cotw::GameState *current_state;
 
-		void on_notify(cotw::Event);
+		void set_state(cotw::State);
 };
 
 }

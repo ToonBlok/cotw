@@ -6,11 +6,11 @@ using namespace std;
 
 namespace cotw {
 
-MainMenuState::MainMenuState(cotw::GameStateManager* _game_state_manager) 
+MainMenuState::MainMenuState(cotw::GameStateManager* _game_state_manager, sf::Vector2u window_size) 
 {
 	game_state_manager = _game_state_manager;
-	float smx = 480;
-	float smy = 480;
+	float smx = window_size.x / 2;
+	float smy = window_size.y / 2;
 
 	sf::Texture *bg_texture = new sf::Texture(texture_manager.get_texture("textures/screens/background.png"));
 	background.setTexture(*bg_texture);
@@ -33,27 +33,7 @@ void MainMenuState::on_notify(cotw::Event)
 {
 }
 
-void MainMenuState::handle_events()
-{
-}
-
-void MainMenuState::init()
-{
-}
-
-void MainMenuState::cleanup()
-{
-}
-
-void MainMenuState::pause()
-{
-}
-
-void MainMenuState::resume()
-{
-}
-
-void MainMenuState::change_state(cotw::GameStateManager* game_state_manager, cotw::GameState* state)
+void MainMenuState::change_state(cotw::GameStateManager* game_state_manager, cotw::State state)
 {
 	game_state_manager->set_state(state);
 }
@@ -82,7 +62,7 @@ void MainMenuState::handle_key(sf::RenderWindow& window, sf::Event event)
 					//std::cout << "Bye." << std::endl;
 					//cotw::InGameState *foo = new InGameState(game_state_manager);
 					cout << "MainMenuState" << endl;
-					change_state(game_state_manager, new InGameState(game_state_manager));
+					change_state(game_state_manager, cotw::State::INGAME);
 				}
 					break;
 					
